@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class health : MonoBehaviour
@@ -21,7 +22,33 @@ public class health : MonoBehaviour
 
         IDamage heal = other.GetComponent<IDamage>();
 
-        if (heal != null && type == healthType.stationary) 
+        if (heal != null && type == healthType.stationary)
+        {
             heal.takeDamage(healingAmount);
+            Destroy(gameObject);
+        }
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if(other.isTrigger) return;
+
+        IDamage healing = other.GetComponent<IDamage>();
+
+        if(healing != null && type == healthType.overtime)
+        {
+            if (!isHealing)
+                StartCoroutine(HealingOther(healing));
+        }
+    }
+
+    IEnumerator HealingOther(IDamage h)
+    {
+        isHealing = true;
+
+        h.takeDamage(healingAmount);
+        yield return new WaitForSeconds(healingTime);
+
+        isHealing = false;
     }
 }
