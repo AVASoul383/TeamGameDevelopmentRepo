@@ -12,15 +12,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text goalCountText;
+    [SerializeField] GameObject continueMenu;
+
 
     public Image playerHPBar;
     public GameObject playerDamageScreen;
+    public GameObject playerHealthScreen;
     public GameObject player;
     public playerController playerScript;
 
     public bool isPaused;
 
     int goalCount;
+    int waves;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -75,10 +79,22 @@ public class GameManager : MonoBehaviour
 
         if(goalCount <= 0)
         {
-            statePause();
-            menuActive = menuWin;
-            menuActive.SetActive(true);
+            waves += 1;
+            if(waves == 1)
+            {
+                statePause();
+                menuActive = continueMenu;
+                menuActive.SetActive(true);
+            }
+            else if(waves > 1)
+            {
+                statePause();
+                menuActive = menuWin;
+                menuActive.SetActive(true);
+            }
+            
         }
+        
     }
 
     public void youLose()

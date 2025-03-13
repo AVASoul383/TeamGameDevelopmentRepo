@@ -116,9 +116,12 @@ public class playerController : MonoBehaviour, IDamage
     {
         HP -= amount;
         updatePlayerUI();
-        StartCoroutine(flashDamageScreen());
+        if (amount > 0)
+            StartCoroutine(flashDamageScreen());
+        else
+            StartCoroutine(flashHealingScreen());
 
-        if(HP<= 0)
+        if (HP <= 0)
         {
             GameManager.instance.youLose();
         }
@@ -129,6 +132,13 @@ public class playerController : MonoBehaviour, IDamage
         GameManager.instance.playerDamageScreen.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         GameManager.instance.playerDamageScreen.SetActive(false);
+    }
+
+    IEnumerator flashHealingScreen()
+    {
+        GameManager.instance.playerHealthScreen.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        GameManager.instance.playerHealthScreen.SetActive(false);
     }
 
     public void updatePlayerUI()
