@@ -11,6 +11,7 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] Animator anim;
 
     [SerializeField] int HP;
+    [SerializeField] int Exp;
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int animTransSpeed;
 
@@ -97,6 +98,7 @@ public class enemyAI : MonoBehaviour, IDamage
         if(HP <= 0)
             {
             GameManager.instance.updateGameGoal(-1);
+            GameManager.instance.playerScript.SetPlayerExp(Exp);
             Destroy(gameObject);
             }
     }
@@ -114,4 +116,5 @@ public class enemyAI : MonoBehaviour, IDamage
         Instantiate(bullet, shootPos.position, transform.rotation);
     }
 
+    public int GetExp() { return Exp; }
 }

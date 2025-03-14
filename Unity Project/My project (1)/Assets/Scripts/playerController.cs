@@ -8,6 +8,7 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] CharacterController controller;
 
     [Range(1, 10)][SerializeField] int HP;
+    [Range(1, 50)][SerializeField] int ExpMax;
     [Range(2, 5)][SerializeField] int speed;
     [Range(2, 4)][SerializeField] int sprintMod;
     [Range(5, 20)][SerializeField] int jumpSpeed;
@@ -20,6 +21,7 @@ public class playerController : MonoBehaviour, IDamage
 
     int jumpCount;
     int HPOrig;
+    int ExpAmount;
 
     float shootTimer;
 
@@ -31,6 +33,7 @@ public class playerController : MonoBehaviour, IDamage
     void Start()
     {
         HPOrig = HP;
+        ExpAmount = 0;
         updatePlayerUI();
     }
 
@@ -104,11 +107,19 @@ public class playerController : MonoBehaviour, IDamage
             Debug.Log(hit.collider.name);
 
             IDamage dmg = hit.collider.GetComponent<IDamage>();
+            //enemyAI enemy = hit.collider.GetComponent<enemyAI>();
 
             if(dmg != null)
             {
+                
                 dmg.takeDamage(shootDamage);
             }
+
+            //if (enemy.gameObject.IsDestroyed())
+            //{
+            //    ExpAmount += enemy.GetExp();
+            //    updatePlayerUI();
+            //}
         }
     }
 
@@ -125,6 +136,7 @@ public class playerController : MonoBehaviour, IDamage
         {
             GameManager.instance.youLose();
         }
+
     }
 
     IEnumerator flashDamageScreen()
@@ -144,6 +156,12 @@ public class playerController : MonoBehaviour, IDamage
     public void updatePlayerUI()
     {
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+        GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
     }
 
+    public void SetPlayerExp(int amount)
+    {
+        ExpAmount += amount;
+        updatePlayerUI();
+    }
 }

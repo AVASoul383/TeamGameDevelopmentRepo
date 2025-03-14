@@ -163,6 +163,7 @@ MonoBehaviour:
     m_Bits: 8
   controller: {fileID: 4708434221416522673}
   HP: 10
+  ExpMax: 10
   speed: 5
   sprintMod: 3
   jumpSpeed: 12

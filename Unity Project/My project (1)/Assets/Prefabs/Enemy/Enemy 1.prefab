@@ -483,6 +483,7 @@ MonoBehaviour:
   agent: {fileID: 1674229576208699542}
   anim: {fileID: 2376098630691307383}
   HP: 3
+  Exp: 2
   faceTargetSpeed: 3
   animTransSpeed: 3
   shootPos: {fileID: 4493664026876046263}
