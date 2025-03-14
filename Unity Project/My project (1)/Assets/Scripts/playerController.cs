@@ -107,19 +107,12 @@ public class playerController : MonoBehaviour, IDamage
             Debug.Log(hit.collider.name);
 
             IDamage dmg = hit.collider.GetComponent<IDamage>();
-            //enemyAI enemy = hit.collider.GetComponent<enemyAI>();
 
             if(dmg != null)
             {
                 
                 dmg.takeDamage(shootDamage);
             }
-
-            //if (enemy.gameObject.IsDestroyed())
-            //{
-            //    ExpAmount += enemy.GetExp();
-            //    updatePlayerUI();
-            //}
         }
     }
 
@@ -162,6 +155,10 @@ public class playerController : MonoBehaviour, IDamage
     public void SetPlayerExp(int amount)
     {
         ExpAmount += amount;
+
+        if(ExpAmount >= ExpMax)
+            ExpAmount -= ExpMax;
+
         updatePlayerUI();
     }
 }
