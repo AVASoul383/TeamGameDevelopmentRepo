@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject continueMenu;
 
 
+
     public Image playerHPBar;
     public Image playerExpBar;
     public GameObject playerDamageScreen;
@@ -22,9 +23,24 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public playerController playerScript;
 
+    [SerializeField] TMP_Text item1CountText;
+    [SerializeField] TMP_Text item2CountText;
+    [SerializeField] TMP_Text item3CountText;
+    [SerializeField] TMP_Text item4CountText;
+    [SerializeField] TMP_Text moneyCountText;
+    public GameObject playerDamageBoostScreen;
+    public GameObject playerSpeedBoostScreen;
+    public GameObject playerJumpBoostScreen;
+
     public bool isPaused;
 
+    
+    
+    
+    
+
     int goalCount;
+    int moneyCount;
     int waves;
 
 
@@ -39,13 +55,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Cancel"))
+        if(Input.GetButtonDown("Cancel") && !isPaused)
         {
             if(menuActive == null)
             {
                 statePause();
-                menuActive = menuPause;
-                menuActive.SetActive(true);
+                setActiveMenu(menuPause);
             }
             else if(menuActive == menuPause)
             {
@@ -84,25 +99,32 @@ public class GameManager : MonoBehaviour
             if(waves == 1)
             {
                 statePause();
-                menuActive = continueMenu;
-                menuActive.SetActive(true);
+                setActiveMenu(continueMenu);
             }
             else if(waves > 1)
             {
                 statePause();
-                menuActive = menuWin;
-                menuActive.SetActive(true);
+                setActiveMenu(menuWin);
             }
             
         }
-        
     }
+
+    public void updateMoneyUI() => moneyCountText.text = playerScript.currency.ToString("F0");
+    public void updateItemCount1() => item1CountText.text = playerScript.item1Count.ToString("F0");
+    public void updateItemCount2() => item2CountText.text = playerScript.item2Count.ToString("F0");
+    public void updateItemCount3() => item3CountText.text = playerScript.item3Count.ToString("F0");
+    public void updateItemCount4() => item4CountText.text = playerScript.item4Count.ToString("F0");
 
     public void youLose()
     {
         statePause();
-        menuActive = menuLose;
-        menuActive.SetActive(true);
+        setActiveMenu(menuLose);
     }
 
+    public void setActiveMenu(GameObject menu)
+    {
+        menuActive = menu;
+        menuActive.SetActive(true);
+    }
 }
