@@ -98,6 +98,7 @@ public class enemyAI : MonoBehaviour, IDamage
         if(HP <= 0)
             {
             GameManager.instance.playerScript.currency += moneyDropped;
+            GameManager.instance.updateMoneyUI();
             GameManager.instance.updateGameGoal(-1);
             Destroy(gameObject);
             }

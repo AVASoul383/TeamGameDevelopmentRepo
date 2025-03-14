@@ -25,7 +25,6 @@ public class playerController : MonoBehaviour, IDamage
     public int item3Count;
     public int item4Count;
     public int currency;
-
     int jumpCount;
     int HPOrig;
 
@@ -45,6 +44,8 @@ public class playerController : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.instance.isPaused) return;
+
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist, Color.green);
 
         movement();
@@ -152,6 +153,7 @@ public class playerController : MonoBehaviour, IDamage
                 {
                     item1Count--;
                     ActivateItemEffect(1);
+                    GameManager.instance.updateItemCount1();
                 }
                 break;
             case 2:
@@ -159,6 +161,7 @@ public class playerController : MonoBehaviour, IDamage
                 {
                     item2Count--;
                     ActivateItemEffect(2);
+                    GameManager.instance.updateItemCount2();
                 }
                 break;
             case 3:
@@ -166,6 +169,7 @@ public class playerController : MonoBehaviour, IDamage
                 {
                     item3Count--;
                     ActivateItemEffect(3);
+                    GameManager.instance.updateItemCount3();
                 }
                 break;
             case 4:
@@ -173,6 +177,7 @@ public class playerController : MonoBehaviour, IDamage
                 {
                     item4Count--;
                     ActivateItemEffect(4);
+                    GameManager.instance.updateItemCount4();
                 }
                 break;
         }
@@ -205,6 +210,7 @@ public class playerController : MonoBehaviour, IDamage
         shootDamage += 5;
         GameManager.instance.playerDamageBoostScreen.SetActive(true);
         yield return new WaitForSeconds(30f);
+        GameManager.instance.playerDamageBoostScreen.SetActive(false);
         shootDamage = origDam;
     }
 
@@ -214,14 +220,16 @@ public class playerController : MonoBehaviour, IDamage
         sprintMod *= 2;
         GameManager.instance.playerSpeedBoostScreen.SetActive(true);
         yield return new WaitForSeconds(30f);
+        GameManager.instance.playerSpeedBoostScreen.SetActive(false);
         sprintMod = origSpeed;
     }
     IEnumerator jumpBoost()
     {
         int origJump = jumpsMax;
         jumpsMax += 5;
-        //GameManager.instance.playerJumpBoostScreen.SetActive(true);
+        GameManager.instance.playerJumpBoostScreen.SetActive(true);
         yield return new WaitForSeconds(20f);
+        GameManager.instance.playerJumpBoostScreen.SetActive(false);
         jumpsMax = origJump;
     }
 
@@ -234,6 +242,10 @@ public class playerController : MonoBehaviour, IDamage
         else
             StartCoroutine(flashHealingScreen());
 
+        if (HPOrig < HP)
+        {
+            HP = HPOrig;
+        }
         if (HP <= 0)
         {
             GameManager.instance.youLose();

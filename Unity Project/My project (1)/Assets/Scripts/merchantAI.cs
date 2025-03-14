@@ -55,6 +55,7 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
         if(GameManager.instance.playerScript.currency >= item1Price)
         {
             GameManager.instance.playerScript.currency -= item1Price;
+            GameManager.instance.updateMoneyUI();
             grantItem(1);
         }
     }
@@ -63,6 +64,7 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
         if (GameManager.instance.playerScript.currency >= item2Price)
         {
             GameManager.instance.playerScript.currency -= item2Price;
+            GameManager.instance.updateMoneyUI();
             grantItem(2);
         }
     }
@@ -71,6 +73,7 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
         if (GameManager.instance.playerScript.currency >= item3Price)
         {
             GameManager.instance.playerScript.currency -= item3Price;
+            GameManager.instance.updateMoneyUI();
             grantItem(3);
         }
     }
@@ -79,6 +82,7 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
         if (GameManager.instance.playerScript.currency >= item4Price)
         {
             GameManager.instance.playerScript.currency -= item4Price;
+            GameManager.instance.updateMoneyUI();
             grantItem(4);
         }
     }
@@ -90,20 +94,25 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
             case 1:
                 // Health Boost
                 GameManager.instance.playerScript.item1Count++;
+                GameManager.instance.updateItemCount1();
                 break;
             case 2:
                 // Damage Boost
                 GameManager.instance.playerScript.item2Count++;
+                GameManager.instance.updateItemCount2();
                 break;
             case 3:
                 // Jump boost
                 GameManager.instance.playerScript.item3Count++;
+                GameManager.instance.updateItemCount3();
                 break;
             case 4:
                 // Speed buff
                 GameManager.instance.playerScript.item4Count++;
+                GameManager.instance.updateItemCount4();
                 break;
         }
+        
     }
 
     public void takeDamage(int amount)

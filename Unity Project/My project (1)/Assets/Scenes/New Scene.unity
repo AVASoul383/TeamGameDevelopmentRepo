@@ -1472,6 +1472,42 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1361838065}
     - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: item1Count
+      value: 
+      objectReference: {fileID: 830018376}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: item2Count
+      value: 
+      objectReference: {fileID: 1844336334}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: item3Count
+      value: 
+      objectReference: {fileID: 505848207}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: item4Count
+      value: 
+      objectReference: {fileID: 1563107502}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: item1CountText
+      value: 
+      objectReference: {fileID: 830018376}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: item2CountText
+      value: 
+      objectReference: {fileID: 1844336334}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: item3CountText
+      value: 
+      objectReference: {fileID: 505848207}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: item4CountText
+      value: 
+      objectReference: {fileID: 1563107502}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: moneyCountText
+      value: 
+      objectReference: {fileID: 1087186117}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
       propertyPath: playerHealthScreen
       value: 
       objectReference: {fileID: 1561741995}
@@ -3138,7 +3174,7 @@ GameObject:
   - component: {fileID: 1087186118}
   - component: {fileID: 1087186117}
   m_Layer: 5
-  m_Name: Number
+  m_Name: Count
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
