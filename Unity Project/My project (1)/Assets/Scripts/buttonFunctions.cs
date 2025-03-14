@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class buttonFunctions : MonoBehaviour
 {
-   public void resume()
+    public void resume()
     {
         GameManager.instance.stateUnpause();
     }
@@ -22,5 +22,4 @@ public class buttonFunctions : MonoBehaviour
         Application.Quit();
 #endif
     }
-
 }
