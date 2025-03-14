@@ -15,15 +15,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject continueMenu;
 
 
+
     public Image playerHPBar;
     public GameObject playerDamageScreen;
     public GameObject playerHealthScreen;
     public GameObject player;
     public playerController playerScript;
 
+    [SerializeField] TMP_Text item1Count;
+    [SerializeField] TMP_Text item2Count;
+    [SerializeField] TMP_Text item3Count;
+    [SerializeField] TMP_Text item4Count;
+    public GameObject playerDamageBoostScreen;
+    public GameObject playerSpeedBoostScreen;
+    public GameObject playerJumpBoostScreen;
+
+
     public bool isPaused;
 
     int goalCount;
+    int moneyCount;
     int waves;
 
 
@@ -38,13 +49,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Cancel"))
+        if(Input.GetButtonDown("Cancel") && !isPaused)
         {
             if(menuActive == null)
             {
                 statePause();
-                menuActive = menuPause;
-                menuActive.SetActive(true);
+                setActiveMenu(menuPause);
             }
             else if(menuActive == menuPause)
             {
@@ -83,25 +93,31 @@ public class GameManager : MonoBehaviour
             if(waves == 1)
             {
                 statePause();
-                menuActive = continueMenu;
-                menuActive.SetActive(true);
+                setActiveMenu(continueMenu);
             }
             else if(waves > 1)
             {
                 statePause();
-                menuActive = menuWin;
-                menuActive.SetActive(true);
+                setActiveMenu(menuWin);
             }
             
         }
+    }
+
+    public void updateMoneyCount(int amount)
+    {
         
     }
 
     public void youLose()
     {
         statePause();
-        menuActive = menuLose;
-        menuActive.SetActive(true);
+        setActiveMenu(menuLose);
     }
 
+    public void setActiveMenu(GameObject menu)
+    {
+        menuActive = menu;
+        menuActive.SetActive(true);
+    }
 }

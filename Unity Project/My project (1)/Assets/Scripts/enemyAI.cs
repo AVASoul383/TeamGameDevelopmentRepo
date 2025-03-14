@@ -13,6 +13,7 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] int HP;
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int animTransSpeed;
+    [SerializeField] int moneyDropped;
 
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
@@ -96,6 +97,7 @@ public class enemyAI : MonoBehaviour, IDamage
 
         if(HP <= 0)
             {
+            GameManager.instance.playerScript.currency += moneyDropped;
             GameManager.instance.updateGameGoal(-1);
             Destroy(gameObject);
             }

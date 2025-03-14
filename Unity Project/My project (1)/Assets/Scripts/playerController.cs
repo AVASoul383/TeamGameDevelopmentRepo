@@ -1,6 +1,8 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
+using System;
 
 public class playerController : MonoBehaviour, IDamage
 {
@@ -9,7 +11,7 @@ public class playerController : MonoBehaviour, IDamage
 
     [Range(1, 10)][SerializeField] int HP;
     [Range(2, 5)][SerializeField] int speed;
-    [Range(2, 4)][SerializeField] int sprintMod;
+    [Range(2, 8)][SerializeField] int sprintMod;
     [Range(5, 20)][SerializeField] int jumpSpeed;
     [Range(2, 3)][SerializeField] int jumpsMax;
     [Range(15, 45)][SerializeField] int gravity;
@@ -17,6 +19,12 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int shootDamage;
     [SerializeField] int shootDist;
     [SerializeField] float shootRate;
+
+    public int item1Count;
+    public int item2Count;
+    public int item3Count;
+    public int item4Count;
+    public int currency;
 
     int jumpCount;
     int HPOrig;
@@ -42,6 +50,23 @@ public class playerController : MonoBehaviour, IDamage
         movement();
 
         sprint();
+
+        if (Input.GetKeyDown("1"))
+        {
+            UseItem(1);
+        }
+        else if (Input.GetKeyDown("2"))
+        {
+            UseItem(2);
+        }
+        else if (Input.GetKeyDown("3"))
+        {
+            UseItem(3);
+        }
+        else if (Input.GetKeyDown("4"))
+        {
+            UseItem(4);
+        }
     }
 
 
@@ -109,7 +134,95 @@ public class playerController : MonoBehaviour, IDamage
             {
                 dmg.takeDamage(shootDamage);
             }
+
+            IInteract act = hit.collider.GetComponent<IInteract>();
+
+            if(act != null)
+            {
+                act.talkTo();
+            }
         }
+    }
+    void UseItem(int slot)
+    {
+        switch (slot)
+        {
+            case 1:
+                if (item1Count > 0)
+                {
+                    item1Count--;
+                    ActivateItemEffect(1);
+                }
+                break;
+            case 2:
+                if (item2Count > 0)
+                {
+                    item2Count--;
+                    ActivateItemEffect(2);
+                }
+                break;
+            case 3:
+                if (item3Count > 0)
+                {
+                    item3Count--;
+                    ActivateItemEffect(3);
+                }
+                break;
+            case 4:
+                if (item4Count > 0)
+                {
+                    item4Count--;
+                    ActivateItemEffect(4);
+                }
+                break;
+        }
+    }
+    void ActivateItemEffect(int item)
+    {
+        switch (item)
+        {
+            case 1:
+                // Heal player
+                takeDamage(-10);
+                break;
+            case 2:
+                // Damage buff
+                StartCoroutine(damageBoost());
+                break;
+            case 3:
+                // Jump boost
+                StartCoroutine(jumpBoost());
+                break;
+            case 4:
+                // Speed boost
+                StartCoroutine(speedBoost());
+                break;
+        }
+    }
+    IEnumerator damageBoost()
+    {
+        int origDam = shootDamage;
+        shootDamage += 5;
+        GameManager.instance.playerDamageBoostScreen.SetActive(true);
+        yield return new WaitForSeconds(30f);
+        shootDamage = origDam;
+    }
+
+    IEnumerator speedBoost()
+    {
+        int origSpeed = sprintMod;
+        sprintMod *= 2;
+        GameManager.instance.playerSpeedBoostScreen.SetActive(true);
+        yield return new WaitForSeconds(30f);
+        sprintMod = origSpeed;
+    }
+    IEnumerator jumpBoost()
+    {
+        int origJump = jumpsMax;
+        jumpsMax += 5;
+        //GameManager.instance.playerJumpBoostScreen.SetActive(true);
+        yield return new WaitForSeconds(20f);
+        jumpsMax = origJump;
     }
 
     public void takeDamage(int amount)
@@ -144,6 +257,7 @@ public class playerController : MonoBehaviour, IDamage
     public void updatePlayerUI()
     {
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+
     }
 
 }
