@@ -3891,7 +3891,7 @@ MonoBehaviour:
   item2CountText: {fileID: 0}
   item3CountText: {fileID: 0}
   item4CountText: {fileID: 0}
-  moneyCountText: {fileID: 0}
+  moneyCountText: {fileID: 202372628438709856}
   playerDamageBoostScreen: {fileID: 721963536260845172}
   playerSpeedBoostScreen: {fileID: 7444733894309549686}
   playerJumpBoostScreen: {fileID: 1921387154019649569}
