@@ -45,7 +45,7 @@ public class enemyAI : MonoBehaviour, IDamage
 
             agent.SetDestination(GameManager.instance.player.transform.position);
 
-            
+
 
             if (shootTimer >= shootRate)
             {
@@ -69,7 +69,7 @@ public class enemyAI : MonoBehaviour, IDamage
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             playerInRange = true;
         }
@@ -96,14 +96,14 @@ public class enemyAI : MonoBehaviour, IDamage
 
         agent.SetDestination(GameManager.instance.player.transform.position);
 
-        if(HP <= 0)
-            {
+        if (HP <= 0)
+        {
             GameManager.instance.playerScript.currency += moneyDropped;
             GameManager.instance.updateMoneyUI();
             GameManager.instance.updateGameGoal(-1);
             GameManager.instance.playerScript.SetPlayerExp(Exp);
             Destroy(gameObject);
-            }
+        }
     }
 
     IEnumerator flashRed()
