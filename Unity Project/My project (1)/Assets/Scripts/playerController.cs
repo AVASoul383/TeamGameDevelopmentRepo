@@ -26,6 +26,8 @@ public class playerController : MonoBehaviour, IDamage
     public int item3Count;
     public int item4Count;
     public int currency;
+
+    int playerLevel;
     int jumpCount;
     int HPOrig;
     int ExpAmount;
@@ -41,6 +43,7 @@ public class playerController : MonoBehaviour, IDamage
     {
         HPOrig = HP;
         ExpAmount = 0;
+        playerLevel = 1;
         updatePlayerUI();
     }
 
@@ -281,8 +284,11 @@ public class playerController : MonoBehaviour, IDamage
         ExpAmount += amount;
 
         if(ExpAmount >= ExpMax)
+        {
             ExpAmount -= ExpMax;
-
+            ++playerLevel;
+        }
+            
         updatePlayerUI();
     }
 }
