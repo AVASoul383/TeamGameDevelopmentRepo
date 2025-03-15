@@ -16,6 +16,9 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
     [SerializeField] int item3Price;
     [SerializeField] int item4Price;
 
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip menuOpenSound;
+
     Vector3 playerDir;
 
     bool playerInRange;
@@ -23,7 +26,10 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
     
     void Start()
     {
-        
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
     }
 
     // Update is called once per frame
@@ -45,6 +51,12 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
     {
         if(playerInRange)
         {
+
+            if (audioSource != null && menuOpenSound != null)
+            {
+                audioSource.PlayOneShot(menuOpenSound);
+            }
+
             GameManager.instance.statePause();
             GameManager.instance.setActiveMenu(menuShop);
         }
