@@ -170,8 +170,13 @@ MonoBehaviour:
   jumpsMax: 2
   gravity: 15
   shootDamage: 1
-  shootDist: 3
+  shootDist: 200
   shootRate: 0.25
+  item1Count: 0
+  item2Count: 0
+  item3Count: 0
+  item4Count: 0
+  currency: 0
 --- !u!33 &1411394632373627340
 MeshFilter:
   m_ObjectHideFlags: 0

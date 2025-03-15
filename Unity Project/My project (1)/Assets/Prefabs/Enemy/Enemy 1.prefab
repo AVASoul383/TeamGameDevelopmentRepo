@@ -457,7 +457,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3396954230837701299}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 95.4, y: 1, z: 51.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -486,6 +486,7 @@ MonoBehaviour:
   Exp: 2
   faceTargetSpeed: 3
   animTransSpeed: 3
+  moneyDropped: 50
   shootPos: {fileID: 4493664026876046263}
   bullet: {fileID: 3027016357346803647, guid: ee17a17a10ce5374e82265199f9e20c1, type: 3}
   shootRate: 1
