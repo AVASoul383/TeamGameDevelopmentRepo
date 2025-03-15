@@ -38,7 +38,7 @@ public class enemyWaveManager : MonoBehaviour
             int spawnPoint = Random.Range(0, spawnPoints.Length);
             GameObject enemy = Instantiate(currEnemyPrefab, spawnPoints[spawnPoint].position, spawnPoints[spawnPoint].rotation);
             enemiesAlive++;
-        
+            enemy.GetComponent<enemyAI>().setWaveManager(this);
             yield return new WaitForSeconds(spawnDelay); 
         }
 

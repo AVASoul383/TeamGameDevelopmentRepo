@@ -26,6 +26,7 @@ public class enemyAI : MonoBehaviour, IDamage
 
     bool playerInRange;
 
+    public enemyWaveManager waveManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -105,6 +106,19 @@ public class enemyAI : MonoBehaviour, IDamage
             GameManager.instance.playerScript.SetPlayerExp(Exp);
             
             }
+    }
+
+    public void enemyDead()
+    {
+        if(waveManager != null)
+        {
+            waveManager.enemyDefeated();
+        }
+    }
+
+    public void setWaveManager(enemyWaveManager manager)
+    {
+        waveManager = manager;
     }
 
     IEnumerator flashRed()
