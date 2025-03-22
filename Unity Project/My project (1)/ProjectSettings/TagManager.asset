@@ -6,6 +6,8 @@ TagManager:
   tags:
   - SlowTrap
   - Enemy
+  - Player Spawn Pos
+  - Grapple Point
   layers:
   - Default
   - TransparentFX
