@@ -19,6 +19,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [Range(5, 20)][SerializeField] int jumpSpeed;
     [Range(2, 3)][SerializeField] int jumpsMax;
     [Range(15, 45)][SerializeField] int gravity;
+    [Range(0, 10)][SerializeField] int armor;
 
     [Header("----- Guns -----")]
     [SerializeField] List<GunStats> gunList = new List<GunStats>();
@@ -254,7 +255,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
                 break;
             case 3:
                 // Jump boost
-                StartCoroutine(jumpBoost());
+                StartCoroutine(defenseBoost());
                 break;
             case 4:
                 // Speed boost
@@ -267,7 +268,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         int origDam = shootDamage;
         shootDamage += 5;
         GameManager.instance.playerDamageBoostScreen.SetActive(true);
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(10f);
         GameManager.instance.playerDamageBoostScreen.SetActive(false);
         shootDamage = origDam;
     }
@@ -277,28 +278,36 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         int origSpeed = sprintMod;
         sprintMod *= 2;
         GameManager.instance.playerSpeedBoostScreen.SetActive(true);
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(10f);
         GameManager.instance.playerSpeedBoostScreen.SetActive(false);
         sprintMod = origSpeed;
     }
-    IEnumerator jumpBoost()
+    IEnumerator defenseBoost()
     {
-        int origJump = jumpsMax;
-        jumpsMax += 5;
-        GameManager.instance.playerJumpBoostScreen.SetActive(true);
-        yield return new WaitForSeconds(20f);
-        GameManager.instance.playerJumpBoostScreen.SetActive(false);
-        jumpsMax = origJump;
+        int origArmor = armor;
+        jumpsMax += 3;
+        GameManager.instance.playerDefenseBoostScreen.SetActive(true);
+        yield return new WaitForSeconds(10f);
+        GameManager.instance.playerDefenseBoostScreen.SetActive(false);
+        armor = origArmor;
     }
 
     public void takeDamage(int amount)
     {
-        HP -= amount;
-        updatePlayerUI();
+        //check if amount is supposed to damage player 
         if (amount > 0)
+        {
+            int totalDamage = amount - armor;
+            if(totalDamage > 0)
+                HP -= totalDamage;
             StartCoroutine(flashDamageScreen());
-        else
+        }
+        else //check if amount is supposed to heal player
+        {
+            HP -= amount;
             StartCoroutine(flashHealingScreen());
+        }
+        updatePlayerUI();
 
         if (HPOrig < HP)
         {

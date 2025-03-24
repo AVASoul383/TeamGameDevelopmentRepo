@@ -31,17 +31,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text moneyCountText;
     public GameObject playerDamageBoostScreen;
     public GameObject playerSpeedBoostScreen;
-    public GameObject playerJumpBoostScreen;
+    public GameObject playerDefenseBoostScreen;
 
     public bool isPaused;
 
-    
-    
-    
-    
-
     int goalCount;
-    int moneyCount;
+    public int moneyCount;
     int waves;
 
 
@@ -112,7 +107,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void updateMoneyUI() => moneyCountText.text = playerScript.currency.ToString("F0");
+    public void updateMoneyCount(int amount)
+    {
+        moneyCount += amount;
+        moneyCountText.text = moneyCount.ToString("F0");
+    }
     public void updateItemCount1() => item1CountText.text = playerScript.item1Count.ToString("F0");
     public void updateItemCount2() => item2CountText.text = playerScript.item2Count.ToString("F0");
     public void updateItemCount3() => item3CountText.text = playerScript.item3Count.ToString("F0");

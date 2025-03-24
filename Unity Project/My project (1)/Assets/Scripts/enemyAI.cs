@@ -170,8 +170,7 @@ public class enemyAI : MonoBehaviour, IDamage
             {
             Destroy(gameObject);
             enemyDead();
-            GameManager.instance.playerScript.currency += moneyDropped;
-            GameManager.instance.updateMoneyUI();
+            GameManager.instance.updateMoneyCount(moneyDropped);
             GameManager.instance.updateGameGoal(-1);
             GameManager.instance.playerScript.SetPlayerExp(Exp);
             
