@@ -10,6 +10,7 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] CharacterController controller;
 
     [Range(1, 10)][SerializeField] int HP;
+    [Range(1, 50)][SerializeField] int ExpMax;
     [Range(2, 5)][SerializeField] int speed;
     [Range(2, 8)][SerializeField] int sprintMod;
     [Range(5, 20)][SerializeField] int jumpSpeed;
@@ -26,8 +27,10 @@ public class playerController : MonoBehaviour, IDamage
     public int item4Count;
     public int currency;
 
+    int playerLevel;
     int jumpCount;
     int HPOrig;
+    int ExpAmount;
 
     float shootTimer;
 
@@ -39,12 +42,16 @@ public class playerController : MonoBehaviour, IDamage
     void Start()
     {
         HPOrig = HP;
+        ExpAmount = 0;
+        playerLevel = 1;
         updatePlayerUI();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.instance.isPaused) return;
+
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist, Color.green);
 
         movement();
@@ -152,6 +159,7 @@ public class playerController : MonoBehaviour, IDamage
                 {
                     item1Count--;
                     ActivateItemEffect(1);
+                    GameManager.instance.updateItemCount1();
                 }
                 break;
             case 2:
@@ -159,6 +167,7 @@ public class playerController : MonoBehaviour, IDamage
                 {
                     item2Count--;
                     ActivateItemEffect(2);
+                    GameManager.instance.updateItemCount2();
                 }
                 break;
             case 3:
@@ -166,6 +175,7 @@ public class playerController : MonoBehaviour, IDamage
                 {
                     item3Count--;
                     ActivateItemEffect(3);
+                    GameManager.instance.updateItemCount3();
                 }
                 break;
             case 4:
@@ -173,6 +183,7 @@ public class playerController : MonoBehaviour, IDamage
                 {
                     item4Count--;
                     ActivateItemEffect(4);
+                    GameManager.instance.updateItemCount4();
                 }
                 break;
         }
@@ -205,6 +216,7 @@ public class playerController : MonoBehaviour, IDamage
         shootDamage += 5;
         GameManager.instance.playerDamageBoostScreen.SetActive(true);
         yield return new WaitForSeconds(30f);
+        GameManager.instance.playerDamageBoostScreen.SetActive(false);
         shootDamage = origDam;
     }
 
@@ -214,14 +226,16 @@ public class playerController : MonoBehaviour, IDamage
         sprintMod *= 2;
         GameManager.instance.playerSpeedBoostScreen.SetActive(true);
         yield return new WaitForSeconds(30f);
+        GameManager.instance.playerSpeedBoostScreen.SetActive(false);
         sprintMod = origSpeed;
     }
     IEnumerator jumpBoost()
     {
         int origJump = jumpsMax;
         jumpsMax += 5;
-        //GameManager.instance.playerJumpBoostScreen.SetActive(true);
+        GameManager.instance.playerJumpBoostScreen.SetActive(true);
         yield return new WaitForSeconds(20f);
+        GameManager.instance.playerJumpBoostScreen.SetActive(false);
         jumpsMax = origJump;
     }
 
@@ -234,10 +248,15 @@ public class playerController : MonoBehaviour, IDamage
         else
             StartCoroutine(flashHealingScreen());
 
+        if (HPOrig < HP)
+        {
+            HP = HPOrig;
+        }
         if (HP <= 0)
         {
             GameManager.instance.youLose();
         }
+
     }
 
     IEnumerator flashDamageScreen()
@@ -257,7 +276,19 @@ public class playerController : MonoBehaviour, IDamage
     public void updatePlayerUI()
     {
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
-
+        GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
     }
 
+    public void SetPlayerExp(int amount)
+    {
+        ExpAmount += amount;
+
+        if(ExpAmount >= ExpMax)
+        {
+            ExpAmount -= ExpMax;
+            ++playerLevel;
+        }
+            
+        updatePlayerUI();
+    }
 }

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Damage : MonoBehaviour
 
-    
+
 {
     enum damageType { moving, stationary, overtime }
     [SerializeField] damageType type;
@@ -14,7 +14,7 @@ public class Damage : MonoBehaviour
     [Range(0.25f, 1)][SerializeField] float damageTime;
     [Range(10, 45)][SerializeField] int speed;
     [Range(1, 4)][SerializeField] int destroyTime;
-    
+
 
     bool isDamaging;
 
@@ -22,7 +22,7 @@ public class Damage : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(type == damageType.moving)
+        if (type == damageType.moving)
         {
             rb.linearVelocity = transform.forward * speed;
             Destroy(gameObject, destroyTime);
@@ -36,12 +36,12 @@ public class Damage : MonoBehaviour
 
         IDamage dmg = other.GetComponent<IDamage>();
 
-        if(dmg != null && (type == damageType.stationary || type == damageType.moving))
+        if (dmg != null && (type == damageType.stationary || type == damageType.moving))
         {
             dmg.takeDamage(damageAmount);
         }
 
-        if(type == damageType.moving)
+        if (type == damageType.moving)
         {
             Destroy(gameObject);
         }
@@ -54,10 +54,10 @@ public class Damage : MonoBehaviour
 
         IDamage dmg = other.GetComponent<IDamage>();
 
-        if(dmg != null && type == damageType.overtime)
+        if (dmg != null && type == damageType.overtime)
         {
-            if(!isDamaging)
-            StartCoroutine(damageOther(dmg));
+            if (!isDamaging)
+                StartCoroutine(damageOther(dmg));
         }
     }
 

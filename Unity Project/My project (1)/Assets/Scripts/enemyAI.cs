@@ -11,6 +11,7 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] Animator anim;
 
     [SerializeField] int HP;
+    [SerializeField] int Exp;
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int animTransSpeed;
     [SerializeField] int moneyDropped;
@@ -44,7 +45,7 @@ public class enemyAI : MonoBehaviour, IDamage
 
             agent.SetDestination(GameManager.instance.player.transform.position);
 
-            
+
 
             if (shootTimer >= shootRate)
             {
@@ -68,7 +69,7 @@ public class enemyAI : MonoBehaviour, IDamage
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             playerInRange = true;
         }
@@ -95,12 +96,14 @@ public class enemyAI : MonoBehaviour, IDamage
 
         agent.SetDestination(GameManager.instance.player.transform.position);
 
-        if(HP <= 0)
-            {
+        if (HP <= 0)
+        {
             GameManager.instance.playerScript.currency += moneyDropped;
+            GameManager.instance.updateMoneyUI();
             GameManager.instance.updateGameGoal(-1);
+            GameManager.instance.playerScript.SetPlayerExp(Exp);
             Destroy(gameObject);
-            }
+        }
     }
 
     IEnumerator flashRed()
@@ -116,4 +119,5 @@ public class enemyAI : MonoBehaviour, IDamage
         Instantiate(bullet, shootPos.position, transform.rotation);
     }
 
+    public int GetExp() { return Exp; }
 }

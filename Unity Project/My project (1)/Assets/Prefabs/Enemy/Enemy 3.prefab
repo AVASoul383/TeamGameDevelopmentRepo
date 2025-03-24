@@ -786,7 +786,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5637724018692819537}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 92.57, y: 1, z: 57.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -812,8 +812,10 @@ MonoBehaviour:
   agent: {fileID: 8936855239574205723}
   anim: {fileID: 424402944571207583}
   HP: 8
+  Exp: 7
   faceTargetSpeed: 3
   animTransSpeed: 3
+  moneyDropped: 0
   shootPos: {fileID: 1048942174194863025}
   bullet: {fileID: 3027016357346803647, guid: 5d4934e4ee951e247a2e2f526c04296e, type: 3}
   shootRate: 1

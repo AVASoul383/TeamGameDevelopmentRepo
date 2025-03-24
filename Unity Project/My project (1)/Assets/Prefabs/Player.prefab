@@ -163,14 +163,20 @@ MonoBehaviour:
     m_Bits: 8
   controller: {fileID: 4708434221416522673}
   HP: 10
+  ExpMax: 10
   speed: 5
   sprintMod: 3
   jumpSpeed: 12
   jumpsMax: 2
   gravity: 15
   shootDamage: 1
-  shootDist: 3
+  shootDist: 200
   shootRate: 0.25
+  item1Count: 0
+  item2Count: 0
+  item3Count: 0
+  item4Count: 0
+  currency: 0
 --- !u!33 &1411394632373627340
 MeshFilter:
   m_ObjectHideFlags: 0

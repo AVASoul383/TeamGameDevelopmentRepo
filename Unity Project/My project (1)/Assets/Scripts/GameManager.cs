@@ -17,21 +17,27 @@ public class GameManager : MonoBehaviour
 
 
     public Image playerHPBar;
+    public Image playerExpBar;
     public GameObject playerDamageScreen;
     public GameObject playerHealthScreen;
     public GameObject player;
     public playerController playerScript;
 
-    [SerializeField] TMP_Text item1Count;
-    [SerializeField] TMP_Text item2Count;
-    [SerializeField] TMP_Text item3Count;
-    [SerializeField] TMP_Text item4Count;
+    [SerializeField] TMP_Text item1CountText;
+    [SerializeField] TMP_Text item2CountText;
+    [SerializeField] TMP_Text item3CountText;
+    [SerializeField] TMP_Text item4CountText;
+    [SerializeField] TMP_Text moneyCountText;
     public GameObject playerDamageBoostScreen;
     public GameObject playerSpeedBoostScreen;
     public GameObject playerJumpBoostScreen;
 
-
     public bool isPaused;
+
+    
+    
+    
+    
 
     int goalCount;
     int moneyCount;
@@ -104,10 +110,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void updateMoneyCount(int amount)
-    {
-        
-    }
+    public void updateMoneyUI() => moneyCountText.text = playerScript.currency.ToString("F0");
+    public void updateItemCount1() => item1CountText.text = playerScript.item1Count.ToString("F0");
+    public void updateItemCount2() => item2CountText.text = playerScript.item2Count.ToString("F0");
+    public void updateItemCount3() => item3CountText.text = playerScript.item3Count.ToString("F0");
+    public void updateItemCount4() => item4CountText.text = playerScript.item4Count.ToString("F0");
 
     public void youLose()
     {
