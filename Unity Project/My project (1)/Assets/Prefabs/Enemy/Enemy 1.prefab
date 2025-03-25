@@ -490,6 +490,7 @@ MonoBehaviour:
   shootPos: {fileID: 4493664026876046263}
   bullet: {fileID: 3027016357346803647, guid: ee17a17a10ce5374e82265199f9e20c1, type: 3}
   shootRate: 1
+  waveManager: {fileID: 0}
 --- !u!195 &1674229576208699542
 NavMeshAgent:
   m_ObjectHideFlags: 0

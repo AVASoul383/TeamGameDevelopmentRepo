@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 
 public class GameManager : MonoBehaviour
@@ -13,8 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] TMP_Text goalCountText;
     [SerializeField] GameObject continueMenu;
-
-
+    [SerializeField] List<GameObject> enemySpawnPOS = new List<GameObject>();
 
     public Image playerHPBar;
     public Image playerExpBar;
@@ -34,11 +34,6 @@ public class GameManager : MonoBehaviour
 
     public bool isPaused;
 
-    
-    
-    
-    
-
     int goalCount;
     int moneyCount;
     int waves;
@@ -49,6 +44,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         player = GameObject.FindWithTag("Player");
+        GameObject.FindGameObjectsWithTag("Enemy Spawn Pos",enemySpawnPOS);
         playerScript = player.GetComponent<playerController>();
     }
 
