@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
+
 
 
 public class enemyAI : MonoBehaviour, IDamage
@@ -9,20 +11,30 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
+    [SerializeField] Transform headPos;
 
     [SerializeField] int HP;
     [SerializeField] int Exp;
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int animTransSpeed;
     [SerializeField] int moneyDropped;
+    [SerializeField] int FOV;
+    [SerializeField] int roamPauseTime;
+    [SerializeField] int roamDist;
 
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
 
+    [SerializeField] Collider weaponCol;
+
     float shootTimer;
+    float roamTimer;
+    float angleToPlayer;
+    float stoppingDist;
 
     Vector3 playerDir;
+    Vector3 startingPos;
 
     bool playerInRange;
 
@@ -31,34 +43,88 @@ public class enemyAI : MonoBehaviour, IDamage
     void Start()
     {
         GameManager.instance.updateGameGoal(1);
+        startingPos = transform.position;
+        stoppingDist = agent.stoppingDistance;
     }
 
     // Update is called once per frame
     void Update()
     {
-        setAnimLocomotion();
-
-        shootTimer += Time.deltaTime;
-        if (playerInRange)
+        if (!GameManager.instance.isPaused)
         {
+            setAnimLocomotion();
 
-            playerDir = GameManager.instance.player.transform.position - transform.position;
+            shootTimer += Time.deltaTime;
 
-            agent.SetDestination(GameManager.instance.player.transform.position);
+            if (agent.remainingDistance < 0.01f)
+                roamTimer += Time.deltaTime;
 
-            
-
-            if (shootTimer >= shootRate)
+            if (playerInRange && !canSeePlayer())
             {
-                shoot();
+                checkRoam();
+
             }
-
-            if (agent.remainingDistance <= agent.stoppingDistance)
+            else if (!playerInRange)
             {
-                faceTarget();
+                checkRoam();
             }
         }
+    }
 
+    bool canSeePlayer()
+    {
+        playerDir = GameManager.instance.player.transform.position - headPos.position;
+        angleToPlayer = Vector3.Angle(playerDir, transform.forward);
+
+        Debug.DrawRay(headPos.position, playerDir);
+
+        RaycastHit hit;
+        if(Physics.Raycast(headPos.position, playerDir, out hit))
+        {
+            if(hit.collider.CompareTag("Player") && angleToPlayer <= FOV)
+            {
+                agent.SetDestination(GameManager.instance.player.transform.position);
+
+                if (shootTimer >= shootRate)
+                {
+                    shoot();
+                }
+
+                if (agent.remainingDistance <= agent.stoppingDistance)
+                {
+                    faceTarget();
+                }
+
+                agent.stoppingDistance = stoppingDist;
+
+                return true;
+            }
+        }
+        agent.stoppingDistance = 0;
+        return false;
+
+    }
+
+    void checkRoam()
+    {
+        if((roamTimer > roamPauseTime && agent.remainingDistance < 0.01f))
+        {
+            roam();
+        }
+
+    }
+
+    void roam()
+    {
+        roamTimer = 0;
+        agent.stoppingDistance = 0;
+
+        Vector3 ranPos = UnityEngine.Random.insideUnitSphere * roamDist;
+        ranPos += startingPos;
+
+        NavMeshHit hit;
+        NavMesh.SamplePosition(ranPos, out hit, roamDist, 1);
+        agent.SetDestination(hit.position);
     }
 
     void setAnimLocomotion()
@@ -81,6 +147,8 @@ public class enemyAI : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+            agent.stoppingDistance = 0;
+            roam();
         }
     }
 
@@ -94,6 +162,7 @@ public class enemyAI : MonoBehaviour, IDamage
     {
         HP -= amount;
         StartCoroutine(flashRed());
+        roamTimer = 0;
 
         agent.SetDestination(GameManager.instance.player.transform.position);
 
@@ -101,8 +170,7 @@ public class enemyAI : MonoBehaviour, IDamage
             {
             Destroy(gameObject);
             enemyDead();
-            GameManager.instance.playerScript.currency += moneyDropped;
-            GameManager.instance.updateMoneyUI();
+            GameManager.instance.updateMoneyCount(moneyDropped);
             GameManager.instance.updateGameGoal(-1);
             GameManager.instance.playerScript.SetPlayerExp(Exp);
             
@@ -132,7 +200,23 @@ public class enemyAI : MonoBehaviour, IDamage
     void shoot()
     {
         shootTimer = 0;
+        anim.SetTrigger("Shoot");
+       
+    }
+
+    public void createBullet()
+    {
         Instantiate(bullet, shootPos.position, transform.rotation);
+    }
+
+    public void turnWeaponColOn()
+    {
+        weaponCol.enabled = true;
+    }
+
+    public void turnWeaponColOff()
+    {
+        weaponCol.enabled = false;
     }
 
     public int GetExp() { return Exp; }
