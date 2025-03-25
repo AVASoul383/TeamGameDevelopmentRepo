@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuShop;
     [SerializeField] TMP_Text goalCountText;
     [SerializeField] GameObject continueMenu;
 
@@ -83,6 +84,12 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
+    }
+
+    public void openShop()
+    {
+        statePause();
+        setActiveMenu(menuShop);
     }
 
     public void updateGameGoal(int amount)

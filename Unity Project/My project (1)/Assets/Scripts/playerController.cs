@@ -44,6 +44,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     int HPOrig;
     int ExpAmount;
 
+    bool isPlayerBuffed;
+
     int gunListPos;
 
     float shootTimer;
@@ -205,40 +207,47 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     }
     void UseItem(int slot)
     {
-        switch (slot)
+        if(isPlayerBuffed)
         {
-            case 1:
-                if (item1Count > 0)
-                {
-                    item1Count--;
-                    ActivateItemEffect(1);
-                    GameManager.instance.updateItemCount1();
-                }
-                break;
-            case 2:
-                if (item2Count > 0)
-                {
-                    item2Count--;
-                    ActivateItemEffect(2);
-                    GameManager.instance.updateItemCount2();
-                }
-                break;
-            case 3:
-                if (item3Count > 0)
-                {
-                    item3Count--;
-                    ActivateItemEffect(3);
-                    GameManager.instance.updateItemCount3();
-                }
-                break;
-            case 4:
-                if (item4Count > 0)
-                {
-                    item4Count--;
-                    ActivateItemEffect(4);
-                    GameManager.instance.updateItemCount4();
-                }
-                break;
+
+        }
+        else
+        {
+            switch (slot)
+            {
+                case 1:
+                    if (item1Count > 0)
+                    {
+                        item1Count--;
+                        ActivateItemEffect(1);
+                        GameManager.instance.updateItemCount1();
+                    }
+                    break;
+                case 2:
+                    if (item2Count > 0)
+                    {
+                        item2Count--;
+                        ActivateItemEffect(2);
+                        GameManager.instance.updateItemCount2();
+                    }
+                    break;
+                case 3:
+                    if (item3Count > 0)
+                    {
+                        item3Count--;
+                        ActivateItemEffect(3);
+                        GameManager.instance.updateItemCount3();
+                    }
+                    break;
+                case 4:
+                    if (item4Count > 0)
+                    {
+                        item4Count--;
+                        ActivateItemEffect(4);
+                        GameManager.instance.updateItemCount4();
+                    }
+                    break;
+            }
         }
     }
     void ActivateItemEffect(int item)
@@ -265,30 +274,36 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     }
     IEnumerator damageBoost()
     {
+        isPlayerBuffed = true;
         int origDam = shootDamage;
         shootDamage += 5;
         GameManager.instance.playerDamageBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerDamageBoostScreen.SetActive(false);
+        isPlayerBuffed = false;
         shootDamage = origDam;
     }
 
     IEnumerator speedBoost()
     {
+        isPlayerBuffed = true;
         int origSpeed = sprintMod;
         sprintMod *= 2;
         GameManager.instance.playerSpeedBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerSpeedBoostScreen.SetActive(false);
+        isPlayerBuffed = false;
         sprintMod = origSpeed;
     }
     IEnumerator defenseBoost()
     {
+        isPlayerBuffed = true;
         int origArmor = armor;
-        jumpsMax += 3;
+        armor += 3;
         GameManager.instance.playerDefenseBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerDefenseBoostScreen.SetActive(false);
+        isPlayerBuffed = false;
         armor = origArmor;
     }
 

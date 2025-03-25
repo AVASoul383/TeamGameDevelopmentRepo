@@ -6,11 +6,11 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
 {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] Animator anim;
 
     [SerializeField] int HP;
     [SerializeField] int faceTargetSpeed;
 
-    [SerializeField] GameObject menuShop;
     [SerializeField] int item1Price;
     [SerializeField] int item2Price;
     [SerializeField] int item3Price;
@@ -51,14 +51,12 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
     {
         if(playerInRange)
         {
-
             if (audioSource != null && menuOpenSound != null)
             {
                 audioSource.PlayOneShot(menuOpenSound);
             }
 
-            GameManager.instance.statePause();
-            GameManager.instance.setActiveMenu(menuShop);
+            GameManager.instance.openShop();
         }
     }
 
@@ -82,7 +80,7 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
     {
         if (GameManager.instance.moneyCount >= item3Price)
         {
-            GameManager.instance.updateMoneyCount(item3Price);
+            GameManager.instance.updateMoneyCount(-(item3Price));
             grantItem(3);
         }
     }
