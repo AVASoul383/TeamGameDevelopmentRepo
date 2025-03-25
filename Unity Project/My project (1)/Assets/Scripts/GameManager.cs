@@ -11,17 +11,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuShop;
     [SerializeField] TMP_Text goalCountText;
     [SerializeField] GameObject continueMenu;
 
 
-
+    public GameObject playerSpawnPos;
     public Image playerHPBar;
     public Image playerExpBar;
     public GameObject playerDamageScreen;
     public GameObject playerHealthScreen;
     public GameObject player;
     public playerController playerScript;
+    public GameObject checkpointPopup;
 
     [SerializeField] TMP_Text item1CountText;
     [SerializeField] TMP_Text item2CountText;
@@ -30,17 +32,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text moneyCountText;
     public GameObject playerDamageBoostScreen;
     public GameObject playerSpeedBoostScreen;
-    public GameObject playerJumpBoostScreen;
+    public GameObject playerDefenseBoostScreen;
 
     public bool isPaused;
 
-    
-    
-    
-    
-
     int goalCount;
-    int moneyCount;
+    public int moneyCount;
     int waves;
 
 
@@ -50,6 +47,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<playerController>();
+        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
     }
 
     // Update is called once per frame
@@ -88,6 +86,12 @@ public class GameManager : MonoBehaviour
         menuActive = null;
     }
 
+    public void openShop()
+    {
+        statePause();
+        setActiveMenu(menuShop);
+    }
+
     public void updateGameGoal(int amount)
     {
         goalCount += amount;
@@ -110,7 +114,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void updateMoneyUI() => moneyCountText.text = playerScript.currency.ToString("F0");
+    public void updateMoneyCount(int amount)
+    {
+        moneyCount += amount;
+        moneyCountText.text = moneyCount.ToString("F0");
+    }
     public void updateItemCount1() => item1CountText.text = playerScript.item1Count.ToString("F0");
     public void updateItemCount2() => item2CountText.text = playerScript.item2Count.ToString("F0");
     public void updateItemCount3() => item3CountText.text = playerScript.item3Count.ToString("F0");

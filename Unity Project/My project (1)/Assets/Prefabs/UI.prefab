@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Speed Potion
+  m_text: Speed Boost
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -610,7 +610,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 11500000, guid: 160f8c623ea30354a9af17635400d911, type: 3}
         m_TargetAssemblyTypeName: merchantAI, Assembly-CSharp
         m_MethodName: purchaseItem3
         m_Mode: 1
@@ -954,7 +954,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 748455606927571877, guid: f3f06ac61cf529541978aad3b2f1a832, type: 3}
         m_TargetAssemblyTypeName: merchantAI, Assembly-CSharp
         m_MethodName: purchaseItem4
         m_Mode: 1
@@ -1106,7 +1106,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Damage Potion
+  m_text: Damage Boost
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1668,7 +1668,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3c98dd25cd423fc459096fd452d49be0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2088,7 +2088,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 748455606927571877, guid: f3f06ac61cf529541978aad3b2f1a832, type: 3}
         m_TargetAssemblyTypeName: merchantAI, Assembly-CSharp
         m_MethodName: purchaseItem2
         m_Mode: 1
@@ -2241,7 +2241,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Health Potion
+  m_text: Health Boost
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2702,7 +2702,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 11500000, guid: 160f8c623ea30354a9af17635400d911, type: 3}
         m_TargetAssemblyTypeName: merchantAI, Assembly-CSharp
         m_MethodName: purchaseItem4
         m_Mode: 1
@@ -3334,7 +3334,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 8eb37e76c2afdaf4786da78ad476e8ee, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3879,23 +3879,27 @@ MonoBehaviour:
   menuPause: {fileID: 6622464475063467307}
   menuWin: {fileID: 8413946084780117494}
   menuLose: {fileID: 4207448409469910564}
+  menuShop: {fileID: 7680265092705112892}
   goalCountText: {fileID: 2139045605267139083}
   continueMenu: {fileID: 5499301787178871465}
+  playerSpawnPos: {fileID: 0}
   playerHPBar: {fileID: 3783626778917430779}
   playerExpBar: {fileID: 3451743037915145024}
   playerDamageScreen: {fileID: 6129036667720753965}
   playerHealthScreen: {fileID: 1167730821997099754}
   player: {fileID: 0}
   playerScript: {fileID: 0}
-  item1CountText: {fileID: 0}
-  item2CountText: {fileID: 0}
-  item3CountText: {fileID: 0}
-  item4CountText: {fileID: 0}
+  checkpointPopup: {fileID: 0}
+  item1CountText: {fileID: 5606164564718278645}
+  item2CountText: {fileID: 6622359118612036962}
+  item3CountText: {fileID: 6508029692482523353}
+  item4CountText: {fileID: 2051637601664721052}
   moneyCountText: {fileID: 202372628438709856}
   playerDamageBoostScreen: {fileID: 721963536260845172}
-  playerSpeedBoostScreen: {fileID: 7444733894309549686}
-  playerJumpBoostScreen: {fileID: 1921387154019649569}
+  playerSpeedBoostScreen: {fileID: 1921387154019649569}
+  playerDefenseBoostScreen: {fileID: 7444733894309549686}
   isPaused: 0
+  moneyCount: 0
 --- !u!1 &2931935682345023390
 GameObject:
   m_ObjectHideFlags: 0
@@ -4308,7 +4312,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Buy $5
+  m_text: Buy $10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5334,7 +5338,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f002119834aa7444c9a7b14a1ab72b40, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5457,7 +5461,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 2431332968282582451, guid: 8cdd847ab4f914d4cb3d23e9eb98958d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5535,7 +5539,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 2431332968282582451, guid: 8cdd847ab4f914d4cb3d23e9eb98958d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5964,7 +5968,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f002119834aa7444c9a7b14a1ab72b40, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6249,7 +6253,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 11500000, guid: 160f8c623ea30354a9af17635400d911, type: 3}
         m_TargetAssemblyTypeName: merchantAI, Assembly-CSharp
         m_MethodName: purchaseItem1
         m_Mode: 1
@@ -7124,7 +7128,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Jump Potion
+  m_text: Defense Boost
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7189,7 +7193,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -18.69983, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7826,7 +7830,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Buy $2
+  m_text: Buy $5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8287,7 +8291,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 11500000, guid: 160f8c623ea30354a9af17635400d911, type: 3}
         m_TargetAssemblyTypeName: merchantAI, Assembly-CSharp
         m_MethodName: purchaseItem2
         m_Mode: 1
@@ -8631,7 +8635,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 748455606927571877, guid: f3f06ac61cf529541978aad3b2f1a832, type: 3}
         m_TargetAssemblyTypeName: merchantAI, Assembly-CSharp
         m_MethodName: purchaseItem3
         m_Mode: 1
@@ -8874,7 +8878,7 @@ GameObject:
   - component: {fileID: 5744034883527311734}
   - component: {fileID: 2079865901999374242}
   m_Layer: 5
-  m_Name: Jump
+  m_Name: Defense
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8930,7 +8934,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 8eb37e76c2afdaf4786da78ad476e8ee, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9141,7 +9145,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3c98dd25cd423fc459096fd452d49be0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9408,7 +9412,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 748455606927571877, guid: f3f06ac61cf529541978aad3b2f1a832, type: 3}
         m_TargetAssemblyTypeName: merchantAI, Assembly-CSharp
         m_MethodName: purchaseItem1
         m_Mode: 1
@@ -9985,7 +9989,7 @@ GameObject:
   - component: {fileID: 2652533159545049107}
   - component: {fileID: 417408345557308082}
   m_Layer: 5
-  m_Name: Player Jump Boost Screen
+  m_Name: Player Defense Boost Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10031,7 +10035,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.7082865, a: 0.392}
+  m_Color: {r: 0.4056604, g: 0.2163522, b: 0, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10735,7 +10739,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Increase Jump count by 5 for 30 seconds
+  m_text: Increase Armor by 3 for 10 seconds
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11782,7 +11786,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Buy 2$
+  m_text: Buy $10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12138,7 +12142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Buy $3
+  m_text: Buy $10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
