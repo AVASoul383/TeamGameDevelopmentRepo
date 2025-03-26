@@ -39,6 +39,10 @@ public class GameManager : MonoBehaviour
     int goalCount;
     public int moneyCount;
     int waves;
+    TurnOnOff trigger1;
+    TurnOnOff trigger2;
+    TurnOnOff trigger3;
+    TurnOnOff trigger4;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -48,6 +52,23 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<playerController>();
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        trigger1 = GameObject.FindWithTag("F1 Trigger").GetComponent<TurnOnOff>();
+        trigger2 = GameObject.FindWithTag("F2 Trigger").GetComponent<TurnOnOff>();
+        trigger3 = GameObject.FindWithTag("F3 Trigger").GetComponent<TurnOnOff>();
+        trigger4 = GameObject.FindWithTag("Boss Trigger").GetComponent<TurnOnOff>();  
+        for (int i = 0; i < trigger1.levelItem.Length; i++)
+        {
+            trigger1.levelItem[i].SetActive(false);
+        }
+        for (int i = 0; i < trigger2.levelItem.Length; i++)
+        {
+            trigger2.levelItem[i].SetActive(false);
+        }
+        for (int i = 0; i < trigger3.levelItem.Length; i++)
+        {
+            trigger3.levelItem[i].SetActive(false);
+        }
+        trigger4.levelItem[0].SetActive(false);
     }
 
     // Update is called once per frame
