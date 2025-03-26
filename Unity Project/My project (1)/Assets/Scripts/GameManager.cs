@@ -68,7 +68,10 @@ public class GameManager : MonoBehaviour
         {
             trigger3.levelItem[i].SetActive(false);
         }
-        trigger4.levelItem[0].SetActive(false);
+        for (int i = 0; i < trigger4.levelItem.Length; i++)
+        {
+            trigger4.levelItem[i].SetActive(false);
+        }   
     }
 
     // Update is called once per frame

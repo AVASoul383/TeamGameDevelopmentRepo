@@ -218,7 +218,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 15
+  m_Radius: 25
   m_Center: {x: -0.00016149879, y: 1.0497739, z: 0.021080002}
 --- !u!136 &2329364084044483386
 CapsuleCollider:
