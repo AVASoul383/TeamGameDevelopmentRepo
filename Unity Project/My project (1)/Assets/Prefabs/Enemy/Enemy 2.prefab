@@ -188,7 +188,7 @@ Transform:
   m_GameObject: {fileID: 1253509002072383684}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.89, y: 2.75, z: 3.12}
+  m_LocalPosition: {x: -0.02, y: 2.75, z: 0.05}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -737,14 +737,20 @@ MonoBehaviour:
   model: {fileID: 12190516437286630}
   agent: {fileID: 7790005134720713781}
   anim: {fileID: 7072810194377104701}
-  HP: 5
+  headPos: {fileID: 6221047170091617574}
+  HP: 3
   Exp: 5
   faceTargetSpeed: 3
   animTransSpeed: 3
-  moneyDropped: 0
+  moneyDropped: 100
+  FOV: 90
+  roamPauseTime: 3
+  roamDist: 25
   shootPos: {fileID: 5459643256924950724}
   bullet: {fileID: 3027016357346803647, guid: 1a0ef1dd26bcb7f43a31c04a37d075a2, type: 3}
   shootRate: 1
+  weaponCol: {fileID: 0}
+  waveManager: {fileID: 0}
 --- !u!195 &7790005134720713781
 NavMeshAgent:
   m_ObjectHideFlags: 0

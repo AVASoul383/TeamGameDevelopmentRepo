@@ -6,14 +6,14 @@ public class Damage : MonoBehaviour
 
 
 {
-    enum damageType { moving, stationary, overtime }
+    enum damageType { moving, stationary, overtime, homing }
     [SerializeField] damageType type;
     [SerializeField] Rigidbody rb;
 
     [Range(1, 10)][SerializeField] int damageAmount;
     [Range(0.25f, 1)][SerializeField] float damageTime;
     [Range(10, 45)][SerializeField] int speed;
-    [Range(1, 4)][SerializeField] int destroyTime;
+    [Range(1, 10)][SerializeField] int destroyTime;
 
 
     bool isDamaging;
@@ -22,10 +22,26 @@ public class Damage : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (type == damageType.moving)
+        if (type == damageType.moving || type == damageType.homing)
         {
-            rb.linearVelocity = transform.forward * speed;
             Destroy(gameObject, destroyTime);
+
+            if(type == damageType.homing)
+                rb.linearVelocity = transform.forward * speed;
+        }
+
+        //if (type == damageType.homing)
+        //{
+        //    Destroy(gameObject, destroyTime);
+        //}
+
+    }
+
+    private void Update()
+    {
+        if(type == damageType.homing)
+        {
+            rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position).normalized * speed * Time.deltaTime;
         }
     }
 
@@ -36,12 +52,12 @@ public class Damage : MonoBehaviour
 
         IDamage dmg = other.GetComponent<IDamage>();
 
-        if (dmg != null && (type == damageType.stationary || type == damageType.moving))
+        if (dmg != null && (type == damageType.stationary || type == damageType.moving || type == damageType.homing))
         {
             dmg.takeDamage(damageAmount);
         }
 
-        if (type == damageType.moving)
+        if (type == damageType.moving || type == damageType.homing)
         {
             Destroy(gameObject);
         }

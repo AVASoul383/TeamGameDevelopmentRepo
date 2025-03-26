@@ -32,6 +32,16 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] int grappleDist;
     [SerializeField] LineRenderer grappleLine;
 
+    [Header("----- Audio -----")]
+    [SerializeField] AudioSource aud;
+    [SerializeField] AudioClip[] audSteps;
+    [Range(0, 1)][SerializeField] float audStepsVol;
+    [SerializeField] AudioClip[] audJump;
+    [Range(0,1)][SerializeField] float audJumpVol;
+    [SerializeField] AudioClip[] audHurt;
+    [Range(0, 1)][SerializeField] float audHurtVol;
+
+    [Header("----- Items -----")]
     public int item1Count;
     public int item2Count;
     public int item3Count;
@@ -49,6 +59,9 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     Vector3 moveDir;
     Vector3 playerVel;
+
+    bool isPlayingSteps;
+    bool isSprinting;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -98,6 +111,9 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         if(controller.isGrounded)
         {
+            if(moveDir.magnitude > 0.3f && !isPlayingSteps)
+                StartCoroutine(playSteps());
+
             jumpCount = 0;
             playerVel = Vector3.zero;
         }
@@ -120,12 +136,27 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         reloadGun();
     }
 
+    IEnumerator playSteps()
+    {
+        isPlayingSteps = true;
+        aud.PlayOneShot(audSteps[UnityEngine.Random.Range(0, audSteps.Length)], audStepsVol);
+
+        if(!isSprinting)
+            yield return new WaitForSeconds(0.5f);
+        else
+            yield return new WaitForSeconds(0.3f);
+
+        isPlayingSteps = false;
+    }
+
+
     void jump()
     {
         if(Input.GetButtonDown("Jump") && jumpCount < jumpsMax)
         {
             jumpCount++;
             playerVel.y = jumpSpeed;
+            aud.PlayOneShot(audJump[UnityEngine.Random.Range(0,audJump.Length)], audJumpVol);
         }
     }
 
@@ -134,10 +165,12 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if(Input.GetButtonDown("Sprint"))
         {
             speed *= sprintMod;
+            isSprinting = true;
         }
         else if(Input.GetButtonUp("Sprint"))
         {
             speed /= sprintMod;
+            isSprinting = false;
         }
     }
 
@@ -180,6 +213,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootTimer = 0;
 
         gunList[gunListPos].ammoCur--;
+        aud.PlayOneShot(gunList[gunListPos].shootSound[UnityEngine.Random.Range(0, gunList[gunListPos].shootSound.Length)], gunList[gunListPos].shootVol);
 
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
@@ -295,6 +329,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         HP -= amount;
         updatePlayerUI();
+        aud.PlayOneShot(audHurt[UnityEngine.Random.Range(0, audHurt.Length)], audHurtVol);
         if (amount > 0)
             StartCoroutine(flashDamageScreen());
         else

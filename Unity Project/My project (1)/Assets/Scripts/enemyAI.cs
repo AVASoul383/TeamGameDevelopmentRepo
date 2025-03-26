@@ -42,7 +42,7 @@ public class enemyAI : MonoBehaviour, IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameManager.instance.updateGameGoal(1);
+        //GameManager.instance.updateGameGoal(1);
         startingPos = transform.position;
         stoppingDist = agent.stoppingDistance;
     }
