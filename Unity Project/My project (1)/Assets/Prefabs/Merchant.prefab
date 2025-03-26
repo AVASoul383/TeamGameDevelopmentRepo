@@ -176,10 +176,10 @@ MonoBehaviour:
   anim: {fileID: 0}
   HP: 50
   faceTargetSpeed: 4
-  item1Price: 2
-  item2Price: 3
-  item3Price: 5
-  item4Price: 2
+  item1Price: 5
+  item2Price: 10
+  item3Price: 10
+  item4Price: 10
   audioSource: {fileID: 0}
   menuOpenSound: {fileID: 0}
 --- !u!23 &1235499632386355612

@@ -8,7 +8,10 @@ TagManager:
   - Enemy
   - Player Spawn Pos
   - Grapple Point
-  - Enemy Spawn Pos
+  - F1 Trigger
+  - F2 Trigger
+  - F3 Trigger
+  - Boss Trigger
   layers:
   - Default
   - TransparentFX
