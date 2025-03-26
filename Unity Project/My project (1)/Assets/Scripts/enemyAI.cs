@@ -202,7 +202,6 @@ public class enemyAI : MonoBehaviour, IDamage
     {
         shootTimer = 0;
         anim.SetTrigger("Shoot");
-       
     }
 
     public void createBullet()
