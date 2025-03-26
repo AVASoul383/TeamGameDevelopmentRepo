@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System;
+using UnityEditor.Experimental.GraphView;
 
 
 public class playerController : MonoBehaviour, IDamage, IPickup
@@ -12,14 +13,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] CharacterController controller;
 
     [Header("----- Stats -----")]
-    [Range(0, 10)] public int HP;
+    [Range(0, 100)] public int HP;
     [Range(1, 50)][SerializeField] int ExpMax;
     [Range(2, 5)][SerializeField] int speed;
     [Range(2, 8)][SerializeField] int sprintMod;
     [Range(5, 20)][SerializeField] int jumpSpeed;
     [Range(2, 3)][SerializeField] int jumpsMax;
     [Range(15, 45)][SerializeField] int gravity;
-    [Range(0, 10)][SerializeField] int armor;
+    [Range(0, 50)][SerializeField] int armor;
 
     [Header("----- Guns -----")]
     [SerializeField] List<GunStats> gunList = new List<GunStats>();
@@ -62,6 +63,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         ExpAmount = 0;
         playerLevel = 1;
         updatePlayerUI();
+        GameManager.instance.updateLevel(playerLevel);
     }
 
     // Update is called once per frame
@@ -353,6 +355,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
         GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
+        
     }
 
     public void SetPlayerExp(int amount)
@@ -362,7 +365,11 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if(ExpAmount >= ExpMax)
         {
             ExpAmount -= ExpMax;
+            HPOrig += 5;
+            HP = HPOrig;
+            armor += 3;
             ++playerLevel;
+            GameManager.instance.updateLevel(playerLevel);
         }
             
         updatePlayerUI();

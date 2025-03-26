@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Player Spawn Pos
   - Grapple Point
+  - Enemy Spawn Pos
   layers:
   - Default
   - TransparentFX

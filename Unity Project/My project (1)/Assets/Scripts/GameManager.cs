@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
+using NUnit.Framework;
+
 
 
 public class GameManager : MonoBehaviour
@@ -13,8 +16,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject menuShop;
     [SerializeField] TMP_Text goalCountText;
+    [SerializeField] TMP_Text levelText;
     [SerializeField] GameObject continueMenu;
-
+    [SerializeField] List<GameObject> enemySpawns = new List<GameObject>();
 
     public GameObject playerSpawnPos;
     public Image playerHPBar;
@@ -47,6 +51,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<playerController>();
+        GameObject.FindGameObjectsWithTag("Enemy Spawn Pos", enemySpawns);
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
     }
 
@@ -114,6 +119,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void updateLevel(int level)
+    {
+        levelText.text = level.ToString("F0");
+    }
+
     public void updateMoneyCount(int amount)
     {
         moneyCount += amount;
@@ -134,5 +144,10 @@ public class GameManager : MonoBehaviour
     {
         menuActive = menu;
         menuActive.SetActive(true);
+    }
+
+    public List<GameObject> getEnemySpawn()
+    {
+        return enemySpawns;
     }
 }

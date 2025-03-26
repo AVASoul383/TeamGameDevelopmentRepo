@@ -84,6 +84,7 @@ public class enemyAI : MonoBehaviour, IDamage
             if(hit.collider.CompareTag("Player") && angleToPlayer <= FOV)
             {
                 agent.SetDestination(GameManager.instance.player.transform.position);
+                
 
                 if (shootTimer >= shootRate)
                 {
@@ -167,14 +168,14 @@ public class enemyAI : MonoBehaviour, IDamage
         agent.SetDestination(GameManager.instance.player.transform.position);
 
         if(HP <= 0)
-            {
+        {
             Destroy(gameObject);
             enemyDead();
             GameManager.instance.updateMoneyCount(moneyDropped);
             GameManager.instance.updateGameGoal(-1);
             GameManager.instance.playerScript.SetPlayerExp(Exp);
             
-            }
+        }
     }
 
     public void enemyDead()
