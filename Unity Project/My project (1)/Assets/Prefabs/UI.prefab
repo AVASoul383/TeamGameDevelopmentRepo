@@ -3881,7 +3881,9 @@ MonoBehaviour:
   menuLose: {fileID: 4207448409469910564}
   menuShop: {fileID: 7680265092705112892}
   goalCountText: {fileID: 2139045605267139083}
+  levelText: {fileID: 0}
   continueMenu: {fileID: 5499301787178871465}
+  enemySpawns: []
   playerSpawnPos: {fileID: 0}
   playerHPBar: {fileID: 3783626778917430779}
   playerExpBar: {fileID: 3451743037915145024}
