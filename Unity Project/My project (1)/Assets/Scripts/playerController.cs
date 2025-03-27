@@ -14,8 +14,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [Header("----- Stats -----")]
     [Range(0, 40)] public int HP;
     [Range(1, 50)][SerializeField] int ExpMax;
-    [Range(2, 5)][SerializeField] float speed;
-    [Range(1, 8)][SerializeField] float sprintMod;
+    [Range(2, 20)][SerializeField] int speed;
+    [Range(1, 8)][SerializeField] int sprintMod;
     [Range(5, 20)][SerializeField] int jumpSpeed;
     [Range(2, 3)][SerializeField] int jumpsMax;
     [Range(15, 45)][SerializeField] int gravity;
@@ -317,8 +317,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     IEnumerator speedBoost()
     {
         isPlayerBuffed = true;
-        float origSpeed = sprintMod;
-        sprintMod *= (float)1.5;
+        int origSpeed = sprintMod;
+        sprintMod += 2;
         GameManager.instance.playerSpeedBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerSpeedBoostScreen.SetActive(false);
@@ -329,7 +329,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         isPlayerBuffed = true;
         int origArmor = armor;
-        armor += 1;
+        armor += 2;
         GameManager.instance.playerDefenseBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerDefenseBoostScreen.SetActive(false);

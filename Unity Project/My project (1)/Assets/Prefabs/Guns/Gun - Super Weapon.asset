@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Gun - Super Weapon
   m_EditorClassIdentifier: 
   model: {fileID: 9192801482375431700, guid: d6736f02ff0a6b94b9e3cbfc044f33a4, type: 3}
-  shootDamage: 3
+  shootDamage: 2
   shootDis: 1000
   shootRate: 0.24
-  ammoCur: 13
+  ammoCur: 20
   ammoMax: 20
   hitEffect: {fileID: 8567743453655228817, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
   shootSound:
