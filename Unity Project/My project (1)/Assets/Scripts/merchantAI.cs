@@ -124,11 +124,8 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
     public void takeDamage(int amount)
     {
         HP -= amount;
-        StartCoroutine(flashRed());
-
         if (HP <= 0)
         {
-            GameManager.instance.updateGameGoal(-1);
             Destroy(gameObject);
         }
     }

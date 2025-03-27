@@ -214,7 +214,7 @@ MonoBehaviour:
   model: {fileID: 982285988896777228}
   agent: {fileID: 4036770466464597777}
   headPos: {fileID: 4449138654369279120}
-  HP: 20
+  HP: 40
   speed: 10
   faceTargetSpeed: 5
   FOV: 90

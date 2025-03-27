@@ -14,8 +14,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [Header("----- Stats -----")]
     [Range(0, 40)] public int HP;
     [Range(1, 50)][SerializeField] int ExpMax;
-    [Range(2, 5)][SerializeField] int speed;
-    [Range(2, 8)][SerializeField] int sprintMod;
+    [Range(2, 5)][SerializeField] float speed;
+    [Range(1, 8)][SerializeField] float sprintMod;
     [Range(5, 20)][SerializeField] int jumpSpeed;
     [Range(2, 3)][SerializeField] int jumpsMax;
     [Range(15, 45)][SerializeField] int gravity;
@@ -33,6 +33,15 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] int grappleDist;
     [SerializeField] LineRenderer grappleLine;
 
+    [Header("---- Audio ----")]
+    [SerializeField] AudioSource aud;
+    [SerializeField] AudioClip[] audSteps;
+    [Range(0, 1)][SerializeField] float audStepsVol;
+    [SerializeField] AudioClip[] audJump;
+    [Range(0, 1)][SerializeField] float audJumpVol;
+    [SerializeField] AudioClip[] audHurt;
+    [Range(0, 1)][SerializeField] float audHurtVol;
+
     public int item1Count;
     public int item2Count;
     public int item3Count;
@@ -45,6 +54,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     int ExpAmount;
 
     bool isPlayerBuffed;
+    bool isPlayingSteps;
+    bool isSprinting;
 
     int gunListPos;
 
@@ -101,6 +112,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         if(controller.isGrounded)
         {
+            if (moveDir.magnitude > 0.3f && !isPlayingSteps)
+                StartCoroutine(playSteps());
             jumpCount = 0;
             playerVel = Vector3.zero;
         }
@@ -124,12 +137,25 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         reloadGun();
     }
 
+    IEnumerator playSteps()
+    {
+        isPlayingSteps = true;
+        aud.PlayOneShot(audSteps[UnityEngine.Random.Range(0, audSteps.Length)]);
+
+        if (!isSprinting)
+            yield return new WaitForSeconds(0.5f);
+        else
+            yield return new WaitForSeconds(0.3f);
+        isPlayingSteps = false;
+    }
+
     void jump()
     {
         if(Input.GetButtonDown("Jump") && jumpCount < jumpsMax)
         {
             jumpCount++;
             playerVel.y = jumpSpeed;
+            aud.PlayOneShot(audJump[UnityEngine.Random.Range(0, audJump.Length)], audJumpVol);
         }
     }
 
@@ -184,6 +210,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootTimer = 0;
 
         gunList[gunListPos].ammoCur--;
+        aud.PlayOneShot(gunList[gunListPos].shootSound[UnityEngine.Random.Range(0, gunList[gunListPos].shootSound.Length)], gunList[gunListPos].shootVol);
         updateGunAmmo();
 
         RaycastHit hit;
@@ -279,7 +306,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         isPlayerBuffed = true;
         int origDam = shootDamage;
-        shootDamage += 5;
+        shootDamage += 2;
         GameManager.instance.playerDamageBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerDamageBoostScreen.SetActive(false);
@@ -290,8 +317,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     IEnumerator speedBoost()
     {
         isPlayerBuffed = true;
-        int origSpeed = sprintMod;
-        sprintMod *= 2;
+        float origSpeed = sprintMod;
+        sprintMod *= (float)1.5;
         GameManager.instance.playerSpeedBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerSpeedBoostScreen.SetActive(false);
@@ -302,7 +329,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         isPlayerBuffed = true;
         int origArmor = armor;
-        armor += 3;
+        armor += 1;
         GameManager.instance.playerDefenseBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerDefenseBoostScreen.SetActive(false);
@@ -319,6 +346,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             if(totalDamage > 0)
                 HP -= totalDamage;
             StartCoroutine(flashDamageScreen());
+            aud.PlayOneShot(audHurt[UnityEngine.Random.Range(0, audHurt.Length)], audHurtVol);
         }
         else //check if amount is supposed to heal player
         {

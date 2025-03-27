@@ -88,14 +88,14 @@ MonoBehaviour:
   model: {fileID: 5830782168827707489}
   agent: {fileID: 1305152482475385902}
   headPos: {fileID: 7738858817633794778}
-  HP: 10
+  HP: 20
   speed: 0
   faceTargetSpeed: 10
   FOV: 180
   roamPauseTime: 0
   roamDist: 0
   Exp: 4
-  moneyDropped: 10
+  moneyDropped: 12
   shootPos:
   - {fileID: 4558164782380160864}
   - {fileID: 6248725489690230552}
