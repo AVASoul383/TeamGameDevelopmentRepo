@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public playerController playerScript;
     public GameObject checkpointPopup;
+    public TMP_Text ammoAmt;
 
     [Header("----- Hotbar Menu -----")]
     [SerializeField] TMP_Text item1CountText;
@@ -125,6 +126,8 @@ public class GameManager : MonoBehaviour
         goalCountText.text = goalCount.ToString("F0");
 
     }
+
+    
 
     public void bossFight(int amount)
     {

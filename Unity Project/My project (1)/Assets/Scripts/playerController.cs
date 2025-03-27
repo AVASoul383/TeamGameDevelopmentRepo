@@ -184,6 +184,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootTimer = 0;
 
         gunList[gunListPos].ammoCur--;
+        updateGunAmmo();
 
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
@@ -373,7 +374,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         gunList.Add(gun);
         gunListPos = gunList.Count - 1;
-
+        updateGunAmmo();
         changeGun();
         
     }
@@ -397,6 +398,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootDamage = gunList[gunListPos].shootDamage;
         shootDist = gunList[gunListPos].shootDis;
         shootRate = gunList[gunListPos].shootRate;
+        updateGunAmmo();
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].model.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterials = gunList[gunListPos].model.GetComponent<MeshRenderer>().sharedMaterials;
@@ -408,6 +410,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if(Input.GetButtonDown("Reload"))
         {
             gunList[gunListPos].ammoCur = gunList[gunListPos].ammoMax;
+            updateGunAmmo();
         }
     }
 
@@ -417,5 +420,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         HP = HPOrig;
         updatePlayerUI();
+    }
+
+    void updateGunAmmo()
+    {
+        GameManager.instance.ammoAmt.text = gunList[gunListPos].ammoCur.ToString("F0") + "/ " + gunList[gunListPos].ammoMax.ToString("F0");
     }
 }
