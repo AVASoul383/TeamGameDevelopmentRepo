@@ -226,6 +226,14 @@ public class droneEnemyAI : MonoBehaviour, IDamage
             shootRotation = 0;
             bulletRotation = 0;
         }
+        if (bulletRotation < bullet.Length - 1)
+        {
+            bulletRotation++;
+        }
+        else
+        {
+            bulletRotation = 0;
+        }
 
         shootDir = (GameManager.instance.player.transform.position - shootPos[shootRotation].position).normalized;
         shootTimer = 0;
