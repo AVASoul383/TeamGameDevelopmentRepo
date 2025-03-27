@@ -512,7 +512,7 @@ NavMeshAgent:
   m_AngularSpeed: 600
   m_StoppingDistance: 8
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
@@ -531,7 +531,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: acef7f2e5d52edd4fa43154e49aaeaad, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0

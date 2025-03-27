@@ -29,4 +29,10 @@ public class buttonFunctions : MonoBehaviour
         GameManager.instance.stateUnpause();
     }
 
+    public void progress()
+    {
+        GameManager.instance.stateUnpause();
+    }
+
+
 }

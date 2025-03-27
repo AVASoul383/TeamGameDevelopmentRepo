@@ -65,7 +65,7 @@ MonoBehaviour:
   FOV: 90
   roamPauseTime: 3
   roamDist: 20
-  Exp: 0
+  Exp: 3
   moneyDropped: 20
   shootPos:
   - {fileID: 3632723116356725178}
