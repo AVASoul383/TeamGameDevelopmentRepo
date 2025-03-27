@@ -55,7 +55,6 @@ public class droneEnemyAI : MonoBehaviour, IDamage
             GameManager.instance.bossFight(1);
         if (type == enemyType.moving || type == enemyType.boss)
             agent.speed = speed;
-        GameManager.instance.updateGameGoal(1);
         startingPos = transform.position;
         stoppingDist = agent.stoppingDistance;
     }
@@ -70,7 +69,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
             if (agent.remainingDistance < 0.01f)
                 roamTimer += Time.deltaTime;
-            if (type == enemyType.moving)
+            if (type == enemyType.moving || type == enemyType.boss)
             {
                 if (playerInRange && !canSeePlayer())
                 {

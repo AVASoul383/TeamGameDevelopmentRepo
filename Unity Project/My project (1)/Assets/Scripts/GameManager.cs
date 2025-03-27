@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject continueMenu;
 
     public GameObject playerSpawnPos;
+    public GameObject[] advancementPlatforms;
     public Image playerHPBar;
     public Image playerExpBar;
     public GameObject playerDamageScreen;
@@ -91,6 +92,7 @@ public class GameManager : MonoBehaviour
             }
            
         }
+        openArea();
     }
 
     public void statePause()
@@ -135,6 +137,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void openArea()
+    {
+        if(goalCount == 0)
+        {
+            for (int i = 0; i < advancementPlatforms.Length; i++)
+            {
+                advancementPlatforms[i].SetActive(false);
+            }
+        }
+        else if(goalCount > 0)
+        {
+            for (int i = 0; i < advancementPlatforms.Length; i++)
+            {
+                advancementPlatforms[i].SetActive(true);
+            }
+        }
+    }
     public void updateMoneyCount(int amount)
     {
         moneyCount += amount;
