@@ -34,6 +34,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] int grappleDist;
     [SerializeField] LineRenderer grappleLine;
 
+    public int levelMax;
     public int item1Count;
     public int item2Count;
     public int item3Count;
@@ -63,7 +64,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         ExpAmount = 0;
         playerLevel = 1;
         updatePlayerUI();
-        GameManager.instance.updateLevel(playerLevel);
     }
 
     // Update is called once per frame
@@ -185,6 +185,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootTimer = 0;
 
         gunList[gunListPos].ammoCur--;
+        updateGunAmmo();
 
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
@@ -360,26 +361,28 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     public void SetPlayerExp(int amount)
     {
-        ExpAmount += amount;
-
-        if(ExpAmount >= ExpMax)
+        if (playerLevel <= levelMax)
         {
-            ExpAmount -= ExpMax;
-            HPOrig += 5;
-            HP = HPOrig;
-            armor += 3;
-            ++playerLevel;
-            GameManager.instance.updateLevel(playerLevel);
+            ExpAmount += amount;
+
+            if (ExpAmount >= ExpMax)
+            {
+                ExpAmount -= ExpMax;
+                HPOrig += 5;
+                HP = HPOrig;
+                armor += 3;
+                ++playerLevel;
+            }
+
+            updatePlayerUI();
         }
-            
-        updatePlayerUI();
     }
 
     public void getGunStats(GunStats gun)
     {
         gunList.Add(gun);
         gunListPos = gunList.Count - 1;
-
+        
         changeGun();
         
     }
@@ -403,6 +406,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootDamage = gunList[gunListPos].shootDamage;
         shootDist = gunList[gunListPos].shootDis;
         shootRate = gunList[gunListPos].shootRate;
+        updateGunAmmo();
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].model.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterials = gunList[gunListPos].model.GetComponent<MeshRenderer>().sharedMaterials;
@@ -414,7 +418,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if(Input.GetButtonDown("Reload"))
         {
             gunList[gunListPos].ammoCur = gunList[gunListPos].ammoMax;
-
+            updateGunAmmo();
         }
     }
 
@@ -427,4 +431,9 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     }
 
+    void updateGunAmmo()
+    {
+        GameManager.instance.updateAmmo(gunList[gunListPos].ammoCur);
+        GameManager.instance.updateAmmoMax(gunList[gunListPos].ammoMax);
+    }
 }

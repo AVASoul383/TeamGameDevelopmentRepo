@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject menuShop;
     [SerializeField] TMP_Text goalCountText;
-    [SerializeField] TMP_Text levelText;
+    [SerializeField] TMP_Text ammoMax;
+    [SerializeField] TMP_Text ammoAmt;
     [SerializeField] GameObject continueMenu;
     [SerializeField] List<GameObject> enemySpawns = new List<GameObject>();
 
@@ -143,9 +144,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void updateLevel(int level)
+    public void updateAmmo(int amount)
     {
-        levelText.text = level.ToString("F0");
+        ammoAmt.text = amount.ToString("F0");
+    }
+
+    public void updateAmmoMax(int amount)
+    {
+        ammoMax.text = "/ " + amount.ToString("F0");
     }
 
     public void updateMoneyCount(int amount)
