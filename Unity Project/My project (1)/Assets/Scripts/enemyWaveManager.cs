@@ -13,7 +13,7 @@ public class enemyWaveManager : MonoBehaviour
     public float spawnDelay = 1f;
     public float waveDelay = 3f;
 
-    List<GameObject> enemySpawn = new List<GameObject>();
+    
     private GameObject currEnemyPrefab;
     private int currWave = 1;
     private int enemiesToSpawn;
@@ -25,7 +25,7 @@ public class enemyWaveManager : MonoBehaviour
     {
         updateEnemyPrefab();
         enemiesToSpawn = startingEnemyCount;
-        enemySpawn = GameManager.instance.getEnemySpawn();
+        
         StartCoroutine(SpawnWave());
     }
 
@@ -37,19 +37,10 @@ public class enemyWaveManager : MonoBehaviour
 
     IEnumerator SpawnWave()
     {
-        //for (int i = 0; i < enemiesToSpawn; i++)
-        //{
-        //    int spawnPoint = i % spawnPoints.Length;
-        //    GameObject enemy = Instantiate(currEnemyPrefab, spawnPoints[spawnPoint].position, spawnPoints[spawnPoint].rotation);
-        //    enemiesAlive++;
-        //    enemy.GetComponent<enemyAI>().setWaveManager(this);
-        //    yield return new WaitForSeconds(spawnDelay);
-        //}
-
         for (int i = 0; i < enemiesToSpawn; i++)
         {
-            int enemiesPoint = i % enemySpawn.Count;
-            GameObject enemy = Instantiate(currEnemyPrefab, enemySpawn[enemiesPoint].transform.position, enemySpawn[enemiesPoint].transform.rotation);
+            int spawnPoint = i % spawnPoints.Length;
+            GameObject enemy = Instantiate(currEnemyPrefab, spawnPoints[spawnPoint].position, spawnPoints[spawnPoint].rotation);
             enemiesAlive++;
             enemy.GetComponent<enemyAI>().setWaveManager(this);
             yield return new WaitForSeconds(spawnDelay);
