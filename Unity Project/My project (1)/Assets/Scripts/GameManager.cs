@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
-using NUnit.Framework;
-
 
 
 public class GameManager : MonoBehaviour
@@ -16,10 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject menuShop;
     [SerializeField] TMP_Text goalCountText;
-    [SerializeField] TMP_Text ammoMax;
-    [SerializeField] TMP_Text ammoAmt;
     [SerializeField] GameObject continueMenu;
-    [SerializeField] List<GameObject> enemySpawns = new List<GameObject>();
 
     public GameObject playerSpawnPos;
     public Image playerHPBar;
@@ -30,6 +24,7 @@ public class GameManager : MonoBehaviour
     public playerController playerScript;
     public GameObject checkpointPopup;
 
+    [Header("----- Hotbar Menu -----")]
     [SerializeField] TMP_Text item1CountText;
     [SerializeField] TMP_Text item2CountText;
     [SerializeField] TMP_Text item3CountText;
@@ -42,6 +37,7 @@ public class GameManager : MonoBehaviour
     public bool isPaused;
 
     int goalCount;
+    int bossCount;
     public int moneyCount;
     int waves;
     TurnOnOff trigger1;
@@ -56,7 +52,6 @@ public class GameManager : MonoBehaviour
         instance = this;
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<playerController>();
-        GameObject.FindGameObjectsWithTag("Enemy Spawn Pos", enemySpawns);
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
         trigger1 = GameObject.FindWithTag("F1 Trigger").GetComponent<TurnOnOff>();
         trigger2 = GameObject.FindWithTag("F2 Trigger").GetComponent<TurnOnOff>();
@@ -127,31 +122,17 @@ public class GameManager : MonoBehaviour
         goalCount += amount;
         goalCountText.text = goalCount.ToString("F0");
 
-        if(goalCount <= 0)
+    }
+
+    public void bossFight(int amount)
+    {
+        bossCount += amount;
+
+        if(bossCount <= 0)
         {
-            waves += 1;
-            if(waves == 1)
-            {
-                statePause();
-                setActiveMenu(continueMenu);
-            }
-            else if(waves > 1)
-            {
-                statePause();
-                setActiveMenu(menuWin);
-            }
-            
+            statePause();
+            setActiveMenu(menuWin);
         }
-    }
-
-    public void updateAmmo(int amount)
-    {
-        ammoAmt.text = amount.ToString("F0");
-    }
-
-    public void updateAmmoMax(int amount)
-    {
-        ammoMax.text = "/ " + amount.ToString("F0");
     }
 
     public void updateMoneyCount(int amount)
@@ -174,10 +155,5 @@ public class GameManager : MonoBehaviour
     {
         menuActive = menu;
         menuActive.SetActive(true);
-    }
-
-    public List<GameObject> getEnemySpawn()
-    {
-        return enemySpawns;
     }
 }

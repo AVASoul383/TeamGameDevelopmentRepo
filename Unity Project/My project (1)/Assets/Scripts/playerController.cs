@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System;
-using UnityEditor.Experimental.GraphView;
 
 
 public class playerController : MonoBehaviour, IDamage, IPickup
@@ -13,14 +12,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] CharacterController controller;
 
     [Header("----- Stats -----")]
-    [Range(0, 100)] public int HP;
+    [Range(0, 40)] public int HP;
     [Range(1, 50)][SerializeField] int ExpMax;
     [Range(2, 5)][SerializeField] int speed;
     [Range(2, 8)][SerializeField] int sprintMod;
     [Range(5, 20)][SerializeField] int jumpSpeed;
     [Range(2, 3)][SerializeField] int jumpsMax;
     [Range(15, 45)][SerializeField] int gravity;
-    [Range(0, 50)][SerializeField] int armor;
+    [Range(0, 10)][SerializeField] int armor;
 
     [Header("----- Guns -----")]
     [SerializeField] List<GunStats> gunList = new List<GunStats>();
@@ -34,7 +33,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] int grappleDist;
     [SerializeField] LineRenderer grappleLine;
 
-    public int levelMax;
     public int item1Count;
     public int item2Count;
     public int item3Count;
@@ -119,8 +117,9 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         
 
         if(Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
-        shoot();
+            shoot();
 
+        
         selectGun();
         reloadGun();
     }
@@ -185,7 +184,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootTimer = 0;
 
         gunList[gunListPos].ammoCur--;
-        updateGunAmmo();
 
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
@@ -207,6 +205,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
                 act.talkTo();
             }
         }
+       
     }
     void UseItem(int slot)
     {
@@ -356,33 +355,25 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
         GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
-        
     }
-
     public void SetPlayerExp(int amount)
     {
-        if (playerLevel <= levelMax)
+        ExpAmount += amount;
+
+        if(ExpAmount >= ExpMax)
         {
-            ExpAmount += amount;
-
-            if (ExpAmount >= ExpMax)
-            {
-                ExpAmount -= ExpMax;
-                HPOrig += 5;
-                HP = HPOrig;
-                armor += 3;
-                ++playerLevel;
-            }
-
-            updatePlayerUI();
+            ExpAmount -= ExpMax;
+            ++playerLevel;
         }
+            
+        updatePlayerUI();
     }
 
     public void getGunStats(GunStats gun)
     {
         gunList.Add(gun);
         gunListPos = gunList.Count - 1;
-        
+
         changeGun();
         
     }
@@ -406,11 +397,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootDamage = gunList[gunListPos].shootDamage;
         shootDist = gunList[gunListPos].shootDis;
         shootRate = gunList[gunListPos].shootRate;
-        updateGunAmmo();
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].model.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterials = gunList[gunListPos].model.GetComponent<MeshRenderer>().sharedMaterials;
-
+       
     }
 
     void reloadGun()
@@ -418,7 +408,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if(Input.GetButtonDown("Reload"))
         {
             gunList[gunListPos].ammoCur = gunList[gunListPos].ammoMax;
-            updateGunAmmo();
         }
     }
 
@@ -428,12 +417,5 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         HP = HPOrig;
         updatePlayerUI();
-
-    }
-
-    void updateGunAmmo()
-    {
-        GameManager.instance.updateAmmo(gunList[gunListPos].ammoCur);
-        GameManager.instance.updateAmmoMax(gunList[gunListPos].ammoMax);
     }
 }
