@@ -125,7 +125,7 @@ MonoBehaviour:
   roamPauseTime: 2
   roamDist: 10
   Exp: 1
-  moneyDropped: 5
+  moneyDropped: 3
   shootPos:
   - {fileID: 7525305708585505027}
   bullet:

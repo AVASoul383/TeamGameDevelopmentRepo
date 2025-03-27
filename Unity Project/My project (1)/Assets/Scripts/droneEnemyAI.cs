@@ -17,7 +17,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     [SerializeField] Transform headPos;
 
     [Header("---- Stats ----")]
-    [Range(0, 20)][SerializeField] int HP;
+    [Range(0, 40)][SerializeField] int HP;
     [Range(0, 10)][SerializeField] float speed;
     [Range(0, 10)][SerializeField] int faceTargetSpeed;
     [Range(0, 360)][SerializeField] int FOV;
@@ -178,7 +178,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
         StartCoroutine(flashRed());
         roamTimer = 0;
 
-        if (type == enemyType.moving)
+        if (type == enemyType.moving || type == enemyType.boss)
             agent.SetDestination(GameManager.instance.player.transform.position);
 
         if (HP <= 0)
