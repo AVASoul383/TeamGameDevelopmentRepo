@@ -150,9 +150,9 @@ MonoBehaviour:
   model: {fileID: 5731853496738781115}
   agent: {fileID: 6677604336401204770}
   headPos: {fileID: 1628541565002323707}
-  HP: 10
-  speed: 1
-  faceTargetSpeed: 3
+  HP: 12
+  speed: 3
+  faceTargetSpeed: 6
   FOV: 90
   roamPauseTime: 3
   roamDist: 10

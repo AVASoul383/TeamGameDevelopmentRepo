@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3f8d8086d887e47965ce483f2c0783, type: 3}
+  m_Name: Gun - Flamethrower
+  m_EditorClassIdentifier: 
+  model: {fileID: 6565334268092943967, guid: 26ef592ca85af6c4ab2efd6cf0a7ec0e, type: 3}
+  shootDamage: 5
+  shootDis: 40
+  shootRate: 1
+  ammoCur: 5
+  ammoMax: 18
+  hitEffect: {fileID: 1301697207402410478, guid: 39f852c28f9c3fd45a427c24f3564ba7, type: 3}
+  shootSound: []
+  shootVol: 0.5

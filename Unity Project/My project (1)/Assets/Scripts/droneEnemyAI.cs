@@ -17,7 +17,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     [SerializeField] Transform headPos;
 
     [Header("---- Stats ----")]
-    [Range(0, 20)][SerializeField] int HP;
+    [Range(0, 30)][SerializeField] int HP;
     [Range(0, 10)][SerializeField] float speed;
     [Range(0, 10)][SerializeField] int faceTargetSpeed;
     [Range(0, 360)][SerializeField] int FOV;
