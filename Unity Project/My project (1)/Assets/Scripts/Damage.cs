@@ -6,7 +6,7 @@ public class Damage : MonoBehaviour
 
 
 {
-    enum damageType { moving, stationary, overtime }
+    enum damageType { moving, stationary, overtime, homing }
     [SerializeField] damageType type;
     [SerializeField] Rigidbody rb;
 
@@ -29,6 +29,14 @@ public class Damage : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (type == damageType.homing)
+        {
+            rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position).normalized * (speed * 100) * Time.deltaTime;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.isTrigger)
@@ -36,12 +44,12 @@ public class Damage : MonoBehaviour
 
         IDamage dmg = other.GetComponent<IDamage>();
 
-        if (dmg != null && (type == damageType.stationary || type == damageType.moving))
+        if (dmg != null && (type == damageType.stationary || type == damageType.moving || type == damageType.homing))
         {
             dmg.takeDamage(damageAmount);
         }
 
-        if (type == damageType.moving)
+        if (type == damageType.moving || type == damageType.homing)
         {
             Destroy(gameObject);
         }

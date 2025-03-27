@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class droneEnemyAI : MonoBehaviour, IDamage
 {
-    enum enemyType { moving, stationary}
+    enum enemyType { moving, stationary, boss}
     [SerializeField] enemyType type;
 
     [Header("----- Model -----")]
@@ -30,7 +30,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
     [Header("---- Combat ----")]
     [SerializeField] Transform[] shootPos;
-    [SerializeField] GameObject bullet;
+    [SerializeField] GameObject[] bullet;
     [Range(0, 5)][SerializeField] float shootRate;
 
     float shootTimer;
@@ -38,6 +38,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     float angleToPlayer;
     float stoppingDist;
     int shootRotation;
+    int bulletRotation;
 
     Vector3 playerDir;
     Vector3 shootDir;
@@ -49,7 +50,10 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (type == enemyType.moving)
+        GameManager.instance.updateGameGoal(1);
+        if (type == enemyType.boss)
+            GameManager.instance.bossFight(1);
+        if (type == enemyType.moving || type == enemyType.boss)
             agent.speed = speed;
         startingPos = transform.position;
         stoppingDist = agent.stoppingDistance;
@@ -184,6 +188,8 @@ public class droneEnemyAI : MonoBehaviour, IDamage
             GameManager.instance.updateMoneyCount(moneyDropped);
             GameManager.instance.updateGameGoal(-1);
             GameManager.instance.playerScript.SetPlayerExp(Exp);
+            if (type == enemyType.boss)
+                GameManager.instance.bossFight(-1);
 
         }
     }
@@ -211,13 +217,19 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     void shoot()
     {
         if (shootRotation < shootPos.Length - 1)
+        {
             shootRotation++;
+            bulletRotation++;
+        }
         else
+        {
             shootRotation = 0;
+            bulletRotation = 0;
+        }
 
         shootDir = (GameManager.instance.player.transform.position - shootPos[shootRotation].position).normalized;
         shootTimer = 0;
-        Instantiate(bullet, shootPos[shootRotation].position, Quaternion.LookRotation(shootDir));
+        Instantiate(bullet[bulletRotation], shootPos[shootRotation].position, Quaternion.LookRotation(shootDir));
     }
 
     public int GetExp() { return Exp; }

@@ -99,7 +99,8 @@ MonoBehaviour:
   shootPos:
   - {fileID: 4558164782380160864}
   - {fileID: 6248725489690230552}
-  bullet: {fileID: 3027016357346803647, guid: ee17a17a10ce5374e82265199f9e20c1, type: 3}
+  bullet:
+  - {fileID: 3027016357346803647, guid: ee17a17a10ce5374e82265199f9e20c1, type: 3}
   shootRate: 0.2
   waveManager: {fileID: 0}
 --- !u!33 &2088528848975466339

@@ -12,7 +12,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] CharacterController controller;
 
     [Header("----- Stats -----")]
-    [Range(0, 10)] public int HP;
+    [Range(0, 40)] public int HP;
     [Range(1, 50)][SerializeField] int ExpMax;
     [Range(2, 5)][SerializeField] int speed;
     [Range(2, 8)][SerializeField] int sprintMod;
@@ -117,8 +117,9 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         
 
         if(Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
-        shoot();
+            shoot();
 
+        
         selectGun();
         reloadGun();
     }
@@ -204,6 +205,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
                 act.talkTo();
             }
         }
+       
     }
     void UseItem(int slot)
     {
@@ -354,7 +356,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
         GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
     }
-
     public void SetPlayerExp(int amount)
     {
         ExpAmount += amount;
@@ -399,7 +400,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].model.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterials = gunList[gunListPos].model.GetComponent<MeshRenderer>().sharedMaterials;
-
+       
     }
 
     void reloadGun()
@@ -407,7 +408,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if(Input.GetButtonDown("Reload"))
         {
             gunList[gunListPos].ammoCur = gunList[gunListPos].ammoMax;
-
         }
     }
 
@@ -417,7 +417,5 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         HP = HPOrig;
         updatePlayerUI();
-
     }
-
 }
