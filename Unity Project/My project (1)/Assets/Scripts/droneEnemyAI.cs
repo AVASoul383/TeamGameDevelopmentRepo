@@ -27,6 +27,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     [Header("---- Rewards ----")]
     [Range(0, 10)][SerializeField] int Exp;
     [Range(0, 50)][SerializeField] int moneyDropped;
+    [SerializeField] GameObject itemDrop;
 
     [Header("---- Combat ----")]
     [SerializeField] Transform[] shootPos;
@@ -183,6 +184,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
+            Instantiate(itemDrop, transform.position, itemDrop.transform.rotation);
             Destroy(gameObject);
             enemyDead();
             GameManager.instance.updateMoneyCount(moneyDropped);
