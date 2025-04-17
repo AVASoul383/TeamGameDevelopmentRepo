@@ -45,13 +45,13 @@ public class Damage : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (type == damageType.homing)
-        {
-            rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position).normalized * (speed * 100) * Time.deltaTime;
-        }
-    }
+    //private void Update()
+    //{
+    //    if (type == damageType.homing)
+    //    {
+    //        rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position).normalized * (speed * 100) * Time.deltaTime;
+    //    }
+    //}
 
     private void OnTriggerEnter(Collider other)
     {
