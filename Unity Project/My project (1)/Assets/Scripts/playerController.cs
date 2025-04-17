@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using System;
 
 
+
 public class playerController : MonoBehaviour, IDamage, IPickup
 {
     [SerializeField] LayerMask ignoreLayer;
@@ -343,8 +344,18 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if (amount > 0)
         {
             int totalDamage = amount - armor;
-            if(totalDamage > 0)
-                HP -= totalDamage;
+            if (totalDamage > 0)
+            {
+                if (HP <= 5)
+                {
+                    totalDamage /= 2;
+                    HP -= totalDamage;  
+                }
+                else
+                {
+                    HP -= totalDamage;
+                }
+            }
             StartCoroutine(flashDamageScreen());
             aud.PlayOneShot(audHurt[UnityEngine.Random.Range(0, audHurt.Length)], audHurtVol);
         }
