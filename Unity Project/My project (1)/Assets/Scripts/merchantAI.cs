@@ -6,11 +6,11 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
 {
     [SerializeField] Renderer model;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] Animator anim;
 
     [SerializeField] int HP;
     [SerializeField] int faceTargetSpeed;
 
-    [SerializeField] GameObject menuShop;
     [SerializeField] int item1Price;
     [SerializeField] int item2Price;
     [SerializeField] int item3Price;
@@ -51,50 +51,44 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
     {
         if(playerInRange)
         {
-
             if (audioSource != null && menuOpenSound != null)
             {
                 audioSource.PlayOneShot(menuOpenSound);
             }
 
-            GameManager.instance.statePause();
-            GameManager.instance.setActiveMenu(menuShop);
+            GameManager.instance.openShop();
         }
     }
 
     public void purchaseItem1()
     {
-        if(GameManager.instance.playerScript.currency >= item1Price)
+        if(GameManager.instance.moneyCount >= item1Price)
         {
-            GameManager.instance.playerScript.currency -= item1Price;
-            GameManager.instance.updateMoneyUI();
+            GameManager.instance.updateMoneyCount(-(item1Price));
             grantItem(1);
         }
     }
     public void purchaseItem2()
     {
-        if (GameManager.instance.playerScript.currency >= item2Price)
+        if (GameManager.instance.moneyCount >= item2Price)
         {
-            GameManager.instance.playerScript.currency -= item2Price;
-            GameManager.instance.updateMoneyUI();
+            GameManager.instance.updateMoneyCount(-(item2Price));
             grantItem(2);
         }
     }
     public void purchaseItem3()
     {
-        if (GameManager.instance.playerScript.currency >= item3Price)
+        if (GameManager.instance.moneyCount >= item3Price)
         {
-            GameManager.instance.playerScript.currency -= item3Price;
-            GameManager.instance.updateMoneyUI();
+            GameManager.instance.updateMoneyCount(-(item3Price));
             grantItem(3);
         }
     }
     public void purchaseItem4()
     {
-        if (GameManager.instance.playerScript.currency >= item4Price)
+        if (GameManager.instance.moneyCount >= item4Price)
         {
-            GameManager.instance.playerScript.currency -= item4Price;
-            GameManager.instance.updateMoneyUI();
+            GameManager.instance.updateMoneyCount(-(item4Price));
             grantItem(4);
         }
     }
@@ -130,11 +124,8 @@ public class merchantAI : MonoBehaviour, IDamage, IInteract
     public void takeDamage(int amount)
     {
         HP -= amount;
-        StartCoroutine(flashRed());
-
         if (HP <= 0)
         {
-            GameManager.instance.updateGameGoal(-1);
             Destroy(gameObject);
         }
     }

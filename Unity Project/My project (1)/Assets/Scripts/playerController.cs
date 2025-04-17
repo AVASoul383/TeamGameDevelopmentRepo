@@ -12,13 +12,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] CharacterController controller;
 
     [Header("----- Stats -----")]
-    [Range(0, 10)] public int HP;
+    [Range(0, 40)] public int HP;
     [Range(1, 50)][SerializeField] int ExpMax;
-    [Range(2, 5)][SerializeField] int speed;
-    [Range(2, 8)][SerializeField] int sprintMod;
+    [Range(2, 20)][SerializeField] int speed;
+    [Range(1, 8)][SerializeField] int sprintMod;
     [Range(5, 20)][SerializeField] int jumpSpeed;
     [Range(2, 3)][SerializeField] int jumpsMax;
     [Range(15, 45)][SerializeField] int gravity;
+    [Range(0, 10)][SerializeField] int armor;
 
     [Header("----- Guns -----")]
     [SerializeField] List<GunStats> gunList = new List<GunStats>();
@@ -32,16 +33,15 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] int grappleDist;
     [SerializeField] LineRenderer grappleLine;
 
-    [Header("----- Audio -----")]
+    [Header("---- Audio ----")]
     [SerializeField] AudioSource aud;
     [SerializeField] AudioClip[] audSteps;
     [Range(0, 1)][SerializeField] float audStepsVol;
     [SerializeField] AudioClip[] audJump;
-    [Range(0,1)][SerializeField] float audJumpVol;
+    [Range(0, 1)][SerializeField] float audJumpVol;
     [SerializeField] AudioClip[] audHurt;
     [Range(0, 1)][SerializeField] float audHurtVol;
 
-    [Header("----- Items -----")]
     public int item1Count;
     public int item2Count;
     public int item3Count;
@@ -53,15 +53,16 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     int HPOrig;
     int ExpAmount;
 
+    bool isPlayerBuffed;
+    bool isPlayingSteps;
+    bool isSprinting;
+
     int gunListPos;
 
     float shootTimer;
 
     Vector3 moveDir;
     Vector3 playerVel;
-
-    bool isPlayingSteps;
-    bool isSprinting;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -111,9 +112,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         if(controller.isGrounded)
         {
-            if(moveDir.magnitude > 0.3f && !isPlayingSteps)
+            if (moveDir.magnitude > 0.3f && !isPlayingSteps)
                 StartCoroutine(playSteps());
-
             jumpCount = 0;
             playerVel = Vector3.zero;
         }
@@ -130,8 +130,9 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         
 
         if(Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
-        shoot();
+            shoot();
 
+        
         selectGun();
         reloadGun();
     }
@@ -139,16 +140,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     IEnumerator playSteps()
     {
         isPlayingSteps = true;
-        aud.PlayOneShot(audSteps[UnityEngine.Random.Range(0, audSteps.Length)], audStepsVol);
+        aud.PlayOneShot(audSteps[UnityEngine.Random.Range(0, audSteps.Length)]);
 
-        if(!isSprinting)
+        if (!isSprinting)
             yield return new WaitForSeconds(0.5f);
         else
             yield return new WaitForSeconds(0.3f);
-
         isPlayingSteps = false;
     }
-
 
     void jump()
     {
@@ -156,7 +155,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         {
             jumpCount++;
             playerVel.y = jumpSpeed;
-            aud.PlayOneShot(audJump[UnityEngine.Random.Range(0,audJump.Length)], audJumpVol);
+            aud.PlayOneShot(audJump[UnityEngine.Random.Range(0, audJump.Length)], audJumpVol);
         }
     }
 
@@ -165,12 +164,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if(Input.GetButtonDown("Sprint"))
         {
             speed *= sprintMod;
-            isSprinting = true;
         }
         else if(Input.GetButtonUp("Sprint"))
         {
             speed /= sprintMod;
-            isSprinting = false;
         }
     }
 
@@ -214,6 +211,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         gunList[gunListPos].ammoCur--;
         aud.PlayOneShot(gunList[gunListPos].shootSound[UnityEngine.Random.Range(0, gunList[gunListPos].shootSound.Length)], gunList[gunListPos].shootVol);
+        updateGunAmmo();
 
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
@@ -235,43 +233,51 @@ public class playerController : MonoBehaviour, IDamage, IPickup
                 act.talkTo();
             }
         }
+       
     }
     void UseItem(int slot)
     {
-        switch (slot)
+        if(isPlayerBuffed)
         {
-            case 1:
-                if (item1Count > 0)
-                {
-                    item1Count--;
-                    ActivateItemEffect(1);
-                    GameManager.instance.updateItemCount1();
-                }
-                break;
-            case 2:
-                if (item2Count > 0)
-                {
-                    item2Count--;
-                    ActivateItemEffect(2);
-                    GameManager.instance.updateItemCount2();
-                }
-                break;
-            case 3:
-                if (item3Count > 0)
-                {
-                    item3Count--;
-                    ActivateItemEffect(3);
-                    GameManager.instance.updateItemCount3();
-                }
-                break;
-            case 4:
-                if (item4Count > 0)
-                {
-                    item4Count--;
-                    ActivateItemEffect(4);
-                    GameManager.instance.updateItemCount4();
-                }
-                break;
+
+        }
+        else
+        {
+            switch (slot)
+            {
+                case 1:
+                    if (item1Count > 0)
+                    {
+                        item1Count--;
+                        ActivateItemEffect(1);
+                        GameManager.instance.updateItemCount1();
+                    }
+                    break;
+                case 2:
+                    if (item2Count > 0)
+                    {
+                        item2Count--;
+                        ActivateItemEffect(2);
+                        GameManager.instance.updateItemCount2();
+                    }
+                    break;
+                case 3:
+                    if (item3Count > 0)
+                    {
+                        item3Count--;
+                        ActivateItemEffect(3);
+                        GameManager.instance.updateItemCount3();
+                    }
+                    break;
+                case 4:
+                    if (item4Count > 0)
+                    {
+                        item4Count--;
+                        ActivateItemEffect(4);
+                        GameManager.instance.updateItemCount4();
+                    }
+                    break;
+            }
         }
     }
     void ActivateItemEffect(int item)
@@ -288,7 +294,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
                 break;
             case 3:
                 // Jump boost
-                StartCoroutine(jumpBoost());
+                StartCoroutine(defenseBoost());
                 break;
             case 4:
                 // Speed boost
@@ -298,42 +304,56 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     }
     IEnumerator damageBoost()
     {
+        isPlayerBuffed = true;
         int origDam = shootDamage;
-        shootDamage += 5;
+        shootDamage += 2;
         GameManager.instance.playerDamageBoostScreen.SetActive(true);
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(10f);
         GameManager.instance.playerDamageBoostScreen.SetActive(false);
+        isPlayerBuffed = false;
         shootDamage = origDam;
     }
 
     IEnumerator speedBoost()
     {
+        isPlayerBuffed = true;
         int origSpeed = sprintMod;
-        sprintMod *= 2;
+        sprintMod += 2;
         GameManager.instance.playerSpeedBoostScreen.SetActive(true);
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(10f);
         GameManager.instance.playerSpeedBoostScreen.SetActive(false);
+        isPlayerBuffed = false;
         sprintMod = origSpeed;
     }
-    IEnumerator jumpBoost()
+    IEnumerator defenseBoost()
     {
-        int origJump = jumpsMax;
-        jumpsMax += 5;
-        GameManager.instance.playerJumpBoostScreen.SetActive(true);
-        yield return new WaitForSeconds(20f);
-        GameManager.instance.playerJumpBoostScreen.SetActive(false);
-        jumpsMax = origJump;
+        isPlayerBuffed = true;
+        int origArmor = armor;
+        armor += 2;
+        GameManager.instance.playerDefenseBoostScreen.SetActive(true);
+        yield return new WaitForSeconds(10f);
+        GameManager.instance.playerDefenseBoostScreen.SetActive(false);
+        isPlayerBuffed = false;
+        armor = origArmor;
     }
 
     public void takeDamage(int amount)
     {
-        HP -= amount;
-        updatePlayerUI();
-        aud.PlayOneShot(audHurt[UnityEngine.Random.Range(0, audHurt.Length)], audHurtVol);
+        //check if amount is supposed to damage player 
         if (amount > 0)
+        {
+            int totalDamage = amount - armor;
+            if(totalDamage > 0)
+                HP -= totalDamage;
             StartCoroutine(flashDamageScreen());
-        else
+            aud.PlayOneShot(audHurt[UnityEngine.Random.Range(0, audHurt.Length)], audHurtVol);
+        }
+        else //check if amount is supposed to heal player
+        {
+            HP -= amount;
             StartCoroutine(flashHealingScreen());
+        }
+        updatePlayerUI();
 
         if (HPOrig < HP)
         {
@@ -365,7 +385,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
         GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
     }
-
     public void SetPlayerExp(int amount)
     {
         ExpAmount += amount;
@@ -383,7 +402,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         gunList.Add(gun);
         gunListPos = gunList.Count - 1;
-
+        updateGunAmmo();
         changeGun();
         
     }
@@ -407,10 +426,11 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootDamage = gunList[gunListPos].shootDamage;
         shootDist = gunList[gunListPos].shootDis;
         shootRate = gunList[gunListPos].shootRate;
+        updateGunAmmo();
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].model.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterials = gunList[gunListPos].model.GetComponent<MeshRenderer>().sharedMaterials;
-
+       
     }
 
     void reloadGun()
@@ -418,7 +438,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if(Input.GetButtonDown("Reload"))
         {
             gunList[gunListPos].ammoCur = gunList[gunListPos].ammoMax;
-
+            updateGunAmmo();
         }
     }
 
@@ -428,7 +448,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         HP = HPOrig;
         updatePlayerUI();
-
     }
 
+    void updateGunAmmo()
+    {
+        GameManager.instance.ammoAmt.text = gunList[gunListPos].ammoCur.ToString("F0") + "/ " + gunList[gunListPos].ammoMax.ToString("F0");
+    }
 }

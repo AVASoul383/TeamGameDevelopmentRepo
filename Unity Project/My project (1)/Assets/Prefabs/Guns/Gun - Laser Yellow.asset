@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3f8d8086d887e47965ce483f2c0783, type: 3}
+  m_Name: Gun - Laser Yellow
+  m_EditorClassIdentifier: 
+  model: {fileID: 2854182235673108927, guid: c6eabddca42929b45acd178fae034a7d, type: 3}
+  shootDamage: 5
+  shootDis: 1000
+  shootRate: 1.5
+  ammoCur: 12
+  ammoMax: 16
+  hitEffect: {fileID: 5396372950321188654, guid: fcb74f28d107e284e80af037bfec14ca, type: 3}
+  shootSound:
+  - {fileID: 8300000, guid: 13a6b948a9fd38140b260724decdbc6e, type: 3}
+  shootVol: 0.5

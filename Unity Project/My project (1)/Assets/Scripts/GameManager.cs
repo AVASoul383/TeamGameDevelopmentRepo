@@ -11,11 +11,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuShop;
     [SerializeField] TMP_Text goalCountText;
     [SerializeField] GameObject continueMenu;
 
-
     public GameObject playerSpawnPos;
+    public GameObject[] advancementPlatforms;
     public Image playerHPBar;
     public Image playerExpBar;
     public GameObject playerDamageScreen;
@@ -23,7 +24,9 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public playerController playerScript;
     public GameObject checkpointPopup;
+    public TMP_Text ammoAmt;
 
+    [Header("----- Hotbar Menu -----")]
     [SerializeField] TMP_Text item1CountText;
     [SerializeField] TMP_Text item2CountText;
     [SerializeField] TMP_Text item3CountText;
@@ -31,18 +34,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text moneyCountText;
     public GameObject playerDamageBoostScreen;
     public GameObject playerSpeedBoostScreen;
-    public GameObject playerJumpBoostScreen;
+    public GameObject playerDefenseBoostScreen;
 
     public bool isPaused;
 
-    
-    
-    
-    
-
     int goalCount;
-    int moneyCount;
+    int bossCount;
+    public int moneyCount;
     int waves;
+    TurnOnOff trigger1;
+    TurnOnOff trigger2;
+    TurnOnOff trigger3;
+    TurnOnOff trigger4;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -52,6 +55,26 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<playerController>();
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+        trigger1 = GameObject.FindWithTag("F1 Trigger").GetComponent<TurnOnOff>();
+        trigger2 = GameObject.FindWithTag("F2 Trigger").GetComponent<TurnOnOff>();
+        trigger3 = GameObject.FindWithTag("F3 Trigger").GetComponent<TurnOnOff>();
+        trigger4 = GameObject.FindWithTag("Boss Trigger").GetComponent<TurnOnOff>();  
+        for (int i = 0; i < trigger1.levelItem.Length; i++)
+        {
+            trigger1.levelItem[i].SetActive(false);
+        }
+        for (int i = 0; i < trigger2.levelItem.Length; i++)
+        {
+            trigger2.levelItem[i].SetActive(false);
+        }
+        for (int i = 0; i < trigger3.levelItem.Length; i++)
+        {
+            trigger3.levelItem[i].SetActive(false);
+        }
+        for (int i = 0; i < trigger4.levelItem.Length; i++)
+        {
+            trigger4.levelItem[i].SetActive(false);
+        }   
     }
 
     // Update is called once per frame
@@ -70,6 +93,7 @@ public class GameManager : MonoBehaviour
             }
            
         }
+        openArea();
     }
 
     public void statePause()
@@ -90,29 +114,54 @@ public class GameManager : MonoBehaviour
         menuActive = null;
     }
 
+    public void openShop()
+    {
+        statePause();
+        setActiveMenu(menuShop);
+    }
+
     public void updateGameGoal(int amount)
     {
         goalCount += amount;
         goalCountText.text = goalCount.ToString("F0");
 
-        if(goalCount <= 0)
+    }
+
+    
+
+    public void bossFight(int amount)
+    {
+        bossCount += amount;
+
+        if(bossCount <= 0)
         {
-            waves += 1;
-            if(waves == 1)
-            {
-                statePause();
-                setActiveMenu(continueMenu);
-            }
-            else if(waves > 1)
-            {
-                statePause();
-                setActiveMenu(menuWin);
-            }
-            
+            statePause();
+            setActiveMenu(menuWin);
         }
     }
 
-    public void updateMoneyUI() => moneyCountText.text = playerScript.currency.ToString("F0");
+    public void openArea()
+    {
+        if(goalCount == 0)
+        {
+            for (int i = 0; i < advancementPlatforms.Length; i++)
+            {
+                advancementPlatforms[i].SetActive(false);
+            }
+        }
+        else if(goalCount > 0)
+        {
+            for (int i = 0; i < advancementPlatforms.Length; i++)
+            {
+                advancementPlatforms[i].SetActive(true);
+            }
+        }
+    }
+    public void updateMoneyCount(int amount)
+    {
+        moneyCount += amount;
+        moneyCountText.text = moneyCount.ToString("F0");
+    }
     public void updateItemCount1() => item1CountText.text = playerScript.item1Count.ToString("F0");
     public void updateItemCount2() => item2CountText.text = playerScript.item2Count.ToString("F0");
     public void updateItemCount3() => item3CountText.text = playerScript.item3Count.ToString("F0");

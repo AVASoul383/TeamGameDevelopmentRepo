@@ -2,13 +2,18 @@ using UnityEngine;
 
 public class TurnOnOff : MonoBehaviour
 {
-    [SerializeField] GameObject levelItem;
+    public GameObject[] levelItem;
+
+    
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            levelItem.SetActive(true);
+            for (int i = 0; i < levelItem.Length; i++)
+            {
+                levelItem[i].SetActive(true);
+            }
         }
     }
 
@@ -16,7 +21,10 @@ public class TurnOnOff : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            levelItem.SetActive(false);
+            for (int i = 0; i < levelItem.Length; i++)
+            {
+                levelItem[i].SetActive(false);
+            }
         }
     }
 
