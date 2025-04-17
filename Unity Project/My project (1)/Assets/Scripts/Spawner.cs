@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+
+public class spawner : MonoBehaviour
 {
     [SerializeField] GameObject objectToSpawn;
     [SerializeField] int numToSpawn;
@@ -13,7 +14,6 @@ public class Spawner : MonoBehaviour
 
     bool startSpawning;
 
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,16 +25,18 @@ public class Spawner : MonoBehaviour
     {
         spawnTimer += Time.deltaTime;
 
-        if(startSpawning)
+        if (startSpawning)
         {
-            if(spawnCount < numToSpawn && spawnTimer >= timeBetweenSpawns)
-            spawn();
+            if (spawnCount < numToSpawn && spawnTimer >= timeBetweenSpawns)
+            {
+                spawn();
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             startSpawning = true;
         }
@@ -48,5 +50,4 @@ public class Spawner : MonoBehaviour
         spawnCount++;
         spawnTimer = 0;
     }
-
 }
