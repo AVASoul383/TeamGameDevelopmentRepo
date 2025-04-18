@@ -184,6 +184,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
+            
             Instantiate(itemDrop, transform.position, itemDrop.transform.rotation);
             Destroy(gameObject);
             enemyDead();
