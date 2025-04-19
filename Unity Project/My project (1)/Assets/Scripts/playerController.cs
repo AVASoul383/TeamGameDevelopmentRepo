@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using System;
 
 
+
 public class playerController : MonoBehaviour, IDamage, IPickup
 {
     [SerializeField] LayerMask ignoreLayer;
@@ -61,8 +62,27 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     float shootTimer;
 
+    public float standingHeight = 2f;
+    public float crouchingHeight = 1.5f;
+    public float proneHeight = 0.5f;
+
+    public bool isCrouching = false;
+    public bool isProne = false;
+
+    public Vector3 standingCenter = new Vector3(0, 1, 0);
+    public Vector3 crouchingCenter = new Vector3(0, 0.75f, 0);
+    public Vector3 proneCenter = new Vector3(0, 0.25f, 0);
+    public Vector3 standingCameraPos = new Vector3(0, 1.7f, 0);
+    public Vector3 crouchingCameraPos = new Vector3(0, 1.2f, 0);
+    public Vector3 proneCameraPos = new Vector3(0, 0.5f, 0);
+
     Vector3 moveDir;
     Vector3 playerVel;
+
+    public KeyCode crouch = KeyCode.C;
+    public KeyCode prone = KeyCode.LeftControl;
+
+    public Transform playerCamera;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -73,6 +93,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         ExpAmount = 0;
         playerLevel = 1;
         updatePlayerUI();
+        setStanding();
+
     }
 
     // Update is called once per frame
@@ -84,6 +106,9 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         if(!GameManager.instance.isPaused)
             movement();
+        crouchInput();
+        proneInput();   
+        handleCrouchProneMovement();
 
         sprint();
 
@@ -120,7 +145,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         //moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         //transform.position += moveDir * speed * Time.deltaTime;
-
         moveDir = (Input.GetAxis("Horizontal") * transform.right) +
                   (Input.GetAxis("Vertical") * transform.forward);
         controller.Move(moveDir * speed * Time.deltaTime);
@@ -135,6 +159,71 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         
         selectGun();
         reloadGun();
+    }
+
+    void crouchInput()
+    {
+        if (Input.GetKeyDown(crouch))
+        {
+            if (isCrouching)
+            {
+               setStanding();
+                Debug.Log("Crouching: " + isCrouching);
+            }
+            else
+            {
+                isProne = false;
+                controller.height = crouchingHeight;
+                controller.center = crouchingCenter;
+                playerCamera.localPosition = crouchingCameraPos;
+                isCrouching = true;
+                Debug.Log("Crouching: " + isCrouching);
+            }
+        }
+    }
+
+    void proneInput()
+    {
+        if (Input.GetKeyDown(prone))
+        {
+            if (isProne)
+            {
+                setStanding(); 
+            }
+            else
+            {
+                isCrouching = false;
+                controller.height = proneHeight;
+                controller.center = proneCenter;
+                playerCamera.localPosition = proneCameraPos;
+                isProne = true;
+            }
+        }
+    }
+
+    void setStanding()
+    {
+        controller.height = standingHeight;
+        controller.center = standingCenter;
+        playerCamera.localPosition = standingCameraPos;
+        isCrouching = false;
+        isProne = false;
+    }
+
+    void handleCrouchProneMovement()
+    {
+        if (isCrouching)
+        {
+            speed = 5;
+        }
+        else if (isProne)
+        {
+            speed = 2;
+        }
+        else
+        {
+            speed = 10;
+        }
     }
 
     IEnumerator playSteps()
@@ -343,8 +432,18 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if (amount > 0)
         {
             int totalDamage = amount - armor;
-            if(totalDamage > 0)
-                HP -= totalDamage;
+            if (totalDamage > 0)
+            {
+                if (HP <= 5)
+                {
+                    totalDamage /= 2;
+                    HP -= totalDamage;  
+                }
+                else
+                {
+                    HP -= totalDamage;
+                }
+            }
             StartCoroutine(flashDamageScreen());
             aud.PlayOneShot(audHurt[UnityEngine.Random.Range(0, audHurt.Length)], audHurtVol);
         }
