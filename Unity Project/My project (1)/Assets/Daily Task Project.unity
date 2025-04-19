@@ -5013,6 +5013,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fda46a38394c77b4da3dc1f7e6f10261, type: 3}
+--- !u!4 &1761262580 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4209207551488846240, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
+  m_PrefabInstance: {fileID: 373761689083809587}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1761433083 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1695661896172600803, guid: fda46a38394c77b4da3dc1f7e6f10261, type: 3}
@@ -6108,6 +6113,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6468904818426705865, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1761262580}
+    - target: {fileID: 6468904818426705865, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
       propertyPath: audHurt.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -6622,7 +6631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2128679905909169098, guid: 48d797142cfdc2949baedf54ea27aea2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7045413829892762264, guid: 48d797142cfdc2949baedf54ea27aea2, type: 3}
       propertyPath: m_LocalPosition.x
