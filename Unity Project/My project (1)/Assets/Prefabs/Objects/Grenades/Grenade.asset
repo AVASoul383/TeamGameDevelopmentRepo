@@ -15,7 +15,7 @@ MonoBehaviour:
   model: {fileID: 5819818904838830069, guid: f57a0ecc4dc390949b387c2f231d0a87, type: 3}
   explosionDamage: 100
   explosionRadius: 1
-  fuseTime: 3
+  fuseTime: 1
   explosionEffect: {fileID: 1000011128802252, guid: 96730f8640590934eacb6f860058e7f9, type: 3}
-  explosionSound: {fileID: 8300000, guid: 620dad4bb8e4b98429963b3bbe39c191, type: 3}
-  explosionVolume: 0.021
+  explosionSound: {fileID: 8300000, guid: 8524588a69a4f3e40bb597b6221138f1, type: 3}
+  explosionVolume: 0.635

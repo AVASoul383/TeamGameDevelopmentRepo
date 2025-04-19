@@ -94,7 +94,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 35574377c6d9698439858b7d0d37d360, type: 2}
   playerCamera: {fileID: 0}
   throwForce: 15
-  pickUpKey: 101
+  pickUpKey: 103
   throwKey: 116
 --- !u!54 &1354775789361185247
 Rigidbody:
