@@ -69,7 +69,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     void Start()
     {
         HPOrig = HP;
-        spawnPlayer();
+        //spawnPlayer();
         ExpAmount = 0;
         playerLevel = 1;
         updatePlayerUI();
