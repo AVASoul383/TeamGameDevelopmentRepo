@@ -85,7 +85,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     public Transform playerCamera;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+   
     void Start()
     {
         HPOrig = HP;
@@ -100,16 +100,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance.isPaused) return;
+       
+        if (GameManager.instance != null && GameManager.instance.isPaused)
+            return;
 
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist, Color.green);
-
-        if(!GameManager.instance.isPaused)
-            movement();
+        movement();
         crouchInput();
-        proneInput();   
+        proneInput();
         handleCrouchProneMovement();
-
         sprint();
 
         if (Input.GetKeyDown("1"))
@@ -131,35 +129,58 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     }
 
 
+
     void movement()
     {
+
+        Debug.Log("Moving with speed: " + speed);
+        Debug.Log("Horizontal: " + Input.GetAxis("Horizontal") + ", Vertical: " + Input.GetAxis("Vertical"));
+
         shootTimer += Time.deltaTime;
 
-        if(controller.isGrounded)
+ 
+        if (controller.isGrounded)
         {
             if (moveDir.magnitude > 0.3f && !isPlayingSteps)
                 StartCoroutine(playSteps());
-            jumpCount = 0;
-            playerVel = Vector3.zero;
+
+            if (playerVel.y < 0)
+                playerVel.y = -1f;
+
+            jumpCount = 0; 
+        }
+        else
+        {
+            
+            playerVel.y -= gravity * Time.deltaTime;
         }
 
-        //moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        //transform.position += moveDir * speed * Time.deltaTime;
+   
         moveDir = (Input.GetAxis("Horizontal") * transform.right) +
                   (Input.GetAxis("Vertical") * transform.forward);
-        controller.Move(moveDir * speed * Time.deltaTime);
 
+     
+        Vector3 finalMove = moveDir * speed;
+        finalMove.y = playerVel.y;
+
+      
+        controller.Move(finalMove * Time.deltaTime);
+
+       
         jump();
-        isGrappling();
-        
 
-        if(Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
+        
+        isGrappling();
+
+     
+        if (Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
             shoot();
 
-        
+      
         selectGun();
         reloadGun();
     }
+
 
     void crouchInput()
     {
