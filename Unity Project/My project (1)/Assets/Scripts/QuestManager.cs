@@ -5,26 +5,29 @@ public class QuestManager : MonoBehaviour
 {
     public TMP_Text questText;
 
-    void Start()
-    {
-        ShowObjective("🎯 Objective: Pick up the grenade");
-    }
+    private bool grenadePickedUp = false;
 
-    public void ShowObjective(string message)
+    public void ShowPressGPrompt()
     {
-        questText.gameObject.SetActive(true);
-        questText.text = message;
-    }
-
-    public void HideObjective()
-    {
-        questText.gameObject.SetActive(false);
+        if (!grenadePickedUp)
+        {
+            questText.text = "Press <b>G</b> to pick up the grenade";
+        }
     }
 
     public void OnGrenadePickedUp()
     {
-        ShowObjective("✅ Objective Complete: Picked up the grenade");
-        
-        Invoke("HideObjective", 3f);
+        grenadePickedUp = true;
+
+
+        questText.text = "<color=#888888><i>Picked up grenade — Press T to throw</i></color>";
+    }
+
+    public void ClearText()
+    {
+        if (!grenadePickedUp)
+        {
+            questText.text = "";
+        }
     }
 }

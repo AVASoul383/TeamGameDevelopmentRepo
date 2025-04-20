@@ -1,16 +1,17 @@
+﻿using System.Collections;
 using UnityEngine;
-using System.Collections;
 
 public class Grenade : MonoBehaviour
 {
     public GrenadeStats stats;
     public Transform playerCamera;
     public float throwForce = 15f;
-    public KeyCode pickUpKey = KeyCode.E;
+    public KeyCode pickUpKey = KeyCode.G;
     public KeyCode throwKey = KeyCode.Mouse0;
 
     private bool isHeld = false;
     private bool playerNearby = false;
+    private bool hasBeenPickedUp = false;
     private Rigidbody rb;
 
     void Start()
@@ -20,14 +21,12 @@ public class Grenade : MonoBehaviour
 
     void Update()
     {
-        if (playerNearby && !isHeld && Input.GetKeyDown(pickUpKey))
+        if (playerNearby && !isHeld && !hasBeenPickedUp && Input.GetKeyDown(pickUpKey))
         {
-            Debug.Log("Picked up grenade");
             PickUp();
         }
         else if (isHeld && Input.GetKeyDown(throwKey))
         {
-            Debug.Log("Threw grenade");
             Throw();
         }
     }
@@ -35,12 +34,13 @@ public class Grenade : MonoBehaviour
     void PickUp()
     {
         isHeld = true;
+        hasBeenPickedUp = true;
         rb.isKinematic = true;
         transform.SetParent(playerCamera);
         transform.localPosition = new Vector3(0, -0.5f, 1.5f);
         transform.localRotation = Quaternion.identity;
 
-        QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
+        QuestManager qm = FindAnyObjectByType<QuestManager>();
         if (qm != null)
         {
             qm.OnGrenadePickedUp();
@@ -58,7 +58,7 @@ public class Grenade : MonoBehaviour
         StartCoroutine(ExplodeAfterDelay());
     }
 
-    private IEnumerator ExplodeAfterDelay()
+    IEnumerator ExplodeAfterDelay()
     {
         yield return new WaitForSeconds(stats.fuseTime);
 
@@ -83,13 +83,11 @@ public class Grenade : MonoBehaviour
         {
             playerNearby = true;
 
-            QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
+            QuestManager qm = FindAnyObjectByType<QuestManager>();
             if (qm != null)
             {
-                qm.ShowObjective("Press 'E' to pick up the grenade");
+                qm.ShowPressGPrompt();
             }
-
-            Debug.Log("Player entered grenade trigger");
         }
     }
 
@@ -99,13 +97,11 @@ public class Grenade : MonoBehaviour
         {
             playerNearby = false;
 
-            QuestManager qm = Object.FindFirstObjectByType<QuestManager>();
+            QuestManager qm = FindAnyObjectByType<QuestManager>();
             if (qm != null)
             {
-                qm.HideObjective();
+                qm.ClearText(); 
             }
-
-            Debug.Log("Player exited grenade trigger");
         }
     }
 }
