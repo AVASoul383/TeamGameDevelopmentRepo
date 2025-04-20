@@ -3981,6 +3981,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fda46a38394c77b4da3dc1f7e6f10261, type: 3}
+--- !u!1001 &1440252664
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 84.79327
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 28.062489
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131567629418768582, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
+      propertyPath: m_Name
+      value: Gun - Super Weapon
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
 --- !u!1001 &1443056148
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7247,3 +7304,4 @@ SceneRoots:
   - {fileID: 7417169184890850478}
   - {fileID: 1885592491}
   - {fileID: 2005292558}
+  - {fileID: 1440252664}
