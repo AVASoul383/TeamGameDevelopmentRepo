@@ -12,23 +12,27 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject optionsMenu;
 
     public List<GameObject> buttons;
-    int buttonPosition;
+    public int buttonPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         instance = this;
         setActiveMenu(mainMenu);
         menuActive.SetActive(true);
-        //findButtons();
+        findButtons();
         buttonPosition = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Menu Down") && buttonPosition < buttons.Count) 
+        if (Input.GetButtonDown("Menu Down") && buttonPosition < buttons.Count - 1) 
         {
             buttonPosition++;
+        }
+        else if(Input.GetButtonDown("Menu Up") && buttonPosition > 0)
+        {
+            buttonPosition--;
         }
 
         if (Input.GetButtonDown("Submit"))
