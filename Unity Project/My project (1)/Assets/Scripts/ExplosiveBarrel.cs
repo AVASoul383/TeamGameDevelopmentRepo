@@ -4,7 +4,7 @@ using UnityEngine;
 public class ExplosiveBarrel : MonoBehaviour
 {
     [Header("Explosion Settings")]
-    [SerializeField] private float explosionRadius = 5f; gi
+    [SerializeField] private float explosionRadius = 5f; 
     [SerializeField] private float explosionForce = 1000f; 
     [SerializeField] private float damage = 50f;
     [SerializeField] private GameObject explosionEffect; 
