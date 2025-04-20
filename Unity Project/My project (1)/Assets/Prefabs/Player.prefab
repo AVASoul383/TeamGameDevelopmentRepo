@@ -251,7 +251,7 @@ MonoBehaviour:
   controller: {fileID: 4708434221416522673}
   HP: 10
   ExpMax: 10
-  speed: 5
+  speed: 6
   sprintMod: 4
   jumpSpeed: 12
   jumpsMax: 2
@@ -265,11 +265,32 @@ MonoBehaviour:
   grappleSpeed: 20
   grappleDist: 50
   grappleLine: {fileID: 7684648694121070447}
+  aud: {fileID: 0}
+  audSteps: []
+  audStepsVol: 0
+  audJump: []
+  audJumpVol: 0
+  audHurt: []
+  audHurtVol: 0
   item1Count: 0
   item2Count: 0
   item3Count: 0
   item4Count: 0
   currency: 0
+  standingHeight: 2
+  crouchingHeight: 1.5
+  proneHeight: 0.5
+  isCrouching: 0
+  isProne: 0
+  standingCenter: {x: 0, y: 1, z: 0}
+  crouchingCenter: {x: 0, y: 0.75, z: 0}
+  proneCenter: {x: 0, y: 0.25, z: 0}
+  standingCameraPos: {x: 0, y: 1.7, z: 0}
+  crouchingCameraPos: {x: 0, y: 1.2, z: 0}
+  proneCameraPos: {x: 0, y: 0.5, z: 0}
+  crouch: 99
+  prone: 306
+  playerCamera: {fileID: 0}
 --- !u!33 &1411394632373627340
 MeshFilter:
   m_ObjectHideFlags: 0
