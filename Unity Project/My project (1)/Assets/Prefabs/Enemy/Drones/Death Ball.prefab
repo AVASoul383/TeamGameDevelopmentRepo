@@ -59,20 +59,22 @@ MonoBehaviour:
   model: {fileID: 4520033188910443556}
   agent: {fileID: 4078757584958958034}
   headPos: {fileID: 3914637955031429180}
-  HP: 5
+  HP: 10
   speed: 10
   faceTargetSpeed: 5
   FOV: 90
   roamPauseTime: 3
   roamDist: 20
   Exp: 3
-  moneyDropped: 20
+  moneyDropped: 5
   shootPos:
   - {fileID: 3632723116356725178}
   - {fileID: 5818109648817596274}
   - {fileID: 101656493201702754}
   - {fileID: 3577006703993336028}
-  bullet: {fileID: 3027016357346803647, guid: ee17a17a10ce5374e82265199f9e20c1, type: 3}
+  bullet:
+  - {fileID: 3027016357346803647, guid: ee17a17a10ce5374e82265199f9e20c1, type: 3}
+  - {fileID: 3027016357346803647, guid: 1a0ef1dd26bcb7f43a31c04a37d075a2, type: 3}
   shootRate: 0.5
   waveManager: {fileID: 0}
 --- !u!33 &8449809269006150914

@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class droneEnemyAI : MonoBehaviour, IDamage
 {
-    enum enemyType { moving, stationary}
+    enum enemyType { moving, stationary, boss}
     [SerializeField] enemyType type;
 
     [Header("----- Model -----")]
@@ -17,7 +17,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     [SerializeField] Transform headPos;
 
     [Header("---- Stats ----")]
-    [Range(0, 20)][SerializeField] int HP;
+    [Range(0, 40)][SerializeField] int HP;
     [Range(0, 10)][SerializeField] float speed;
     [Range(0, 10)][SerializeField] int faceTargetSpeed;
     [Range(0, 360)][SerializeField] int FOV;
@@ -30,7 +30,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
     [Header("---- Combat ----")]
     [SerializeField] Transform[] shootPos;
-    [SerializeField] GameObject bullet;
+    [SerializeField] GameObject[] bullet;
     [Range(0, 5)][SerializeField] float shootRate;
 
     float shootTimer;
@@ -38,6 +38,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     float angleToPlayer;
     float stoppingDist;
     int shootRotation;
+    int bulletRotation;
 
     Vector3 playerDir;
     Vector3 shootDir;
@@ -49,9 +50,11 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (type == enemyType.moving)
-            agent.speed = speed;
         GameManager.instance.updateGameGoal(1);
+        if (type == enemyType.boss)
+            GameManager.instance.bossFight(1);
+        if (type == enemyType.moving || type == enemyType.boss)
+            agent.speed = speed;
         startingPos = transform.position;
         stoppingDist = agent.stoppingDistance;
     }
@@ -66,7 +69,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
             if (agent.remainingDistance < 0.01f)
                 roamTimer += Time.deltaTime;
-            if (type == enemyType.moving)
+            if (type == enemyType.moving || type == enemyType.boss)
             {
                 if (playerInRange && !canSeePlayer())
                 {
@@ -175,7 +178,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
         StartCoroutine(flashRed());
         roamTimer = 0;
 
-        if (type == enemyType.moving)
+        if (type == enemyType.moving || type == enemyType.boss)
             agent.SetDestination(GameManager.instance.player.transform.position);
 
         if (HP <= 0)
@@ -185,6 +188,8 @@ public class droneEnemyAI : MonoBehaviour, IDamage
             GameManager.instance.updateMoneyCount(moneyDropped);
             GameManager.instance.updateGameGoal(-1);
             GameManager.instance.playerScript.SetPlayerExp(Exp);
+            if (type == enemyType.boss)
+                GameManager.instance.bossFight(-1);
 
         }
     }
@@ -212,13 +217,27 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     void shoot()
     {
         if (shootRotation < shootPos.Length - 1)
+        {
             shootRotation++;
+            bulletRotation++;
+        }
         else
+        {
             shootRotation = 0;
+            bulletRotation = 0;
+        }
+        if (bulletRotation < bullet.Length - 1)
+        {
+            bulletRotation++;
+        }
+        else
+        {
+            bulletRotation = 0;
+        }
 
         shootDir = (GameManager.instance.player.transform.position - shootPos[shootRotation].position).normalized;
         shootTimer = 0;
-        Instantiate(bullet, shootPos[shootRotation].position, Quaternion.LookRotation(shootDir));
+        Instantiate(bullet[bulletRotation], shootPos[shootRotation].position, Quaternion.LookRotation(shootDir));
     }
 
     public int GetExp() { return Exp; }

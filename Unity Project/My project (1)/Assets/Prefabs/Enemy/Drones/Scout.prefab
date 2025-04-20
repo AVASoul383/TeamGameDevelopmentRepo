@@ -125,10 +125,11 @@ MonoBehaviour:
   roamPauseTime: 2
   roamDist: 10
   Exp: 1
-  moneyDropped: 5
+  moneyDropped: 3
   shootPos:
   - {fileID: 7525305708585505027}
-  bullet: {fileID: 3027016357346803647, guid: 5d4934e4ee951e247a2e2f526c04296e, type: 3}
+  bullet:
+  - {fileID: 3027016357346803647, guid: 5d4934e4ee951e247a2e2f526c04296e, type: 3}
   shootRate: 2
   waveManager: {fileID: 0}
 --- !u!33 &4517459166066056970

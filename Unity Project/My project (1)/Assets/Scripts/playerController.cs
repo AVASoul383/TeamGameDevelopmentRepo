@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System;
-using UnityEditor.Experimental.GraphView;
+
 
 
 public class playerController : MonoBehaviour, IDamage, IPickup
@@ -13,14 +13,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] CharacterController controller;
 
     [Header("----- Stats -----")]
-    [Range(0, 100)] public int HP;
+    [Range(0, 40)] public int HP;
     [Range(1, 50)][SerializeField] int ExpMax;
-    [Range(2, 5)][SerializeField] int speed;
-    [Range(2, 8)][SerializeField] int sprintMod;
+    [Range(2, 20)][SerializeField] int speed;
+    [Range(1, 8)][SerializeField] int sprintMod;
     [Range(5, 20)][SerializeField] int jumpSpeed;
     [Range(2, 3)][SerializeField] int jumpsMax;
     [Range(15, 45)][SerializeField] int gravity;
-    [Range(0, 50)][SerializeField] int armor;
+    [Range(0, 10)][SerializeField] int armor;
 
     [Header("----- Guns -----")]
     [SerializeField] List<GunStats> gunList = new List<GunStats>();
@@ -34,7 +34,15 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] int grappleDist;
     [SerializeField] LineRenderer grappleLine;
 
-    public int levelMax;
+    [Header("---- Audio ----")]
+    [SerializeField] AudioSource aud;
+    [SerializeField] AudioClip[] audSteps;
+    [Range(0, 1)][SerializeField] float audStepsVol;
+    [SerializeField] AudioClip[] audJump;
+    [Range(0, 1)][SerializeField] float audJumpVol;
+    [SerializeField] AudioClip[] audHurt;
+    [Range(0, 1)][SerializeField] float audHurtVol;
+
     public int item1Count;
     public int item2Count;
     public int item3Count;
@@ -47,13 +55,34 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     int ExpAmount;
 
     bool isPlayerBuffed;
+    bool isPlayingSteps;
+    bool isSprinting;
 
     int gunListPos;
 
     float shootTimer;
 
+    public float standingHeight = 2f;
+    public float crouchingHeight = 1.5f;
+    public float proneHeight = 0.5f;
+
+    public bool isCrouching = false;
+    public bool isProne = false;
+
+    public Vector3 standingCenter = new Vector3(0, 1, 0);
+    public Vector3 crouchingCenter = new Vector3(0, 0.75f, 0);
+    public Vector3 proneCenter = new Vector3(0, 0.25f, 0);
+    public Vector3 standingCameraPos = new Vector3(0, 1.7f, 0);
+    public Vector3 crouchingCameraPos = new Vector3(0, 1.2f, 0);
+    public Vector3 proneCameraPos = new Vector3(0, 0.5f, 0);
+
     Vector3 moveDir;
     Vector3 playerVel;
+
+    public KeyCode crouch = KeyCode.C;
+    public KeyCode prone = KeyCode.LeftControl;
+
+    public Transform playerCamera;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -64,6 +93,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         ExpAmount = 0;
         playerLevel = 1;
         updatePlayerUI();
+        setStanding();
+
     }
 
     // Update is called once per frame
@@ -75,6 +106,9 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         if(!GameManager.instance.isPaused)
             movement();
+        crouchInput();
+        proneInput();   
+        handleCrouchProneMovement();
 
         sprint();
 
@@ -103,13 +137,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         if(controller.isGrounded)
         {
+            if (moveDir.magnitude > 0.3f && !isPlayingSteps)
+                StartCoroutine(playSteps());
             jumpCount = 0;
             playerVel = Vector3.zero;
         }
 
         //moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         //transform.position += moveDir * speed * Time.deltaTime;
-
         moveDir = (Input.GetAxis("Horizontal") * transform.right) +
                   (Input.GetAxis("Vertical") * transform.forward);
         controller.Move(moveDir * speed * Time.deltaTime);
@@ -119,10 +154,88 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         
 
         if(Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
-        shoot();
+            shoot();
 
+        
         selectGun();
         reloadGun();
+    }
+
+    void crouchInput()
+    {
+        if (Input.GetKeyDown(crouch))
+        {
+            if (isCrouching)
+            {
+               setStanding();
+                Debug.Log("Crouching: " + isCrouching);
+            }
+            else
+            {
+                isProne = false;
+                controller.height = crouchingHeight;
+                controller.center = crouchingCenter;
+                playerCamera.localPosition = crouchingCameraPos;
+                isCrouching = true;
+                Debug.Log("Crouching: " + isCrouching);
+            }
+        }
+    }
+
+    void proneInput()
+    {
+        if (Input.GetKeyDown(prone))
+        {
+            if (isProne)
+            {
+                setStanding(); 
+            }
+            else
+            {
+                isCrouching = false;
+                controller.height = proneHeight;
+                controller.center = proneCenter;
+                playerCamera.localPosition = proneCameraPos;
+                isProne = true;
+            }
+        }
+    }
+
+    void setStanding()
+    {
+        controller.height = standingHeight;
+        controller.center = standingCenter;
+        playerCamera.localPosition = standingCameraPos;
+        isCrouching = false;
+        isProne = false;
+    }
+
+    void handleCrouchProneMovement()
+    {
+        if (isCrouching)
+        {
+            speed = 5;
+        }
+        else if (isProne)
+        {
+            speed = 2;
+        }
+        else
+        {
+            speed = 10;
+        }
+    }
+
+    IEnumerator playSteps()
+    {
+        isPlayingSteps = true;
+        aud.PlayOneShot(audSteps[UnityEngine.Random.Range(0, audSteps.Length)]);
+
+        if (!isSprinting)
+            yield return new WaitForSeconds(0.5f);
+        else
+            yield return new WaitForSeconds(0.3f);
+        isPlayingSteps = false;
     }
 
     void jump()
@@ -131,6 +244,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         {
             jumpCount++;
             playerVel.y = jumpSpeed;
+            aud.PlayOneShot(audJump[UnityEngine.Random.Range(0, audJump.Length)], audJumpVol);
         }
     }
 
@@ -185,6 +299,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         shootTimer = 0;
 
         gunList[gunListPos].ammoCur--;
+        aud.PlayOneShot(gunList[gunListPos].shootSound[UnityEngine.Random.Range(0, gunList[gunListPos].shootSound.Length)], gunList[gunListPos].shootVol);
         updateGunAmmo();
 
         RaycastHit hit;
@@ -207,6 +322,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
                 act.talkTo();
             }
         }
+       
     }
     void UseItem(int slot)
     {
@@ -279,7 +395,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         isPlayerBuffed = true;
         int origDam = shootDamage;
-        shootDamage += 5;
+        shootDamage += 2;
         GameManager.instance.playerDamageBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerDamageBoostScreen.SetActive(false);
@@ -291,7 +407,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         isPlayerBuffed = true;
         int origSpeed = sprintMod;
-        sprintMod *= 2;
+        sprintMod += 2;
         GameManager.instance.playerSpeedBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerSpeedBoostScreen.SetActive(false);
@@ -302,7 +418,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         isPlayerBuffed = true;
         int origArmor = armor;
-        armor += 3;
+        armor += 2;
         GameManager.instance.playerDefenseBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerDefenseBoostScreen.SetActive(false);
@@ -316,9 +432,20 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if (amount > 0)
         {
             int totalDamage = amount - armor;
-            if(totalDamage > 0)
-                HP -= totalDamage;
+            if (totalDamage > 0)
+            {
+                if (HP <= 5)
+                {
+                    totalDamage /= 2;
+                    HP -= totalDamage;  
+                }
+                else
+                {
+                    HP -= totalDamage;
+                }
+            }
             StartCoroutine(flashDamageScreen());
+            aud.PlayOneShot(audHurt[UnityEngine.Random.Range(0, audHurt.Length)], audHurtVol);
         }
         else //check if amount is supposed to heal player
         {
@@ -356,33 +483,25 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
         GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
-        
     }
-
     public void SetPlayerExp(int amount)
     {
-        if (playerLevel <= levelMax)
+        ExpAmount += amount;
+
+        if(ExpAmount >= ExpMax)
         {
-            ExpAmount += amount;
-
-            if (ExpAmount >= ExpMax)
-            {
-                ExpAmount -= ExpMax;
-                HPOrig += 5;
-                HP = HPOrig;
-                armor += 3;
-                ++playerLevel;
-            }
-
-            updatePlayerUI();
+            ExpAmount -= ExpMax;
+            ++playerLevel;
         }
+            
+        updatePlayerUI();
     }
 
     public void getGunStats(GunStats gun)
     {
         gunList.Add(gun);
         gunListPos = gunList.Count - 1;
-        
+        updateGunAmmo();
         changeGun();
         
     }
@@ -410,7 +529,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].model.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterials = gunList[gunListPos].model.GetComponent<MeshRenderer>().sharedMaterials;
-
+       
     }
 
     void reloadGun()
@@ -428,12 +547,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         HP = HPOrig;
         updatePlayerUI();
-
     }
 
     void updateGunAmmo()
     {
-        GameManager.instance.updateAmmo(gunList[gunListPos].ammoCur);
-        GameManager.instance.updateAmmoMax(gunList[gunListPos].ammoMax);
+        GameManager.instance.ammoAmt.text = gunList[gunListPos].ammoCur.ToString("F0") + "/ " + gunList[gunListPos].ammoMax.ToString("F0");
     }
 }
