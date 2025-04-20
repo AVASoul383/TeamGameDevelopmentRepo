@@ -74,7 +74,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < trigger4.levelItem.Length; i++)
         {
             trigger4.levelItem[i].SetActive(false);
-        }   
+        }
+        musicManager.instance.playGameplayMusic();
     }
 
     // Update is called once per frame
@@ -102,6 +103,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        musicManager.instance.playMenuMusic();
     }
 
     public void stateUnpause()
@@ -112,6 +114,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
+        musicManager.instance.playGameplayMusic();
     }
 
     public void openShop()
