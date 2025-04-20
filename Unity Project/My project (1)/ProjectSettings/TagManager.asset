@@ -12,6 +12,7 @@ TagManager:
   - F2 Trigger
   - F3 Trigger
   - Boss Trigger
+  - Menu Button
   layers:
   - Default
   - TransparentFX

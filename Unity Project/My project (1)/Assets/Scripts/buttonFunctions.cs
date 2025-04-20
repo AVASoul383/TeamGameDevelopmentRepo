@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class buttonFunctions : MonoBehaviour
 {
@@ -33,6 +34,38 @@ public class buttonFunctions : MonoBehaviour
     {
         GameManager.instance.stateUnpause();
     }
+    public void PlayGame()
+    {
+        StartCoroutine(loadGame());
+    }
+
+    public void options()
+    {
+        MenuManager.instance.options();
+    }
+
+    public void back()
+    {
+        MenuManager.instance.main();
+    }
+
+    IEnumerator loadGame()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Tower Level", LoadSceneMode.Single);
+        asyncLoad.allowSceneActivation = false;
+
+        while (!asyncLoad.isDone)
+        {
+            Debug.Log($"Tower Level Loading: {asyncLoad.progress}");
+            if (asyncLoad.progress == 0.9f)
+            {
+                asyncLoad.allowSceneActivation = true;
+                break;
+            }
+            yield return null;
+        }
 
 
+        Debug.Log("Tower Level Loaded");
+    }
 }
