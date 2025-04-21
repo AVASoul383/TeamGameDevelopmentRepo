@@ -54,30 +54,52 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        // Try to find player
         player = GameObject.FindWithTag("Player");
-        playerScript = player.GetComponent<playerController>();
+        if (player != null)
+        {
+            playerScript = player.GetComponent<playerController>();
+        }
+        else
+        {
+            Debug.LogWarning("Player object with tag 'Player' not found.");
+        }
+
+        // Try to find player spawn position
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        trigger1 = GameObject.FindWithTag("F1 Trigger").GetComponent<TurnOnOff>();
-        trigger2 = GameObject.FindWithTag("F2 Trigger").GetComponent<TurnOnOff>();
-        trigger3 = GameObject.FindWithTag("F3 Trigger").GetComponent<TurnOnOff>();
-        trigger4 = GameObject.FindWithTag("Boss Trigger").GetComponent<TurnOnOff>();  
-        for (int i = 0; i < trigger1.levelItem.Length; i++)
-        {
-            trigger1.levelItem[i].SetActive(false);
-        }
-        for (int i = 0; i < trigger2.levelItem.Length; i++)
-        {
-            trigger2.levelItem[i].SetActive(false);
-        }
-        for (int i = 0; i < trigger3.levelItem.Length; i++)
-        {
-            trigger3.levelItem[i].SetActive(false);
-        }
-        for (int i = 0; i < trigger4.levelItem.Length; i++)
-        {
-            trigger4.levelItem[i].SetActive(false);
-        }   
+        if (playerSpawnPos == null)
+            Debug.LogWarning("Player Spawn Pos not found.");
+
+        // Safe way to find triggers
+        TrySetupTrigger("F1 Trigger", ref trigger1);
+        TrySetupTrigger("F2 Trigger", ref trigger2);
+        TrySetupTrigger("F3 Trigger", ref trigger3);
+        TrySetupTrigger("Boss Trigger", ref trigger4);
     }
+
+    void TrySetupTrigger(string tag, ref TurnOnOff trigger)
+    {
+        GameObject obj = GameObject.FindWithTag(tag);
+        if (obj != null)
+        {
+            trigger = obj.GetComponent<TurnOnOff>();
+            if (trigger != null)
+            {
+                foreach (var item in trigger.levelItem)
+                    item.SetActive(false);
+            }
+            else
+            {
+                Debug.LogWarning($"GameObject with tag '{tag}' found but missing TurnOnOff script.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"GameObject with tag '{tag}' not found.");
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
