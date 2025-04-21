@@ -82,6 +82,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     public KeyCode crouch = KeyCode.C;
     public KeyCode prone = KeyCode.LeftControl;
 
+    //Start is called once before the first execution of Update after the MonoBehaviour is created
     public Transform playerCamera;
 
 
@@ -89,10 +90,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     void Start()
     {
         HPOrig = HP;
+        
         //spawnPlayer();
         ExpAmount = 0;
         playerLevel = 1;
+        
         //updatePlayerUI();
+        setStanding();
+
         setStanding();
 
     }
@@ -100,9 +105,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.instance.isPaused) return;
        
         if (GameManager.instance != null && GameManager.instance.isPaused)
             return;
+
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist, Color.green);
+        if(!GameManager.instance.isPaused)
+           movement();
 
         movement();
         crouchInput();
@@ -138,11 +148,13 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         shootTimer += Time.deltaTime;
 
- 
+        
         if (controller.isGrounded)
         {
             if (moveDir.magnitude > 0.3f && !isPlayingSteps)
                 StartCoroutine(playSteps());
+            jumpCount = 0;
+            playerVel = Vector3.zero;
 
             if (playerVel.y < 0)
                 playerVel.y = -1f;
@@ -155,9 +167,12 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             playerVel.y -= gravity * Time.deltaTime;
         }
 
+        //moveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        //transform.position += moveDir * speed * Time.deltaTime;
    
         moveDir = (Input.GetAxis("Horizontal") * transform.right) +
                   (Input.GetAxis("Vertical") * transform.forward);
+        controller.Move(moveDir * speed * Time.deltaTime);
 
      
         Vector3 finalMove = moveDir * speed;
@@ -171,11 +186,14 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         
         isGrappling();
+       
 
+        
      
         if (Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
             shoot();
 
+       
       
         selectGun();
         reloadGun();
@@ -321,6 +339,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         gunList[gunListPos].ammoCur--;
         aud.PlayOneShot(gunList[gunListPos].shootSound[UnityEngine.Random.Range(0, gunList[gunListPos].shootSound.Length)], gunList[gunListPos].shootVol);
+        
         //updateGunAmmo();
 
         RaycastHit hit;
@@ -453,6 +472,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if (amount > 0)
         {
             int totalDamage = amount - armor;
+            if(totalDamage > 0)
+                HP -= totalDamage;
             if (totalDamage > 0)
             {
                 if (HP <= 5)
@@ -473,6 +494,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             HP -= amount;
             StartCoroutine(flashHealingScreen());
         }
+        
         //updatePlayerUI();
 
         if (HPOrig < HP)
