@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
     public GameObject[] advancementPlatforms;
     public Image playerHPBar;
     public Image playerExpBar;
-    public Image playerReloadBar;
-    public Image playerReloadFillBar;
     public GameObject playerDamageScreen;
     public GameObject playerHealthScreen;
     public GameObject player;
