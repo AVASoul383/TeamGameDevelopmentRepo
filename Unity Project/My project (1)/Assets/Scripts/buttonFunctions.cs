@@ -36,7 +36,8 @@ public class buttonFunctions : MonoBehaviour
     }
     public void PlayGame()
     {
-        StartCoroutine(loadGame());
+        //StartCoroutine(loadGame());
+        SceneManager.LoadScene("Town");
     }
 
     public void options()
@@ -51,7 +52,7 @@ public class buttonFunctions : MonoBehaviour
 
     IEnumerator loadGame()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Tower Level", LoadSceneMode.Single);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Town", LoadSceneMode.Single);
         asyncLoad.allowSceneActivation = false;
 
         while (!asyncLoad.isDone)

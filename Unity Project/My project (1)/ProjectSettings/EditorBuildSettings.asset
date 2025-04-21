@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 566e85a46b1858f4eb8fff269082b3e4
   - enabled: 1
-    path: Assets/Scenes/Tower Level.unity
-    guid: 30b7706b5eb0d7640b53203e47497a9d
+    path: Assets/Scenes/Town.unity
+    guid: e58d20bdb75cba041a19c75ec8436e3d
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 324861a466f33fc4a8a950dcfa9e3daa, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
