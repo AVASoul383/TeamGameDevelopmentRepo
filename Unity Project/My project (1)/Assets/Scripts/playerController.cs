@@ -1,26 +1,24 @@
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
-using System;
-
-
 
 public class playerController : MonoBehaviour, IDamage, IPickup
 {
     [SerializeField] LayerMask ignoreLayer;
     [SerializeField] CharacterController controller;
+    [SerializeField] Transform carryPosition;
+
+    ICarryable heldObject;
 
     [Header("----- Stats -----")]
     [Range(0, 40)] public int HP;
-    [Range(1, 50)][SerializeField] int ExpMax;
-    [Range(2, 20)][SerializeField] int speed;
-    [Range(1, 8)][SerializeField] int sprintMod;
-    [Range(5, 20)][SerializeField] int jumpSpeed;
-    [Range(2, 3)][SerializeField] int jumpsMax;
-    [Range(15, 45)][SerializeField] int gravity;
-    [Range(0, 10)][SerializeField] int armor;
+    [SerializeField] int ExpMax = 10;
+    [SerializeField] int speed = 10;
+    [SerializeField] int sprintMod = 2;
+    [SerializeField] int jumpSpeed = 10;
+    [SerializeField] int jumpsMax = 2;
+    [SerializeField] int gravity = 20;
+    [SerializeField] int armor = 0;
 
     [Header("----- Guns -----")]
     [SerializeField] List<GunStats> gunList = new List<GunStats>();
@@ -30,195 +28,178 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] float shootRate;
 
     [Header("----- Grapple -----")]
-    [SerializeField] int grappleSpeed;
-    [SerializeField] int grappleDist;
+    [SerializeField] int grappleSpeed = 20;
+    [SerializeField] int grappleDist = 50;
     [SerializeField] LineRenderer grappleLine;
 
     [Header("---- Audio ----")]
     [SerializeField] AudioSource aud;
     [SerializeField] AudioClip[] audSteps;
-    [Range(0, 1)][SerializeField] float audStepsVol;
+    [SerializeField] float audStepsVol = 1;
     [SerializeField] AudioClip[] audJump;
-    [Range(0, 1)][SerializeField] float audJumpVol;
+    [SerializeField] float audJumpVol = 1;
     [SerializeField] AudioClip[] audHurt;
-    [Range(0, 1)][SerializeField] float audHurtVol;
-
-    public int item1Count;
-    public int item2Count;
-    public int item3Count;
-    public int item4Count;
-    public int currency;
-
-    int playerLevel;
-    int jumpCount;
-    int HPOrig;
-    int ExpAmount;
-
-    bool isPlayerBuffed;
-    bool isPlayingSteps;
-    bool isSprinting;
-
-    int gunListPos;
-
-    float shootTimer;
-
-    public float standingHeight = 2f;
-    public float crouchingHeight = 1.5f;
-    public float proneHeight = 0.5f;
-
-    public bool isCrouching = false;
-    public bool isProne = false;
-
-    public Vector3 standingCenter = new Vector3(0, 1, 0);
-    public Vector3 crouchingCenter = new Vector3(0, 0.75f, 0);
-    public Vector3 proneCenter = new Vector3(0, 0.25f, 0);
-    public Vector3 standingCameraPos = new Vector3(0, 1.7f, 0);
-    public Vector3 crouchingCameraPos = new Vector3(0, 1.2f, 0);
-    public Vector3 proneCameraPos = new Vector3(0, 0.5f, 0);
-
-    Vector3 moveDir;
-    Vector3 playerVel;
-
-    public KeyCode crouch = KeyCode.C;
-    public KeyCode prone = KeyCode.LeftControl;
+    [SerializeField] float audHurtVol = 1;
 
     public Transform playerCamera;
 
+    public int item1Count, item2Count, item3Count, item4Count, currency;
+    int playerLevel, jumpCount, HPOrig, ExpAmount;
+    bool isPlayerBuffed, isPlayingSteps, isSprinting;
+    int gunListPos;
+    float shootTimer;
 
-   
+    [Header("----- Movement States -----")]
+    public float standingHeight = 2f, crouchingHeight = 1.5f, proneHeight = 0.5f;
+    public bool isCrouching = false, isProne = false;
+    public Vector3 standingCenter = new(0, 1, 0), crouchingCenter = new(0, 0.75f, 0), proneCenter = new(0, 0.25f, 0);
+    public Vector3 standingCameraPos = new(0, 1.7f, 0), crouchingCameraPos = new(0, 1.2f, 0), proneCameraPos = new(0, 0.5f, 0);
+
+    Vector3 moveDir, playerVel;
+
+    public KeyCode crouch = KeyCode.C, prone = KeyCode.LeftControl;
+
     void Start()
     {
         HPOrig = HP;
-        spawnPlayer();
         ExpAmount = 0;
         playerLevel = 1;
         updatePlayerUI();
         setStanding();
 
+      
+        StartCoroutine(NudgeToGround());
     }
 
-    // Update is called once per frame
+    IEnumerator NudgeToGround()
+    {
+        yield return new WaitForEndOfFrame();
+        controller.Move(Vector3.down * 0.1f);
+    }
+
     void Update()
     {
-       
-        if (GameManager.instance != null && GameManager.instance.isPaused)
-            return;
+        if (GameManager.instance != null && GameManager.instance.isPaused) return;
 
         movement();
         crouchInput();
         proneInput();
         handleCrouchProneMovement();
         sprint();
+        HandleItemKeys();
 
-        if (Input.GetKeyDown("1"))
-        {
-            UseItem(1);
-        }
-        else if (Input.GetKeyDown("2"))
-        {
-            UseItem(2);
-        }
-        else if (Input.GetKeyDown("3"))
-        {
-            UseItem(3);
-        }
-        else if (Input.GetKeyDown("4"))
-        {
-            UseItem(4);
-        }
+        if (Input.GetKeyDown(KeyCode.G)) TryPickup();
+        if (Input.GetKeyDown(KeyCode.D)) DropHeldObject();
+        if (Input.GetKeyDown(KeyCode.T)) ThrowHeldObject();
     }
-
-
 
     void movement()
     {
-
-        Debug.Log("Moving with speed: " + speed);
-        Debug.Log("Horizontal: " + Input.GetAxis("Horizontal") + ", Vertical: " + Input.GetAxis("Vertical"));
-
         shootTimer += Time.deltaTime;
 
- 
         if (controller.isGrounded)
         {
-            if (moveDir.magnitude > 0.3f && !isPlayingSteps)
+            if (moveDir.magnitude > 0.3f && !isPlayingSteps && audSteps.Length > 0)
                 StartCoroutine(playSteps());
 
-            if (playerVel.y < 0)
-                playerVel.y = -1f;
-
-            jumpCount = 0; 
+            playerVel.y = playerVel.y < 0 ? -1f : playerVel.y;
+            jumpCount = 0;
         }
         else
         {
-            
             playerVel.y -= gravity * Time.deltaTime;
         }
 
-   
-        moveDir = (Input.GetAxis("Horizontal") * transform.right) +
-                  (Input.GetAxis("Vertical") * transform.forward);
-
-     
+        moveDir = (Input.GetAxis("Horizontal") * transform.right) + (Input.GetAxis("Vertical") * transform.forward);
         Vector3 finalMove = moveDir * speed;
         finalMove.y = playerVel.y;
-
-      
         controller.Move(finalMove * Time.deltaTime);
 
-       
         jump();
-
-        
         isGrappling();
 
-     
         if (Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
             shoot();
 
-      
         selectGun();
         reloadGun();
     }
 
+    void TryPickup()
+    {
+        if (heldObject != null) return;
+
+        Ray ray = new(playerCamera.position, playerCamera.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
+        {
+            if (hit.collider.TryGetComponent(out ICarryable carryable))
+            {
+                PickUpObject(carryable);
+            }
+        }
+    }
+
+    void HandleItemKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) UseItem(1);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) UseItem(2);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) UseItem(3);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) UseItem(4);
+    }
+
+    public void PickUpObject(ICarryable obj)
+    {
+        heldObject = obj;
+        obj.OnPickUp(carryPosition);
+    }
+
+    void DropHeldObject()
+    {
+        if (heldObject == null) return;
+        heldObject.OnDrop();
+        heldObject = null;
+    }
+
+    void ThrowHeldObject()
+    {
+        if (heldObject == null) return;
+
+        heldObject.OnDrop();
+        Rigidbody rb = ((MonoBehaviour)heldObject).GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(playerCamera.forward * 10f, ForceMode.Impulse);
+        }
+        heldObject = null;
+    }
 
     void crouchInput()
     {
-        if (Input.GetKeyDown(crouch))
+        if (!Input.GetKeyDown(crouch)) return;
+
+        if (isCrouching) setStanding();
+        else
         {
-            if (isCrouching)
-            {
-               setStanding();
-                Debug.Log("Crouching: " + isCrouching);
-            }
-            else
-            {
-                isProne = false;
-                controller.height = crouchingHeight;
-                controller.center = crouchingCenter;
-                playerCamera.localPosition = crouchingCameraPos;
-                isCrouching = true;
-                Debug.Log("Crouching: " + isCrouching);
-            }
+            isProne = false;
+            controller.height = crouchingHeight;
+            controller.center = crouchingCenter;
+            playerCamera.localPosition = crouchingCameraPos;
+            isCrouching = true;
         }
     }
 
     void proneInput()
     {
-        if (Input.GetKeyDown(prone))
+        if (!Input.GetKeyDown(prone)) return;
+
+        if (isProne) setStanding();
+        else
         {
-            if (isProne)
-            {
-                setStanding(); 
-            }
-            else
-            {
-                isCrouching = false;
-                controller.height = proneHeight;
-                controller.center = proneCenter;
-                playerCamera.localPosition = proneCameraPos;
-                isProne = true;
-            }
+            isCrouching = false;
+            controller.height = proneHeight;
+            controller.center = proneCenter;
+            playerCamera.localPosition = proneCameraPos;
+            isProne = true;
         }
     }
 
@@ -233,257 +214,156 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     void handleCrouchProneMovement()
     {
-        if (isCrouching)
-        {
-            speed = 5;
-        }
-        else if (isProne)
-        {
-            speed = 2;
-        }
-        else
-        {
-            speed = 10;
-        }
+        speed = isCrouching ? 5 : isProne ? 2 : 10;
     }
 
     IEnumerator playSteps()
     {
         isPlayingSteps = true;
-        aud.PlayOneShot(audSteps[UnityEngine.Random.Range(0, audSteps.Length)]);
-
-        if (!isSprinting)
-            yield return new WaitForSeconds(0.5f);
-        else
-            yield return new WaitForSeconds(0.3f);
+        aud.PlayOneShot(audSteps[Random.Range(0, audSteps.Length)], audStepsVol);
+        yield return new WaitForSeconds(isSprinting ? 0.3f : 0.5f);
         isPlayingSteps = false;
     }
 
     void jump()
     {
-        if(Input.GetButtonDown("Jump") && jumpCount < jumpsMax)
-        {
-            jumpCount++;
-            playerVel.y = jumpSpeed;
-            aud.PlayOneShot(audJump[UnityEngine.Random.Range(0, audJump.Length)], audJumpVol);
-        }
+        if (!Input.GetButtonDown("Jump") || jumpCount >= jumpsMax) return;
+
+        jumpCount++;
+        playerVel.y = jumpSpeed;
+
+        if (audJump.Length > 0)
+            aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
     }
 
     void sprint()
     {
-        if(Input.GetButtonDown("Sprint"))
-        {
-            speed *= sprintMod;
-        }
-        else if(Input.GetButtonUp("Sprint"))
-        {
-            speed /= sprintMod;
-        }
+        if (Input.GetButtonDown("Sprint")) speed *= sprintMod;
+        else if (Input.GetButtonUp("Sprint")) speed /= sprintMod;
     }
 
     void isGrappling()
     {
-        if(Input.GetButton("Fire2") && grapple())
-        {
-            grappleLine.enabled = true;
-        }
+        if (Input.GetButton("Fire2") && grapple()) grappleLine.enabled = true;
         else
         {
             controller.Move(playerVel * Time.deltaTime);
             playerVel.y -= gravity * Time.deltaTime;
             grappleLine.enabled = false;
         }
-        
     }
 
     bool grapple()
     {
-        RaycastHit hit;
-        if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, grappleDist))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, grappleDist))
         {
             if (hit.collider.CompareTag("Grapple Point"))
             {
                 controller.Move((hit.point - transform.position).normalized * grappleSpeed * Time.deltaTime);
                 grappleLine.SetPosition(0, transform.position);
                 grappleLine.SetPosition(1, hit.point);
-
                 return true;
             }
         }
-
-        
         return false;
     }
 
     void shoot()
     {
         shootTimer = 0;
-
         gunList[gunListPos].ammoCur--;
-        aud.PlayOneShot(gunList[gunListPos].shootSound[UnityEngine.Random.Range(0, gunList[gunListPos].shootSound.Length)], gunList[gunListPos].shootVol);
+        if (gunList[gunListPos].shootSound.Length > 0)
+            aud.PlayOneShot(gunList[gunListPos].shootSound[Random.Range(0, gunList[gunListPos].shootSound.Length)], gunList[gunListPos].shootVol);
+
         updateGunAmmo();
 
-        RaycastHit hit;
-        if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, shootDist, ~ignoreLayer))
         {
-            Debug.Log(hit.collider.name);
             Instantiate(gunList[gunListPos].hitEffect, hit.point, Quaternion.identity);
-
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-
-            if(dmg != null)
-            {
-                dmg.takeDamage(shootDamage);
-            }
-
-            IInteract act = hit.collider.GetComponent<IInteract>();
-
-            if(act != null)
-            {
-                act.talkTo();
-            }
+            hit.collider.GetComponent<IDamage>()?.takeDamage(shootDamage);
+            hit.collider.GetComponent<IInteract>()?.talkTo();
         }
-       
     }
+
     void UseItem(int slot)
     {
-        if(isPlayerBuffed)
-        {
+        if (isPlayerBuffed) return;
 
-        }
-        else
+        switch (slot)
         {
-            switch (slot)
-            {
-                case 1:
-                    if (item1Count > 0)
-                    {
-                        item1Count--;
-                        ActivateItemEffect(1);
-                        GameManager.instance.updateItemCount1();
-                    }
-                    break;
-                case 2:
-                    if (item2Count > 0)
-                    {
-                        item2Count--;
-                        ActivateItemEffect(2);
-                        GameManager.instance.updateItemCount2();
-                    }
-                    break;
-                case 3:
-                    if (item3Count > 0)
-                    {
-                        item3Count--;
-                        ActivateItemEffect(3);
-                        GameManager.instance.updateItemCount3();
-                    }
-                    break;
-                case 4:
-                    if (item4Count > 0)
-                    {
-                        item4Count--;
-                        ActivateItemEffect(4);
-                        GameManager.instance.updateItemCount4();
-                    }
-                    break;
-            }
+            case 1: if (item1Count-- > 0) ActivateItemEffect(1); break;
+            case 2: if (item2Count-- > 0) ActivateItemEffect(2); break;
+            case 3: if (item3Count-- > 0) ActivateItemEffect(3); break;
+            case 4: if (item4Count-- > 0) ActivateItemEffect(4); break;
         }
     }
+
     void ActivateItemEffect(int item)
     {
         switch (item)
         {
-            case 1:
-                // Heal player
-                takeDamage(-10);
-                break;
-            case 2:
-                // Damage buff
-                StartCoroutine(damageBoost());
-                break;
-            case 3:
-                // Jump boost
-                StartCoroutine(defenseBoost());
-                break;
-            case 4:
-                // Speed boost
-                StartCoroutine(speedBoost());
-                break;
+            case 1: takeDamage(-10); break;
+            case 2: StartCoroutine(damageBoost()); break;
+            case 3: StartCoroutine(defenseBoost()); break;
+            case 4: StartCoroutine(speedBoost()); break;
         }
     }
+
     IEnumerator damageBoost()
     {
         isPlayerBuffed = true;
-        int origDam = shootDamage;
+        int orig = shootDamage;
         shootDamage += 2;
         GameManager.instance.playerDamageBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerDamageBoostScreen.SetActive(false);
+        shootDamage = orig;
         isPlayerBuffed = false;
-        shootDamage = origDam;
     }
 
     IEnumerator speedBoost()
     {
         isPlayerBuffed = true;
-        int origSpeed = sprintMod;
+        int orig = sprintMod;
         sprintMod += 2;
         GameManager.instance.playerSpeedBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerSpeedBoostScreen.SetActive(false);
+        sprintMod = orig;
         isPlayerBuffed = false;
-        sprintMod = origSpeed;
     }
+
     IEnumerator defenseBoost()
     {
         isPlayerBuffed = true;
-        int origArmor = armor;
+        int orig = armor;
         armor += 2;
         GameManager.instance.playerDefenseBoostScreen.SetActive(true);
         yield return new WaitForSeconds(10f);
         GameManager.instance.playerDefenseBoostScreen.SetActive(false);
+        armor = orig;
         isPlayerBuffed = false;
-        armor = origArmor;
     }
 
     public void takeDamage(int amount)
     {
-        //check if amount is supposed to damage player 
         if (amount > 0)
         {
-            int totalDamage = amount - armor;
-            if (totalDamage > 0)
-            {
-                if (HP <= 5)
-                {
-                    totalDamage /= 2;
-                    HP -= totalDamage;  
-                }
-                else
-                {
-                    HP -= totalDamage;
-                }
-            }
+            int total = amount - armor;
+            if (total > 0) HP -= (HP <= 5) ? total / 2 : total;
             StartCoroutine(flashDamageScreen());
-            aud.PlayOneShot(audHurt[UnityEngine.Random.Range(0, audHurt.Length)], audHurtVol);
+            if (audHurt.Length > 0)
+                aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], audHurtVol);
         }
-        else //check if amount is supposed to heal player
+        else
         {
             HP -= amount;
             StartCoroutine(flashHealingScreen());
         }
+
         updatePlayerUI();
-
-        if (HPOrig < HP)
-        {
-            HP = HPOrig;
-        }
-        if (HP <= 0)
-        {
-            GameManager.instance.youLose();
-        }
-
+        if (HP > HPOrig) HP = HPOrig;
+        if (HP <= 0) GameManager.instance.youLose();
     }
 
     IEnumerator flashDamageScreen()
@@ -502,19 +382,19 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     public void updatePlayerUI()
     {
+        if (GameManager.instance == null) return;
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
         GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
     }
+
     public void SetPlayerExp(int amount)
     {
         ExpAmount += amount;
-
-        if(ExpAmount >= ExpMax)
+        if (ExpAmount >= ExpMax)
         {
             ExpAmount -= ExpMax;
-            ++playerLevel;
+            playerLevel++;
         }
-            
         updatePlayerUI();
     }
 
@@ -524,21 +404,12 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         gunListPos = gunList.Count - 1;
         updateGunAmmo();
         changeGun();
-        
     }
 
     void selectGun()
     {
-        if(Input.GetAxis("Mouse ScrollWheel") > 0 && gunListPos < gunList.Count - 1)
-        {
-            gunListPos++;
-            changeGun();
-        }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && gunListPos > 0)
-        {
-            gunListPos--;
-            changeGun();
-        }
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && gunListPos < gunList.Count - 1) { gunListPos++; changeGun(); }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && gunListPos > 0) { gunListPos--; changeGun(); }
     }
 
     void changeGun()
@@ -550,28 +421,29 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[gunListPos].model.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterials = gunList[gunListPos].model.GetComponent<MeshRenderer>().sharedMaterials;
-       
     }
 
     void reloadGun()
     {
-        if(Input.GetButtonDown("Reload"))
+        if (Input.GetButtonDown("Reload"))
         {
             gunList[gunListPos].ammoCur = gunList[gunListPos].ammoMax;
             updateGunAmmo();
         }
     }
 
-    public void spawnPlayer()
-    {
-        controller.transform.position = GameManager.instance.playerSpawnPos.transform.position;
-
-        HP = HPOrig;
-        updatePlayerUI();
-    }
-
     void updateGunAmmo()
     {
-        GameManager.instance.ammoAmt.text = gunList[gunListPos].ammoCur.ToString("F0") + "/ " + gunList[gunListPos].ammoMax.ToString("F0");
+        GameManager.instance.ammoAmt.text = gunList[gunListPos].ammoCur + " / " + gunList[gunListPos].ammoMax;
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody rb = hit.collider.attachedRigidbody;
+        if (rb != null && !rb.isKinematic)
+        {
+            Vector3 pushDir = new(hit.moveDirection.x, 0, hit.moveDirection.z);
+            rb.AddForce(pushDir * 5f, ForceMode.Impulse);
+        }
     }
 }
