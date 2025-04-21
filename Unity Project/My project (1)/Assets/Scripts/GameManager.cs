@@ -14,6 +14,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuShop;
     [SerializeField] TMP_Text goalCountText;
     [SerializeField] GameObject continueMenu;
+    [SerializeField] GameObject dialogueBox;
+    [SerializeField] TMP_Text dialogueText;
+    [SerializeField] TMP_Text npcName;
+    [SerializeField] GameObject interactionPrompt;
+
 
     public GameObject playerSpawnPos;
     public GameObject[] advancementPlatforms;
@@ -205,5 +210,27 @@ public class GameManager : MonoBehaviour
     {
         menuActive = menu;
         menuActive.SetActive(true);
+    }
+
+    public void showDialogue(string text, string name)
+    {
+        dialogueBox.SetActive(true);
+        npcName.text = name;
+        dialogueText.text = text;
+    }
+
+    public void hideDialogue()
+    {
+        dialogueBox.SetActive(false);
+    }
+
+    public void showInteractionPrompt()
+    {
+        interactionPrompt.SetActive(true);
+    }
+
+    public void hideInteractionPrompt()
+    {
+        interactionPrompt.SetActive(false);
     }
 }
