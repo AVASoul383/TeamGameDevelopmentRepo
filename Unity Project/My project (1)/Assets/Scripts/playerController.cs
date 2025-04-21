@@ -61,6 +61,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     void Start()
     {
+        playerCamera = Camera.main.transform;
         HPOrig = HP;
         ExpAmount = 0;
         playerLevel = 1;
