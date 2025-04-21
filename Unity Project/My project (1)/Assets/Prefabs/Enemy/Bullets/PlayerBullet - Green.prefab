@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6285606014293737195}
   - component: {fileID: 9216088822227521362}
   - component: {fileID: 8305011974859952838}
-  m_Layer: 8
-  m_Name: Bullet-Red
+  m_Layer: 6
+  m_Name: PlayerBullet - Green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,10 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   rb: {fileID: 9216088822227521362}
-  damageAmount: 1
+  damageAmount: 2
   damageTime: 0.25
-  speed: 29
+  speed: 25
   destroyTime: 3
+  hitEffectPrefab: {fileID: 7856939199014537196, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
 --- !u!135 &6285606014293737195
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -168,7 +169,7 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.9308176, g: 0.0029269028, b: 0.0029269028, a: 1}
+      key0: {r: 0.027626216, g: 0.92941177, b: 0.003921572, a: 1}
       key1: {r: 0.9738192, g: 0.6226763, b: 0.6226763, a: 1}
       key2: {r: 1, g: 1, b: 1, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
