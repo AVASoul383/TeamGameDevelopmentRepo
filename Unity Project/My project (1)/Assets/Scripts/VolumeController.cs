@@ -64,4 +64,6 @@ public class VolumeController : MonoBehaviour
     {
         PlayerPrefs.SetFloat(volumeParameter, volumeSlider.value);
     }
+
+    public float volume { get { return volumeSlider.value;} }
 }

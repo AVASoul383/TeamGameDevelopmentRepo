@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
@@ -11,16 +12,19 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject optionsMenu;
 
-    public List<GameObject> buttons;
-    public int buttonPosition;
+    GameObject prevMenu;
+    List<GameObject> buttons;
+    int buttonPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         instance = this;
+        
         setActiveMenu(mainMenu);
         menuActive.SetActive(true);
         findButtons();
         buttonPosition = 0;
+        
     }
 
     // Update is called once per frame
@@ -35,7 +39,7 @@ public class MenuManager : MonoBehaviour
             buttonPosition--;
         }
 
-        if (Input.GetButtonDown("Submit"))
+        if (Input.GetButtonDown("Submit") && menuActive != null)
         {
             buttons[buttonPosition].GetComponent<Button>().onClick.Invoke();
         }
@@ -53,6 +57,7 @@ public class MenuManager : MonoBehaviour
     public void options()
     {
         menuActive.SetActive(false);
+        prevMenu = menuActive;
         setActiveMenu(optionsMenu);
         findButtons();
         menuActive.SetActive(true);
@@ -67,6 +72,15 @@ public class MenuManager : MonoBehaviour
     public void setActiveMenu(GameObject menu)
     {
         menuActive = menu;
+        if (menuActive != null) 
+            menuActive.SetActive(true);
+    }
+
+    public void prevMenuCall()
+    {
+        menuActive.SetActive(false);
+        setActiveMenu(prevMenu);
         menuActive.SetActive(true);
+        findButtons();
     }
 }

@@ -36,8 +36,9 @@ public class buttonFunctions : MonoBehaviour
     }
     public void PlayGame()
     {
-        //StartCoroutine(loadGame());
-        SceneManager.LoadScene("Town");
+        StartCoroutine(loadGame());
+        MenuManager.instance.setActiveMenu(null);
+        //SceneManager.LoadScene("Town");
     }
 
     public void options()
@@ -47,7 +48,7 @@ public class buttonFunctions : MonoBehaviour
 
     public void back()
     {
-        MenuManager.instance.main();
+        MenuManager.instance.prevMenuCall();
     }
 
     IEnumerator loadGame()
