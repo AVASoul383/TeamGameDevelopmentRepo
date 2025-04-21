@@ -20,6 +20,7 @@ public class playerInteract : MonoBehaviour
 
     void handleInteraction()
     {
+        Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * interactDistance, Color.red);
         RaycastHit hit;
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, interactDistance, interactableLayer))
         {
