@@ -76,6 +76,8 @@ public class GameManager : MonoBehaviour
         TrySetupTrigger("F2 Trigger", ref trigger2);
         TrySetupTrigger("F3 Trigger", ref trigger3);
         TrySetupTrigger("Boss Trigger", ref trigger4);
+
+        MusicManager.instance.playGameplayMusic();
     }
 
     void TrySetupTrigger(string tag, ref TurnOnOff trigger)
@@ -126,6 +128,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        MusicManager.instance.playMenuMusic();
     }
 
     public void stateUnpause()
@@ -136,6 +139,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         menuActive.SetActive(false);
         menuActive = null;
+        MusicManager.instance.playGameplayMusic();
     }
 
     public void openShop()
