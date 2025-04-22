@@ -51,10 +51,13 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     void Start()
     {
         GameManager.instance.updateGameGoal(1);
+
         if (type == enemyType.boss)
             GameManager.instance.bossFight(1);
+
         if (type == enemyType.moving || type == enemyType.boss)
             agent.speed = speed;
+
         startingPos = transform.position;
         stoppingDist = agent.stoppingDistance;
     }
@@ -187,7 +190,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
             enemyDead();
             GameManager.instance.updateMoneyCount(moneyDropped);
             GameManager.instance.updateGameGoal(-1);
-            GameManager.instance.playerScript.SetPlayerExp(Exp);
+            
             if (type == enemyType.boss)
                 GameManager.instance.bossFight(-1);
 

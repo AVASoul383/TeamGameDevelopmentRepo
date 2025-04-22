@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerSpawnPos;
     public GameObject[] advancementPlatforms;
     public Image playerHPBar;
-    public Image playerExpBar;
+    
     public GameObject playerDamageScreen;
     public GameObject playerHealthScreen;
     public GameObject player;
@@ -47,18 +47,22 @@ public class GameManager : MonoBehaviour
     TurnOnOff trigger3;
     TurnOnOff trigger4;
 
-
+    private void Awake()
+    {
+        instance = this;
+        DontDestroyOnLoad(instance);
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        instance = this;
+        
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<playerController>();
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
         trigger1 = GameObject.FindWithTag("F1 Trigger").GetComponent<TurnOnOff>();
         trigger2 = GameObject.FindWithTag("F2 Trigger").GetComponent<TurnOnOff>();
         trigger3 = GameObject.FindWithTag("F3 Trigger").GetComponent<TurnOnOff>();
-        trigger4 = GameObject.FindWithTag("Boss Trigger").GetComponent<TurnOnOff>();  
+        trigger4 = GameObject.FindWithTag("Boss Trigger").GetComponent<TurnOnOff>();
         for (int i = 0; i < trigger1.levelItem.Length; i++)
         {
             trigger1.levelItem[i].SetActive(false);
@@ -74,7 +78,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < trigger4.levelItem.Length; i++)
         {
             trigger4.levelItem[i].SetActive(false);
-        }   
+        }
     }
 
     // Update is called once per frame
@@ -126,9 +130,6 @@ public class GameManager : MonoBehaviour
         goalCountText.text = goalCount.ToString("F0");
 
     }
-
-    
-
     public void bossFight(int amount)
     {
         bossCount += amount;

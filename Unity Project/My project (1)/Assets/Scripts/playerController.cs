@@ -95,10 +95,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         ExpAmount = 0;
         playerLevel = 1;
         
-        //updatePlayerUI();
+        updatePlayerUI();
         setStanding();
 
-        setStanding();
+        //setStanding();
 
     }
 
@@ -114,7 +114,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if(!GameManager.instance.isPaused)
            movement();
 
-        movement();
+       // movement();
         crouchInput();
         proneInput();
         handleCrouchProneMovement();
@@ -143,8 +143,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     void movement()
     {
 
-        Debug.Log("Moving with speed: " + speed);
-        Debug.Log("Horizontal: " + Input.GetAxis("Horizontal") + ", Vertical: " + Input.GetAxis("Vertical"));
+        Debug.Log("Moving with speed: " + speed.ToString());
+        Debug.Log("Horizontal: " + Input.GetAxis("Horizontal").ToString() + ", Vertical: " + Input.GetAxis("Vertical").ToString());
 
         shootTimer += Time.deltaTime;
 
@@ -180,20 +180,13 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
       
         controller.Move(finalMove * Time.deltaTime);
-
        
         jump();
-
         
         isGrappling();
-       
-
-        
-     
+             
         if (Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
             shoot();
-
-       
       
         selectGun();
         reloadGun();
@@ -340,7 +333,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         gunList[gunListPos].ammoCur--;
         aud.PlayOneShot(gunList[gunListPos].shootSound[UnityEngine.Random.Range(0, gunList[gunListPos].shootSound.Length)], gunList[gunListPos].shootVol);
         
-        //updateGunAmmo();
+        updateGunAmmo();
 
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
@@ -495,7 +488,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             StartCoroutine(flashHealingScreen());
         }
         
-        //updatePlayerUI();
+        updatePlayerUI();
 
         if (HPOrig < HP)
         {
@@ -525,7 +518,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     public void updatePlayerUI()
     {
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
-        GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
+        
     }
     public void SetPlayerExp(int amount)
     {

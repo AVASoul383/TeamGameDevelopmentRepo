@@ -36,9 +36,11 @@ public class buttonFunctions : MonoBehaviour
     }
     public void PlayGame()
     {
-        StartCoroutine(loadGame());
+        
         MenuManager.instance.setActiveMenu(null);
-        //SceneManager.LoadScene("Town");
+        StartCoroutine(loadGame());
+        //SceneManager.LoadScene("Tower Level");
+ 
     }
 
     public void options()
@@ -53,21 +55,23 @@ public class buttonFunctions : MonoBehaviour
 
     IEnumerator loadGame()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Town", LoadSceneMode.Single);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Tower Level", LoadSceneMode.Single);
         asyncLoad.allowSceneActivation = false;
 
         while (!asyncLoad.isDone)
         {
             Debug.Log($"Tower Level Loading: {asyncLoad.progress}");
-            if (asyncLoad.progress == 0.9f)
+            if(asyncLoad.progress >= 0.9f)
             {
-                asyncLoad.allowSceneActivation = true;
-                break;
+                if (Input.GetButtonDown("Submit"))
+                {
+                    break;
+                }
             }
             yield return null;
         }
 
-
+        asyncLoad.allowSceneActivation = true;
         Debug.Log("Tower Level Loaded");
     }
 }

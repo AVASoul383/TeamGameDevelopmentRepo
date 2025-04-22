@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,8 +12,9 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject optionsMenu;
 
     GameObject prevMenu;
-    List<GameObject> buttons;
+    GameObject[] buttons;
     int buttonPosition;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,7 +30,7 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Menu Down") && buttonPosition < buttons.Count - 1) 
+        if (Input.GetButtonDown("Menu Down") && buttonPosition < buttons.Length - 1) 
         {
             buttonPosition++;
         }
@@ -65,15 +65,21 @@ public class MenuManager : MonoBehaviour
 
     public void findButtons()
     {
-        GameObject.FindGameObjectsWithTag("Menu Button",buttons);
+        buttons = GameObject.FindGameObjectsWithTag("Menu Button");
         buttonPosition = 0;
     }
 
     public void setActiveMenu(GameObject menu)
     {
+        if (menu == null)
+            menuActive.SetActive(false);
+
         menuActive = menu;
+        
         if (menuActive != null) 
             menuActive.SetActive(true);
+        
+            
     }
 
     public void prevMenuCall()
