@@ -1,9 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class playerController : MonoBehaviour, IDamage, IPickup
@@ -25,15 +24,11 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] int armor = 0;
 
     [Header("----- Guns -----")]
-    [SerializeField] Transform shootPoint;
     [SerializeField] List<GunStats> gunList = new List<GunStats>();
     [SerializeField] GameObject gunModel;
-    [SerializeField] Transform muzzleFlash;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDist;
     [SerializeField] float shootRate;
-    public Animator shootAnim;
-    public Animator reloadAnim;
 
     [Header("----- Grapple -----")]
     [SerializeField] int grappleSpeed = 20;
@@ -48,11 +43,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] float audJumpVol = 1;
     [SerializeField] AudioClip[] audHurt;
     [Range(0, 1)][SerializeField] float audHurtVol;
-    [SerializeField] AudioClip[] audReload;
-    [Range(0, 1)][SerializeField] float audReloadVol;
-    [SerializeField] AudioClip[] audNoReload;
-    [Range(0, 1)][SerializeField] float audNoReloadVol;
-
 
     public int item1Count;
     public int item2Count;
@@ -68,7 +58,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     bool isPlayerBuffed;
     bool isPlayingSteps;
     bool isSprinting;
-    bool isReloading;
 
 
     public Transform playerCamera;
@@ -93,8 +82,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         ExpAmount = 0;
         playerLevel = 1;
         updatePlayerUI();
-
-        shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
         setStanding();
       
         StartCoroutine(NudgeToGround());
@@ -299,9 +286,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     void shoot()
     {
-        if (isReloading || gunList[gunListPos].ammoCur <= 0)
-            return;
-
         shootTimer = 0;
         gunList[gunListPos].ammoCur--;
         if (gunList[gunListPos].shootSound.Length > 0)
@@ -309,29 +293,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         updateGunAmmo();
 
-        StartCoroutine(flashMuzzle());
-        shootAnim.SetTrigger("Shoot");
-        //Shooting bullets
-        Vector3 targetPoint;
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // center of screen
-        if (Physics.Raycast(ray, out RaycastHit hit, gunList[gunListPos].shootDis, ~ignoreLayer))
-        {
-            targetPoint = hit.point;
-        }
-        else
-        {
-            // nothing hit, shoot far away
-            targetPoint = ray.origin + ray.direction * 100f;
-        }
-        Vector3 shootDir = (targetPoint - shootPoint.position).normalized;
-        if (gunList[gunListPos].ammoCur == 0)
-            Instantiate(gunList[gunListPos].lastBullet, shootPoint.position, Quaternion.LookRotation(shootDir));
-        else
-            Instantiate(gunList[gunListPos].bullet, shootPoint.position, Quaternion.LookRotation(shootDir));
-
-        //Raycast Hitting
-        //may look into creating different gun types
-        /*
         RaycastHit hit;
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, shootDist, ~ignoreLayer))
@@ -342,8 +303,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             hit.collider.GetComponent<IInteract>()?.talkTo();
         }
 
-        */
-
+       
     }
 
     void UseItem(int slot)
@@ -463,7 +423,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         gunList.Add(gun);
         gunListPos = gunList.Count - 1;
-        gunList[gunListPos].ammoReserve = gunList[gunListPos].ammoMax;
         updateGunAmmo();
         changeGun();
     }
@@ -489,57 +448,9 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         if (Input.GetButtonDown("Reload"))
         {
-            if (gunList[gunListPos].ammoReserve > 0 && gunList[gunListPos].ammoCur < gunList[gunListPos].ammoMax && !isReloading)
-            {
-                //Reload
-                StartCoroutine(ReloadCoroutine());
-            }
-            else
-            {
-                //play clip for no reload
-                //aud.PlayOneShot(audNoReload[UnityEngine.Random.Range(0, audNoReload.Length)], audNoReloadVol);
-            }
+            gunList[gunListPos].ammoCur = gunList[gunListPos].ammoMax;
+            updateGunAmmo();
         }
-    }
-
-    IEnumerator ReloadCoroutine()
-    {
-        isReloading = true;
-        Image bar = GameManager.instance.playerReloadBar;
-        Image fill = GameManager.instance.playerReloadFillBar;
-        fill.gameObject.SetActive(true);
-        bar.gameObject.SetActive(true);
-        fill.fillAmount = 0;
-
-        //aud.PlayOneShot(audReload[UnityEngine.Random.Range(0, audReload.Length)], audReloadVol);
-
-        float elapsed = 0f;
-
-        while (elapsed < gunList[gunListPos].reloadTimer)
-        {
-            elapsed += Time.deltaTime;
-            fill.fillAmount = Mathf.Clamp01(elapsed / gunList[gunListPos].reloadTimer);
-            yield return null;
-        }
-
-
-        int ammoDifference = gunList[gunListPos].ammoMax - gunList[gunListPos].ammoCur;
-        if (ammoDifference <= gunList[gunListPos].ammoReserve)
-        {
-            gunList[gunListPos].ammoReserve -= ammoDifference;
-            gunList[gunListPos].ammoCur += ammoDifference;
-        }
-        else
-        {
-            gunList[gunListPos].ammoCur += gunList[gunListPos].ammoReserve;
-            gunList[gunListPos].ammoReserve = 0;
-        }
-
-        fill.fillAmount = 0;
-        bar.gameObject.SetActive(false);
-        fill.gameObject.SetActive(false);
-        updateGunAmmo();
-        isReloading = false;
     }
 
     public void spawnPlayer()
@@ -552,15 +463,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     void updateGunAmmo()
     {
-        GameManager.instance.ammoAmt.text = gunList[gunListPos].ammoCur.ToString("F0") + "/ " + gunList[gunListPos].ammoMax.ToString("F0") + "   " + gunList[gunListPos].ammoReserve.ToString("F0");
-    }
-
-    IEnumerator flashMuzzle()
-    {
-        muzzleFlash.localEulerAngles = new Vector3(0, 0, UnityEngine.Random.Range(0, 360));
-        muzzleFlash.gameObject.SetActive(true);
-        yield return new WaitForSeconds(.05f);
-        muzzleFlash.gameObject.SetActive(false);
+        GameManager.instance.ammoAmt.text = gunList[gunListPos].ammoCur.ToString("F0") + "/ " + gunList[gunListPos].ammoMax.ToString("F0");
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)

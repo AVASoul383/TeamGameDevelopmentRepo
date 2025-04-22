@@ -5686,11 +5686,10 @@ PrefabInstance:
       value: 0.101
       objectReference: {fileID: 0}
     - target: {fileID: 6468904818426705865, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
-      propertyPath: shootPoint
+propertyPath: shootPoint
       value: 
       objectReference: {fileID: 705421691}
-    - target: {fileID: 6468904818426705865, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
-      propertyPath: audStepsVol
+    - target: {fileID: 6468904818426705865, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}      propertyPath: audStepsVol
       value: 0.008
       objectReference: {fileID: 0}
     - target: {fileID: 6468904818426705865, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
@@ -5839,18 +5838,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7204097595754490171, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
+m_AddedGameObjects: []
+- targetCorrespondingSourceObject: {fileID: 7204097595754490171, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 705421691}
-    m_AddedComponents:
+      addedObject: {fileID: 705421691}    m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4783143153548691374, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1149147673}
-    - targetCorrespondingSourceObject: {fileID: 1354054908588926858, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
+ 	  targetCorrespondingSourceObject: {fileID: 1354054908588926858, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2918459082974576766}
-  m_SourcePrefab: {fileID: 100100000, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
+      addedObject: {fileID: 2918459082974576766}  m_SourcePrefab: {fileID: 100100000, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
 --- !u!4 &409902153 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5289642173964296580, guid: 57990ae2ca8133b4993321e4d4f93c7e, type: 3}
@@ -27501,11 +27498,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
-      propertyPath: player
+	  propertyPath: player
       value: 
       objectReference: {fileID: 1149147665}
-    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
-      propertyPath: 'advancementPlatforms.Array.data[0]'
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}      propertyPath: 'advancementPlatforms.Array.data[0]'
       value: 
       objectReference: {fileID: 2747404986141782223}
     - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
@@ -27540,11 +27536,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
-    - target: {fileID: 6240857297221232849, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+target: {fileID: 6240857297221232849, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7680265092705112892, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      objectReference: {fileID: 0}    - target: {fileID: 7680265092705112892, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -27557,8 +27552,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 877854097517978444, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
       insertIndex: 1
-      addedObject: {fileID: 993065058}
-    m_AddedComponents: []
+      addedObject: {fileID: 993065058}    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
 --- !u!4 &1768195334 stripped
 Transform:
@@ -33199,8 +33193,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!1001 &3074804655151850869
+  m_WriteDefaultValuesOnDisable: 0--- !u!1001 &3074804655151850869
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
