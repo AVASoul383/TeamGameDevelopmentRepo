@@ -3412,17 +3412,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5289642173964296580, guid: 57990ae2ca8133b4993321e4d4f93c7e, type: 3}
   m_PrefabInstance: {fileID: 2134184812}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &224515232 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3783626778917430779, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
-  m_PrefabInstance: {fileID: 1767723175}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &225584360 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5289642173964296580, guid: 57990ae2ca8133b4993321e4d4f93c7e, type: 3}
@@ -5862,10 +5851,6 @@ PrefabInstance:
       propertyPath: audStepsVol
       value: 0.008
       objectReference: {fileID: 0}
-    - target: {fileID: 6468904818426705865, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
-      propertyPath: playerCamera
-      value: 
-      objectReference: {fileID: 1339880370}
     - target: {fileID: 6468904818426705865, guid: a7307e90ce3cf6b4ca7eb32297ed5a07, type: 3}
       propertyPath: audHurt.Array.size
       value: 6
@@ -27700,11 +27685,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1149147665}
     - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
-<<<<<<< HEAD
-      propertyPath: playerHPBar
-      value: 
-      objectReference: {fileID: 224515232}
-=======
       propertyPath: npcName
       value: 
       objectReference: {fileID: 1228644163}
@@ -27716,7 +27696,6 @@ PrefabInstance:
       propertyPath: dialogueText
       value: 
       objectReference: {fileID: 1527660285}
->>>>>>> Safety-Branch
     - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
       propertyPath: 'advancementPlatforms.Array.data[0]'
       value: 

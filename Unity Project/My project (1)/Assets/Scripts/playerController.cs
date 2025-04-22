@@ -86,14 +86,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     public KeyCode crouch = KeyCode.C, prone = KeyCode.LeftControl;
 
-Vector3 moveDir;
-    Vector3 playerVel;
-
-    public KeyCode crouch = KeyCode.C;
-    public KeyCode prone = KeyCode.LeftControl;
-
     //Start is called once before the first execution of Update after the MonoBehaviour is created
-    public Transform playerCamera;    void Start()
+    //public Transform playerCamera; 
+    
+    void Start()
     {
         playerCamera = Camera.main.transform;
         HPOrig = HP;
