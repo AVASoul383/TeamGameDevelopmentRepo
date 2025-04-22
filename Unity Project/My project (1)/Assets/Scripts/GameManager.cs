@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
     TurnOnOff trigger3;
     TurnOnOff trigger4;
 
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -111,7 +110,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Cancel") && !isPaused)
+        if (Input.GetButtonDown("Cancel") && !isPaused)
         {
             if(menuActive == null)
             {
@@ -123,6 +122,18 @@ public class GameManager : MonoBehaviour
                 stateUnpause();
             }
            
+        }
+        if (dialogueBox == null)
+        {
+            Debug.Log("Dialogue box is null");  
+        }
+        if (dialogueBox.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Debug.Log("E key pressed");
+                dialogueBox.SetActive(false);
+            }
         }
         openArea();
     }
@@ -221,7 +232,10 @@ public class GameManager : MonoBehaviour
 
     public void hideDialogue()
     {
-        dialogueBox.SetActive(false);
+        
+            dialogueBox.SetActive(false);
+        
+        
     }
 
     public void showInteractionPrompt()

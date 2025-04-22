@@ -386,6 +386,11 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: -5678768721306973932, guid: fe8275b281ddf164e9185e2e38c42d6c, type: 3}
+      propertyPath: 'dialogueLines.Array.data[0]'
+      value: The drones have started an uprising!! Your family may be nearby at the
+        abandoned mining colony.
+      objectReference: {fileID: 0}
     - target: {fileID: 2503187276307914276, guid: fe8275b281ddf164e9185e2e38c42d6c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 335.7628
@@ -593,6 +598,8 @@ MonoBehaviour:
   advancementPlatforms: []
   playerHPBar: {fileID: 0}
   playerExpBar: {fileID: 0}
+  playerReloadBar: {fileID: 0}
+  playerReloadFillBar: {fileID: 0}
   playerDamageScreen: {fileID: 0}
   playerHealthScreen: {fileID: 0}
   player: {fileID: 0}
