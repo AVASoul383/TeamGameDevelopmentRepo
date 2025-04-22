@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: James
   dialogueLines:
-  - Hello!!
+  - Hello!! Welcome to Scrap Metal!
 --- !u!33 &1087873932261889405
 MeshFilter:
   m_ObjectHideFlags: 0
