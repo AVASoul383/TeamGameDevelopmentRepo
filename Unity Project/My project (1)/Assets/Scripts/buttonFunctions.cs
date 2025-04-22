@@ -24,17 +24,11 @@ public class buttonFunctions : MonoBehaviour
 #endif
     }
 
-    public void respawn()
-    {
-        GameManager.instance.playerScript.spawnPlayer();
-        GameManager.instance.stateUnpause();
-    }
-
     public void progress()
     {
         GameManager.instance.stateUnpause();
     }
-    public void PlayGame()
+public void PlayGame()
     {
         
         MenuManager.instance.setActiveMenu(null);
@@ -47,7 +41,6 @@ public class buttonFunctions : MonoBehaviour
     {
         MenuManager.instance.options();
     }
-
     public void back()
     {
         MenuManager.instance.prevMenuCall();

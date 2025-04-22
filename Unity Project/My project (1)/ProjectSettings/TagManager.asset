@@ -12,7 +12,8 @@ TagManager:
   - F2 Trigger
   - F3 Trigger
   - Boss Trigger
-  - Menu Button
+Dynamic Music Trigger
+Menu Button
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Enemy
   - Enemy Bullet
   - Merchant
-  - 
+  - Interactable
   - 
   - 
   - 
