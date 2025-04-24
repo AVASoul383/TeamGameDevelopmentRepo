@@ -4,7 +4,7 @@ using System.Collections;
 
 public class playerInteract : MonoBehaviour
 {
-    public float interactDistance = 3f; 
+    public float interactDistance = 3f;
     public LayerMask interactableLayer;
     public KeyCode interactKey = KeyCode.E;
 
@@ -12,6 +12,7 @@ public class playerInteract : MonoBehaviour
     void Start()
     {
         playerCamera = Camera.main;
+        interactableLayer = LayerMask.GetMask("Interactable");
     }
     void Update()
     {
