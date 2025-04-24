@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -19,11 +18,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text npcName;
     [SerializeField] GameObject interactionPrompt;
 
-
     public GameObject playerSpawnPos;
     public GameObject[] advancementPlatforms;
     public Image playerHPBar;
     public Image playerExpBar;
+    public Image playerReloadBar;         
+    public Image playerReloadFillBar;      
     public GameObject playerDamageScreen;
     public GameObject playerHealthScreen;
     public GameObject player;
@@ -52,7 +52,6 @@ public class GameManager : MonoBehaviour
     TurnOnOff trigger3;
     TurnOnOff trigger4;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         instance = this;
@@ -73,7 +72,7 @@ public class GameManager : MonoBehaviour
         if (playerSpawnPos == null)
             Debug.LogWarning("Player Spawn Pos not found.");
 
-        // Safe way to find triggers
+      
         TrySetupTrigger("F1 Trigger", ref trigger1);
         TrySetupTrigger("F2 Trigger", ref trigger2);
         TrySetupTrigger("F3 Trigger", ref trigger3);
@@ -104,27 +103,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetButtonDown("Cancel") && !isPaused)
         {
-            if(menuActive == null)
+            if (menuActive == null)
             {
                 statePause();
                 setActiveMenu(menuPause);
             }
-            else if(menuActive == menuPause)
+            else if (menuActive == menuPause)
             {
                 stateUnpause();
             }
-           
         }
+
         if (dialogueBox == null)
         {
-            Debug.Log("Dialogue box is null");  
+            Debug.Log("Dialogue box is null");
         }
+
         if (dialogueBox.activeSelf)
         {
             if (Input.GetKeyDown(KeyCode.E))
@@ -133,6 +131,7 @@ public class GameManager : MonoBehaviour
                 dialogueBox.SetActive(false);
             }
         }
+
         openArea();
     }
 
@@ -166,16 +165,13 @@ public class GameManager : MonoBehaviour
     {
         goalCount += amount;
         goalCountText.text = goalCount.ToString("F0");
-
     }
-
-    
 
     public void bossFight(int amount)
     {
         bossCount += amount;
 
-        if(bossCount <= 0)
+        if (bossCount <= 0)
         {
             statePause();
             setActiveMenu(menuWin);
@@ -184,14 +180,14 @@ public class GameManager : MonoBehaviour
 
     public void openArea()
     {
-        if(goalCount == 0)
+        if (goalCount == 0)
         {
             for (int i = 0; i < advancementPlatforms.Length; i++)
             {
                 advancementPlatforms[i].SetActive(false);
             }
         }
-        else if(goalCount > 0)
+        else if (goalCount > 0)
         {
             for (int i = 0; i < advancementPlatforms.Length; i++)
             {
@@ -199,11 +195,13 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     public void updateMoneyCount(int amount)
     {
         moneyCount += amount;
         moneyCountText.text = moneyCount.ToString("F0");
     }
+
     public void updateItemCount1() => item1CountText.text = playerScript.item1Count.ToString("F0");
     public void updateItemCount2() => item2CountText.text = playerScript.item2Count.ToString("F0");
     public void updateItemCount3() => item3CountText.text = playerScript.item3Count.ToString("F0");
@@ -230,10 +228,7 @@ public class GameManager : MonoBehaviour
 
     public void hideDialogue()
     {
-        
-            dialogueBox.SetActive(false);
-        
-        
+        dialogueBox.SetActive(false);
     }
 
     public void showInteractionPrompt()
