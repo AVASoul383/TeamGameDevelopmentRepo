@@ -3999,7 +3999,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 28.062489
+      value: 22.86
       objectReference: {fileID: 0}
     - target: {fileID: 4411782682607460981, guid: a3e075bcd1e08d244b71b7e56fe0e2da, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6958,9 +6958,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1640615972}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
       propertyPath: continueMenu
       value: 
       objectReference: {fileID: 847591491}
+    - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: playerScript
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4693252466345288901, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
       propertyPath: checkpointPopup
       value: 
@@ -7277,6 +7285,75 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 337d1464ddccff74e92f00707553f91e, type: 3}
+--- !u!1001 &8237206499470401211
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 90.40847
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 36.555416
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3431220574078872224, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850163050639402426, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
+      propertyPath: m_Name
+      value: Gun - Rocket Launcher
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a0a207e4bae839042a6f9ee51ff0ae51, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -7305,3 +7382,4 @@ SceneRoots:
   - {fileID: 1885592491}
   - {fileID: 2005292558}
   - {fileID: 1440252664}
+  - {fileID: 8237206499470401211}
