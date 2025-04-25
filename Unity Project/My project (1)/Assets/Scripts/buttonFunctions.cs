@@ -56,6 +56,8 @@ public void PlayGame()
             Debug.Log($"Tower Level Loading: {asyncLoad.progress}");
             if(asyncLoad.progress >= 0.9f)
             {
+                MenuManager.instance.promptInput();
+
                 if (Input.GetButtonDown("Submit"))
                 {
                     break;

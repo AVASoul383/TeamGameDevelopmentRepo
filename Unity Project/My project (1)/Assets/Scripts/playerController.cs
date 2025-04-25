@@ -86,16 +86,12 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     public KeyCode crouch = KeyCode.C, prone = KeyCode.LeftControl;
 
-    //Start is called once before the first execution of Update after the MonoBehaviour is created
-    //public Transform playerCamera; 
-    
     void Start()
     {
         playerCamera = Camera.main.transform;
         HPOrig = HP;
         ExpAmount = 0;
         playerLevel = 1;
-        
         updatePlayerUI();
 
         shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
@@ -104,19 +100,17 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         StartCoroutine(NudgeToGround());
     }
 
-IEnumerator NudgeToGround()
+    IEnumerator NudgeToGround()
     {
         yield return new WaitForEndOfFrame();
-        controller.Move(Vector3.down * 0.1f);    }
+        controller.Move(Vector3.down * 0.1f);
+    }
 
     void Update()
     {
+        if (GameManager.instance != null && GameManager.instance.isPaused) return;
 
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist, Color.green);
-        if(!GameManager.instance.isPaused)
-           movement();
-
-       // movement();
+        movement();
         crouchInput();
         proneInput();
         handleCrouchProneMovement();
@@ -132,13 +126,10 @@ IEnumerator NudgeToGround()
     {
         shootTimer += Time.deltaTime;
 
- 
         if (controller.isGrounded)
         {
             if (moveDir.magnitude > 0.3f && !isPlayingSteps && audSteps.Length > 0)
                 StartCoroutine(playSteps());
-            jumpCount = 0;
-            playerVel = Vector3.zero;
 
             playerVel.y = playerVel.y < 0 ? -1f : playerVel.y;
             jumpCount = 0;
@@ -148,20 +139,17 @@ IEnumerator NudgeToGround()
             playerVel.y -= gravity * Time.deltaTime;
         }
 
-		moveDir = (Input.GetAxis("Horizontal") * transform.right) + (Input.GetAxis("Vertical") * transform.forward);
-//transform.position += moveDir * speed * Time.deltaTime;
-   
-        moveDir = (Input.GetAxis("Horizontal") * transform.right) +
-                  (Input.GetAxis("Vertical") * transform.forward);
-        controller.Move(moveDir * speed * Time.deltaTime);        Vector3 finalMove = moveDir * speed;
+        moveDir = (Input.GetAxis("Horizontal") * transform.right) + (Input.GetAxis("Vertical") * transform.forward);
+        Vector3 finalMove = moveDir * speed;
         finalMove.y = playerVel.y;
         controller.Move(finalMove * Time.deltaTime);
+
         jump();
-        
         isGrappling();
-     
+
         if (Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
             shoot();
+
         selectGun();
         reloadGun();
     }
@@ -319,7 +307,6 @@ IEnumerator NudgeToGround()
         if (gunList[gunListPos].shootSound.Length > 0)
             aud.PlayOneShot(gunList[gunListPos].shootSound[Random.Range(0, gunList[gunListPos].shootSound.Length)], gunList[gunListPos].shootVol);
 
-        
         updateGunAmmo();
 
         StartCoroutine(flashMuzzle());
@@ -423,7 +410,8 @@ IEnumerator NudgeToGround()
     {
         if (amount > 0)
         {
-			if (total > 0) HP -= (HP <= 5) ? total / 2 : total;
+            int total = amount - armor;
+            if (total > 0) HP -= (HP <= 5) ? total / 2 : total;
             StartCoroutine(flashDamageScreen());
             if (audHurt.Length > 0)
                 aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], audHurtVol);
@@ -433,6 +421,7 @@ IEnumerator NudgeToGround()
             HP -= amount;
             StartCoroutine(flashHealingScreen());
         }
+
         updatePlayerUI();
         if (HP > HPOrig) HP = HPOrig;
         if (HP <= 0) GameManager.instance.youLose();

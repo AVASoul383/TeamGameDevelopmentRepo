@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+using TMPro;
+using Unity.Profiling.LowLevel;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -10,10 +14,12 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject optionsMenu;
+    [SerializeField] GameObject prompt; 
 
     GameObject prevMenu;
     GameObject[] buttons;
     int buttonPosition;
+    float canBePressed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,16 +36,19 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Menu Down") && buttonPosition < buttons.Length - 1) 
+        if (canBePressed == 0)
         {
-            buttonPosition++;
-        }
-        else if(Input.GetButtonDown("Menu Up") && buttonPosition > 0)
-        {
-            buttonPosition--;
-        }
+            if (Input.GetAxisRaw("Vertical") < 0)buttonPosition++;
+            else if (buttonPosition < 0) buttonPosition = buttons.Length - 1;
+            else if (Input.GetAxisRaw("Vertical") > 0) buttonPosition--;
+            else if (buttonPosition > buttons.Length - 1) buttonPosition = 0;
 
-        if (Input.GetButtonDown("Submit") && menuActive != null)
+            Selected();
+        }
+        
+        canBePressed = Input.GetAxis("Vertical");
+
+        if ((Input.GetButtonDown("Submit")) && menuActive != null)
         {
             buttons[buttonPosition].GetComponent<Button>().onClick.Invoke();
         }
@@ -88,5 +97,23 @@ public class MenuManager : MonoBehaviour
         setActiveMenu(prevMenu);
         menuActive.SetActive(true);
         findButtons();
+    }
+
+    public void promptInput()
+    {
+        TMP_Text line= prompt.GetComponentInChildren<TMP_Text>();
+        line.text = "Press Enter to Continue";
+        prompt.SetActive(true);
+    }
+
+    private void Selected()
+    {
+        if(buttonPosition < buttons.Length && buttonPosition >= 0)
+        {
+            if (buttons[buttonPosition] != null)
+            {
+                EventSystem.current.SetSelectedGameObject(buttons[buttonPosition], new BaseEventData(EventSystem.current));
+            }
+        }
     }
 }

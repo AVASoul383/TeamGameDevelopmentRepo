@@ -54,11 +54,13 @@ public class GameManager : MonoBehaviour
     TurnOnOff trigger3;
     TurnOnOff trigger4;
 
-private void Awake()
+    void Awake()
     {
         instance = this;
         DontDestroyOnLoad(instance);
-    }    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    } 
+    
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
