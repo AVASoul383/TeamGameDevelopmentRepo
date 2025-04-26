@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System;
+using UnityEditor.Rendering.LookDev;
 
 
 
@@ -467,17 +468,24 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     IEnumerator flashDamageScreen()
     {
-        RaycastHit hitCast;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Vector3 oppAngle;
-        if (Physics.Raycast(ray, out hitCast))
-        {
-            Vector3 shotBullet = hitCast.point;
+        //RaycastHit hitCast;
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Vector3 oppAngle;
+        //moveDir = (Input.GetAxis("Horizontal") * transform.right) +
+        //          (Input.GetAxis("Vertical") * transform.forward);
+        //if (Physics.Raycast(ray, out hitCast))
+        //{
+        //    Vector3 shotBullet = hitCast.point;
 
-            oppAngle = Vector3.Reflect(shotBullet, hitCast.normal);
-        }
+        //    oppAngle = Vector3.Reflect(shotBullet, hitCast.normal);
+        //}
+        
+        //if (Quaternion.FromToRotation(Vector3.up, moveDir - playerVel).eulerAngles.z >= -45.0f || Quaternion.FromToRotation(Vector3.up, moveDir - playerVel).eulerAngles.z <= 45.0f);
+        //{
 
-        //if(oppAngle >= -45)
+        //}
+
+        
         GameManager.instance.playerDamageScreen[0].SetActive(true);
         yield return new WaitForSeconds(0.1f);
         GameManager.instance.playerDamageScreen[0].SetActive(false);
@@ -564,4 +572,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         GameManager.instance.ammoAmt.text = gunList[gunListPos].ammoCur.ToString("F0") + "/ " + gunList[gunListPos].ammoMax.ToString("F0");
     }
+
+    public void AngleShot(Vector3 shotFrom, Vector3 lookPOV)
+    {
+        Quaternion.FromToRotation(Vector3.up, lookPOV - shotFrom);
+    }
+
 }
