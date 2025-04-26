@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] advancementPlatforms;
     public Image playerHPBar;
     public Image playerExpBar;
-    public GameObject playerDamageScreen;
+    public GameObject[] playerDamageScreen;
     public GameObject playerHealthScreen;
     public GameObject player;
     public playerController playerScript;

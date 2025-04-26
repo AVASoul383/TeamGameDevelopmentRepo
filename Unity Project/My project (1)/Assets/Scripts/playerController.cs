@@ -467,9 +467,20 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     IEnumerator flashDamageScreen()
     {
-        GameManager.instance.playerDamageScreen.SetActive(true);
+        RaycastHit hitCast;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector3 oppAngle;
+        if (Physics.Raycast(ray, out hitCast))
+        {
+            Vector3 shotBullet = hitCast.point;
+
+            oppAngle = Vector3.Reflect(shotBullet, hitCast.normal);
+        }
+
+        //if(oppAngle >= -45)
+        GameManager.instance.playerDamageScreen[0].SetActive(true);
         yield return new WaitForSeconds(0.1f);
-        GameManager.instance.playerDamageScreen.SetActive(false);
+        GameManager.instance.playerDamageScreen[0].SetActive(false);
     }
 
     IEnumerator flashHealingScreen()
