@@ -12,20 +12,19 @@ TagManager:
   - F2 Trigger
   - F3 Trigger
   - Boss Trigger
-Dynamic Music Trigger
-Menu Button
+  - Menu Button
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
-  - Player Bullet
-  - Enemy
-  - Enemy Bullet
-  - Merchant
-  - Interactable
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

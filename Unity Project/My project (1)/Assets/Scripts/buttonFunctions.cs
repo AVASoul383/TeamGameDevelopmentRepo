@@ -20,7 +20,10 @@ public class buttonFunctions : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+        if(SceneManager.GetActiveScene().name == "Main Menu")
+            Application.Quit();
+        else
+            SceneManager.LoadScene("Main Menu");
 #endif
     }
 

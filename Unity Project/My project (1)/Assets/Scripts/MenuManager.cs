@@ -14,6 +14,11 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject menuActive;
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject optionsMenu;
+    [SerializeField] GameObject continueMenu;
+    [SerializeField] GameObject loseMenu;
+    [SerializeField] GameObject winMenu;
+    [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject shopMenu;
     [SerializeField] GameObject prompt; 
 
     GameObject prevMenu;
@@ -25,18 +30,19 @@ public class MenuManager : MonoBehaviour
     void Start()
     {
         instance = this;
-        
-        setActiveMenu(mainMenu);
-        menuActive.SetActive(true);
-        findButtons();
-        buttonPosition = 0;
-        
+        if (SceneManager.GetActiveScene().name == "Main Menu")
+        {
+            setActiveMenu(mainMenu);
+            menuActive.SetActive(true);
+            findButtons();
+            buttonPosition = 0;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (canBePressed == 0)
+        if (canBePressed == 0 && menuActive != null)
         {
             if (Input.GetAxisRaw("Vertical") < 0)buttonPosition++;
             else if (buttonPosition < 0) buttonPosition = buttons.Length - 1;
@@ -106,7 +112,7 @@ public class MenuManager : MonoBehaviour
         prompt.SetActive(true);
     }
 
-    private void Selected()
+    public void Selected()
     {
         if(buttonPosition < buttons.Length && buttonPosition >= 0)
         {

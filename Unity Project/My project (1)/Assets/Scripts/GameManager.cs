@@ -120,7 +120,9 @@ public class GameManager : MonoBehaviour
             if(menuActive == null)
             {
                 statePause();
-                setActiveMenu(menuPause);
+                MenuManager.instance.setActiveMenu(menuPause);
+                MenuManager.instance.findButtons();
+                MenuManager.instance.Selected();
             }
             else if(menuActive == menuPause)
             {
@@ -158,15 +160,16 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        menuActive.SetActive(false);
-        menuActive = null;
+        MenuManager.instance.setActiveMenu(null);
         MusicManager.instance.playGameplayMusic();
     }
 
     public void openShop()
     {
         statePause();
-        setActiveMenu(menuShop);
+        MenuManager.instance.setActiveMenu(menuShop);
+        MenuManager.instance.findButtons();
+        MenuManager.instance.Selected();
     }
 
     public void updateGameGoal(int amount)
@@ -182,7 +185,9 @@ public class GameManager : MonoBehaviour
         if(bossCount <= 0)
         {
             statePause();
-            setActiveMenu(menuWin);
+            MenuManager.instance.setActiveMenu(menuWin);
+            MenuManager.instance.findButtons();
+            MenuManager.instance.Selected();
         }
     }
 
@@ -216,7 +221,9 @@ public class GameManager : MonoBehaviour
     public void youLose()
     {
         statePause();
-        setActiveMenu(menuLose);
+        MenuManager.instance.setActiveMenu(menuLose);
+        MenuManager.instance.findButtons();
+        MenuManager.instance.Selected();
     }
 
     public void setActiveMenu(GameObject menu)
