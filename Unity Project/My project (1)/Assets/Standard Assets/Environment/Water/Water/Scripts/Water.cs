@@ -336,7 +336,7 @@ namespace UnityStandardAssets.Water
 
         WaterMode FindHardwareWaterSupport()
         {
-            if (!SystemInfo.supportsRenderTextures || !GetComponent<Renderer>())
+            if (!GetComponent<Renderer>())
             {
                 return WaterMode.Simple;
             }
@@ -359,6 +359,7 @@ namespace UnityStandardAssets.Water
 
             return WaterMode.Simple;
         }
+
 
         // Given position/normal of the plane, calculates plane in camera space.
         Vector4 CameraSpacePlane(Camera cam, Vector3 pos, Vector3 normal, float sideSign)
