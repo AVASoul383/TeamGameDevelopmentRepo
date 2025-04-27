@@ -70,6 +70,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     bool isSprinting;
     bool isReloading;
     bool isSliding;
+    bool isDodging;
 
 
     public Transform playerCamera;
@@ -86,11 +87,24 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     public float slideDuration = 0.75f;
     float slideTimer = 0f;
     int currSpeed;
+    public int dodgeSpeed = 25;
+    public float dodgeDuration = 0.3f;
+    public float dodgeCooldown = 1f;
+    float dodgeTimer = 0f;
+    float dodgeCooldownTimer = 0f;
+    public float doubleTapTime = 0.3f;
+    float lastTapW = 0f;
+    float lastTapS = 0f;
+    float lastTapA = 0f;
+    float lastTapD = 0f;
 
 
-    Vector3 moveDir, playerVel;
 
-    public KeyCode crouch = KeyCode.C, prone = KeyCode.LeftControl, slideKey = KeyCode.V;
+
+
+    Vector3 moveDir, playerVel, dodgeDir;
+
+    public KeyCode crouch = KeyCode.C, prone = KeyCode.LeftControl, slideKey = KeyCode.V, dodgeKey = KeyCode.F;
 
     void Start()
     {
@@ -123,6 +137,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         proneInput();
         handleCrouchProneMovement();
         handleSlide();
+        handleDodge();
         sprint();
         HandleItemKeys();
 
@@ -150,6 +165,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         moveDir = (Input.GetAxis("Horizontal") * transform.right) + (Input.GetAxis("Vertical") * transform.forward);
         Vector3 finalMove = moveDir * currSpeed;
+        if (isDodging)
+        {
+            finalMove = dodgeDir * dodgeSpeed;
+        }
         finalMove.y = playerVel.y;
         controller.Move(finalMove * Time.deltaTime);
 
@@ -280,6 +299,51 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         else if (Input.GetKeyDown(slideKey) && !isCrouching && !isProne)
         {
             startSlide();
+        }
+    }
+
+    void startDodge()
+    {
+        isDodging = true;
+        dodgeTimer = dodgeDuration;
+        dodgeCooldownTimer = dodgeCooldown;
+        Vector3 inputDir = (Input.GetAxis("Horizontal") * transform.right) + (Input.GetAxis("Vertical") * transform.forward);
+        if(inputDir.magnitude > 0.1f)
+        {
+            dodgeDir = inputDir.normalized;
+        }
+        else
+        {
+            dodgeDir = transform.forward;
+        }
+    }
+
+    void endDodge()
+    {
+        isDodging = false;
+    }
+
+    void handleDodge()
+    {
+       if (dodgeCooldownTimer > 0f)
+        {
+            dodgeCooldownTimer -= Time.deltaTime;
+        }
+        if (isDodging) 
+        {
+            dodgeTimer -= Time.deltaTime;
+            if (dodgeTimer <= 0f)
+            {
+                endDodge();
+            }
+            else
+            {
+                if(Input.GetKeyDown(dodgeKey) && dodgeCooldownTimer <= 0f && controller.isGrounded)
+                {
+                    startDodge();
+                }
+            }
+            
         }
     }
 
