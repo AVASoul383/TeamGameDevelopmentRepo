@@ -92,29 +92,25 @@ namespace UnityStandardAssets.CrossPlatformInput.Inspector
         {
             foreach (var group in mobile ? mobileBuildTargetGroups : buildTargetGroups)
             {
-                var namedGroup = NamedBuildTarget.FromBuildTargetGroup(group);
                 var defines = GetDefinesList(group);
                 if (enable)
                 {
                     if (!defines.Contains(defineName))
-                    {
                         defines.Add(defineName);
-                    }
                 }
                 else
                 {
-                    defines.Remove(defineName);
+                    defines.RemoveAll(d => d == defineName);
                 }
 
                 string definesString = string.Join(";", defines.ToArray());
-                PlayerSettings.SetScriptingDefineSymbols(namedGroup, definesString);
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(group, definesString);
             }
         }
 
         private static List<string> GetDefinesList(BuildTargetGroup group)
         {
-            var namedGroup = NamedBuildTarget.FromBuildTargetGroup(group);
-            return new List<string>(PlayerSettings.GetScriptingDefineSymbols(namedGroup).Split(';'));
+            return new List<string>(PlayerSettings.GetScriptingDefineSymbolsForGroup(group).Split(';'));
         }
     }
 }
