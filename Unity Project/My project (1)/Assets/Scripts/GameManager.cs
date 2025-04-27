@@ -139,15 +139,8 @@ public class GameManager : MonoBehaviour
         {
             statePause();
 
-            IEnumerator Credits()
-            {
-                setActiveMenu(creditsMenu);
-                yield return new WaitForSeconds(45.0f);
-            }
+            setActiveMenu(creditsMenu);
             
-            //yield return new WaitForSeconds(30.0f);
-            
-
             setActiveMenu(menuWin);
         }
     }
