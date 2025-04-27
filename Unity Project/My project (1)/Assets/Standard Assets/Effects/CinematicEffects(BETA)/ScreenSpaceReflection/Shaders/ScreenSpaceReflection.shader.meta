@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7e2fcc83af19e744787647ec0ac5d42c
+timeCreated: 1449750821
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 61186
+  packageName: Autumn planet pack
+  packageVersion: 1.0
+  assetPath: Assets/Standard Assets/Effects/CinematicEffects(BETA)/ScreenSpaceReflection/Shaders/ScreenSpaceReflection.shader
+  uploadId: 114089
