@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using UnityEngine.Rendering;
 
 public class playerController : MonoBehaviour, IDamage, IPickup
 {
@@ -35,6 +36,11 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     public float standingHeight = 2f;
     public float crouchingHeight = 1.5f;
     public float proneHeight = 0.5f;
+    public int proneSpeed = 3;
+    public int crouchingSpeed = 5;
+    public int slideSpeed = 20;
+    public float slideDuration = 0.75f;
+    float slideTimer = 0f;
     public Vector3 standingCenter = new Vector3(0, 1, 0);
     public Vector3 crouchingCenter = new Vector3(0, 0.75f, 0);
     public Vector3 proneCenter = new Vector3(0, 0.25f, 0);
@@ -70,7 +76,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     KeyCode crouch = KeyCode.C;
     KeyCode prone = KeyCode.LeftControl;
     KeyCode slideKey = KeyCode.V;
-    KeyCode dodgeKey = KeyCode.F;
 
     void Start()
     {
@@ -95,6 +100,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         Movement();
         HandleInputs();
+        handleSlide();
 
         if (Input.GetKeyDown(KeyCode.G)) TryPickup();
         if (Input.GetKeyDown(KeyCode.D)) DropHeldObject();
@@ -160,6 +166,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             controller.height = crouchingHeight;
             controller.center = crouchingCenter;
             playerCamera.localPosition = crouchingCameraPos;
+            currSpeed = crouchingSpeed;
         }
     }
 
@@ -172,6 +179,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             controller.height = proneHeight;
             controller.center = proneCenter;
             playerCamera.localPosition = proneCameraPos;
+            currSpeed = proneSpeed;
         }
     }
 
@@ -180,6 +188,35 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         controller.height = standingHeight;
         controller.center = standingCenter;
         playerCamera.localPosition = standingCameraPos;
+        currSpeed = speed;
+    }
+
+    void startSlide()
+    {
+        isSliding = true;
+        slideTimer = slideDuration;
+        currSpeed = slideSpeed;
+        controller.height = crouchingHeight;
+    }
+
+    void endSlide()
+    {
+        isSliding = false;
+        controller.height = standingHeight;
+        currSpeed = speed;
+    }
+
+    void handleSlide()
+    {
+        if(Input.GetKeyDown(slideKey) && controller.isGrounded && moveDir.magnitude > 0.1f)
+        {
+            startSlide();
+        }
+        if(isSliding)
+        {
+            slideTimer -= Time.deltaTime;
+            if (slideTimer <= 0f) endSlide();
+        }
     }
 
     void TryPickup()
