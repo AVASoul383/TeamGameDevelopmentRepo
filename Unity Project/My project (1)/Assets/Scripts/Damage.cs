@@ -14,7 +14,6 @@ public class Damage : MonoBehaviour
     [Range(0.25f, 1)][SerializeField] float damageTime;
     [Range(10, 45)][SerializeField] int speed;
     [Range(1, 4)][SerializeField] int destroyTime;
-    [SerializeField] GameObject hitEffectPrefab;
 
 
     bool isDamaging;
@@ -52,13 +51,7 @@ public class Damage : MonoBehaviour
 
         if (type == damageType.moving || type == damageType.homing)
         {
-            if (hitEffectPrefab != null)
-            {
-                GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
-                Destroy(effect, 2f);
-            }
             Destroy(gameObject);
-            
         }
     }
 

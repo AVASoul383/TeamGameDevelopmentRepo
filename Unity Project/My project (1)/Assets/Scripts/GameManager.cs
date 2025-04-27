@@ -23,9 +23,9 @@ public class GameManager : MonoBehaviour
     public GameObject playerSpawnPos;
     public GameObject[] advancementPlatforms;
     public Image playerHPBar;
-    
     public Image playerReloadBar;
     public Image playerReloadFillBar;
+    public Image playerExpBar;
     public GameObject playerDamageScreen;
     public GameObject playerHealthScreen;
     public GameObject player;
