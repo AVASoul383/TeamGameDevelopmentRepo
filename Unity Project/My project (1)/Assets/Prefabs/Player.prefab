@@ -229,7 +229,7 @@ Transform:
   m_GameObject: {fileID: 4783143153548691374}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 82, y: 1, z: 30}
+  m_LocalPosition: {x: 1, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -265,69 +265,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6781a6122508bb418de17575b75789c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 4708434221416522673}
+  carryPosition: {fileID: 0}
   ignoreLayer:
     serializedVersion: 2
     m_Bits: 8
-  controller: {fileID: 4708434221416522673}
-  carryPosition: {fileID: 0}
+  grappleLine: {fileID: 7684648694121070447}
+  aud: {fileID: 0}
+  playerCamera: {fileID: 0}
   HP: 10
-  ExpMax: 10
+  item1Count: 0
+  item2Count: 0
+  item3Count: 0
+  item4Count: 0
   speed: 6
   sprintMod: 4
   jumpSpeed: 12
   jumpsMax: 2
   gravity: 35
   armor: 0
-  shootPoint: {fileID: 0}
-  gunList: []
-  gunModel: {fileID: 1354054908588926858}
-  muzzleFlash: {fileID: 3635144426432032995}
-  shootDamage: 1
-  shootDist: 200
-  shootRate: 0.25
-  shootAnim: {fileID: 0}
-  reloadAnim: {fileID: 0}
-  grappleSpeed: 20
-  grappleDist: 50
-  grappleLine: {fileID: 7684648694121070447}
-  aud: {fileID: 0}
-  audSteps: []
-  audStepsVol: 0
-  audJump: []
-  audJumpVol: 0
-  audHurt: []
-  audHurtVol: 0
-  audReload: []
-  audReloadVol: 0
-  audNoReload: []
-  audNoReloadVol: 0
-  item1Count: 0
-  item2Count: 0
-  item3Count: 0
-  item4Count: 0
-  currency: 0
-  playerCamera: {fileID: 0}
+  ExpMax: 10
   standingHeight: 2
   crouchingHeight: 1.5
   proneHeight: 0.5
-  isCrouching: 0
-  isProne: 0
   standingCenter: {x: 0, y: 1, z: 0}
   crouchingCenter: {x: 0, y: 0.75, z: 0}
   proneCenter: {x: 0, y: 0.25, z: 0}
   standingCameraPos: {x: 0, y: 1.7, z: 0}
   crouchingCameraPos: {x: 0, y: 1.2, z: 0}
   proneCameraPos: {x: 0, y: 0.5, z: 0}
-  slideSpeed: 20
-  slideDuration: 0.75
-  dodgeSpeed: 25
-  dodgeDuration: 0.3
-  dodgeCooldown: 1
-  doubleTapTime: 0.3
-  crouch: 99
-  prone: 306
-  slideKey: 118
-  dodgeKey: 102
+  shootPoint: {fileID: 0}
+  gunModel: {fileID: 1354054908588926858}
+  muzzleFlash: {fileID: 3635144426432032995}
+  gunList: []
+  shootAnim: {fileID: 0}
+  reloadAnim: {fileID: 0}
+  grappleSpeed: 20
+  grappleDist: 50
+  audSteps: []
+  audJump: []
+  audHurt: []
 --- !u!33 &1411394632373627340
 MeshFilter:
   m_ObjectHideFlags: 0
