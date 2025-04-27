@@ -121,8 +121,7 @@ public class GameManager : MonoBehaviour
             {
                 statePause();
                 MenuManager.instance.setActiveMenu(menuPause);
-                MenuManager.instance.findButtons();
-                MenuManager.instance.Selected();
+                
             }
             else if(menuActive == menuPause)
             {
@@ -168,8 +167,7 @@ public class GameManager : MonoBehaviour
     {
         statePause();
         MenuManager.instance.setActiveMenu(menuShop);
-        MenuManager.instance.findButtons();
-        MenuManager.instance.Selected();
+        
     }
 
     public void updateGameGoal(int amount)
@@ -186,8 +184,7 @@ public class GameManager : MonoBehaviour
         {
             statePause();
             MenuManager.instance.setActiveMenu(menuWin);
-            MenuManager.instance.findButtons();
-            MenuManager.instance.Selected();
+            
         }
     }
 
@@ -222,8 +219,7 @@ public class GameManager : MonoBehaviour
     {
         statePause();
         MenuManager.instance.setActiveMenu(menuLose);
-        MenuManager.instance.findButtons();
-        MenuManager.instance.Selected();
+        
     }
 
     public void setActiveMenu(GameObject menu)

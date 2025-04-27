@@ -44,9 +44,9 @@ public class MenuManager : MonoBehaviour
     {
         if (canBePressed == 0 && menuActive != null)
         {
-            if (Input.GetAxisRaw("Vertical") < 0)buttonPosition++;
+            if (Input.GetAxis("Vertical") < 0)buttonPosition++;
             else if (buttonPosition < 0) buttonPosition = buttons.Length - 1;
-            else if (Input.GetAxisRaw("Vertical") > 0) buttonPosition--;
+            else if (Input.GetAxis("Vertical") > 0) buttonPosition--;
             else if (buttonPosition > buttons.Length - 1) buttonPosition = 0;
 
             Selected();
@@ -74,11 +74,10 @@ public class MenuManager : MonoBehaviour
         menuActive.SetActive(false);
         prevMenu = menuActive;
         setActiveMenu(optionsMenu);
-        findButtons();
         menuActive.SetActive(true);
     }
 
-    public void findButtons()
+    private void findButtons()
     {
         buttons = GameObject.FindGameObjectsWithTag("Menu Button");
         buttonPosition = 0;
@@ -90,10 +89,13 @@ public class MenuManager : MonoBehaviour
             menuActive.SetActive(false);
 
         menuActive = menu;
-        
-        if (menuActive != null) 
+
+        if (menuActive != null)
+        {
             menuActive.SetActive(true);
-        
+            findButtons();
+            Selected();
+        }
             
     }
 
@@ -112,7 +114,7 @@ public class MenuManager : MonoBehaviour
         prompt.SetActive(true);
     }
 
-    public void Selected()
+    private void Selected()
     {
         if(buttonPosition < buttons.Length && buttonPosition >= 0)
         {
