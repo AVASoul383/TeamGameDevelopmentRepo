@@ -249,6 +249,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   controller: {fileID: 4708434221416522673}
+  carryPosition: {fileID: 0}
   HP: 10
   ExpMax: 10
   speed: 6
@@ -272,6 +273,7 @@ MonoBehaviour:
   audJumpVol: 0
   audHurt: []
   audHurtVol: 0
+  playerCamera: {fileID: 0}
   item1Count: 0
   item2Count: 0
   item3Count: 0
@@ -290,7 +292,6 @@ MonoBehaviour:
   proneCameraPos: {x: 0, y: 0.5, z: 0}
   crouch: 99
   prone: 306
-  playerCamera: {fileID: 0}
 --- !u!33 &1411394632373627340
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -322,7 +323,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -416,7 +417,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
