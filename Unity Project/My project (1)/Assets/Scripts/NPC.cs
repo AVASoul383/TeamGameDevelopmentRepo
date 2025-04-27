@@ -36,15 +36,5 @@ public class NPC : MonoBehaviour, playerInteract.IInteractable
             GameManager.instance.hideInteractionPrompt();
         }
     }
-    // This method is called when the script instance is being loaded
-    void Awake()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }
