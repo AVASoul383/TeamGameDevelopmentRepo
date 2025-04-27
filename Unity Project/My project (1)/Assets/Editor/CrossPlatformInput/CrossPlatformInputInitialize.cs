@@ -96,13 +96,11 @@ namespace UnityStandardAssets.CrossPlatformInput.Inspector
                 if (enable)
                 {
                     if (!defines.Contains(defineName))
-                    {
                         defines.Add(defineName);
-                    }
                 }
                 else
                 {
-                    defines.Remove(defineName);
+                    defines.RemoveAll(d => d == defineName);
                 }
 
                 string definesString = string.Join(";", defines.ToArray());
