@@ -7,26 +7,21 @@ public class Grenade : MonoBehaviour
     public Transform playerCamera;
     public float throwForce = 15f;
     public KeyCode pickUpKey = KeyCode.G;
-    public KeyCode throwKey = KeyCode.T;
+    public KeyCode throwKey = KeyCode.Mouse0;
 
     private bool isHeld = false;
     private bool playerNearby = false;
     private bool hasBeenPickedUp = false;
-
     private Rigidbody rb;
-    private MeshRenderer mesh;
-
-    public static bool playerHasGrenade = false; 
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        mesh = GetComponent<MeshRenderer>();
     }
 
     void Update()
     {
-        if (playerNearby && !isHeld && !hasBeenPickedUp && !playerHasGrenade && Input.GetKeyDown(pickUpKey))
+        if (playerNearby && !isHeld && !hasBeenPickedUp && Input.GetKeyDown(pickUpKey))
         {
             PickUp();
         }
@@ -40,14 +35,10 @@ public class Grenade : MonoBehaviour
     {
         isHeld = true;
         hasBeenPickedUp = true;
-        playerHasGrenade = true; 
         rb.isKinematic = true;
-        rb.useGravity = false;
-
         transform.SetParent(playerCamera);
-        transform.localPosition = new Vector3(0.3f, -0.4f, 1.2f);
-        transform.localRotation = Quaternion.Euler(0, 0, 0);
-        mesh.enabled = true;
+        transform.localPosition = new Vector3(0, -0.5f, 1.5f);
+        transform.localRotation = Quaternion.identity;
 
         QuestManager qm = FindAnyObjectByType<QuestManager>();
         if (qm != null)
@@ -59,7 +50,6 @@ public class Grenade : MonoBehaviour
     void Throw()
     {
         isHeld = false;
-        playerHasGrenade = false; 
         transform.SetParent(null);
         rb.isKinematic = false;
         rb.useGravity = true;
@@ -92,6 +82,7 @@ public class Grenade : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNearby = true;
+
             QuestManager qm = FindAnyObjectByType<QuestManager>();
             if (qm != null)
             {
@@ -105,10 +96,11 @@ public class Grenade : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNearby = false;
+
             QuestManager qm = FindAnyObjectByType<QuestManager>();
             if (qm != null)
             {
-                qm.ClearText();
+                qm.ClearText(); 
             }
         }
     }
