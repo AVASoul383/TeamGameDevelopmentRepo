@@ -1,60 +1,94 @@
 using System;
-using UnityEditor;
-using UnityEditor.AnimatedValues;
 using UnityEngine;
 
 namespace UnityStandardAssets.ImageEffects
 {
-    [CustomEditor(typeof(CreaseShading))]
-    class CreaseShadingEditor : Editor {
-        SerializedObject serObj;
+    [ExecuteInEditMode]
+    [AddComponentMenu("Image Effects/Crease Shading")]
+    public class CreaseShading : PostEffectsBase
+    {
+        public float intensity = 0.5f;
+        public int softness = 1;
+        public float spread = 1.0f;
 
-        SerializedProperty m_intensity;
-        SerializedProperty m_softness;
-        SerializedProperty m_spread;
+        public Shader blurShader = null;
+        private Material blurMaterial = null;
 
-        AnimBool m_showSoftnessWarning = new AnimBool();
-        AnimBool m_showSpreadWarning = new AnimBool();
+        public Shader depthFetchShader = null;
+        private Material depthFetchMaterial = null;
 
-        private bool softnessWarningValue { get { return m_softness.intValue > 4; } }
-        private bool spreadWarningValue { get { return m_spread.floatValue > 4; } }
+        public Shader creaseApplyShader = null;
+        private Material creaseApplyMaterial = null;
 
-        void OnEnable () {
-            serObj = new SerializedObject (target);
-
-            m_intensity = serObj.FindProperty("intensity");
-            m_softness = serObj.FindProperty("softness");
-            m_spread = serObj.FindProperty("spread");
-
-            m_showSoftnessWarning.valueChanged.AddListener(Repaint);
-            m_showSpreadWarning.valueChanged.AddListener(Repaint);
-
-            m_showSoftnessWarning.value = softnessWarningValue;
-            m_showSpreadWarning.value = spreadWarningValue;
+        void OnEnable()
+        {
+            GetComponent<Camera>().depthTextureMode |= DepthTextureMode.Depth;
         }
 
-        public override void OnInspectorGUI () {
-            serObj.Update ();
+        void OnDisable()
+        {
+            if (blurMaterial)
+                DestroyImmediate(blurMaterial);
+            if (depthFetchMaterial)
+                DestroyImmediate(depthFetchMaterial);
+            if (creaseApplyMaterial)
+                DestroyImmediate(creaseApplyMaterial);
+        }
 
-            EditorGUILayout.Slider(m_intensity, -5.0f, 5.0f, new GUIContent("Intensity"));
+        public override bool CheckResources()
+        {
+            CheckSupport(true);
 
-            EditorGUILayout.IntSlider(m_softness, 0, 15, new GUIContent("Softness"));
-            m_showSoftnessWarning.target = softnessWarningValue;
-            if (EditorGUILayout.BeginFadeGroup(m_showSoftnessWarning.faded))
+            blurMaterial = CheckShaderAndCreateMaterial(blurShader, blurMaterial);
+            depthFetchMaterial = CheckShaderAndCreateMaterial(depthFetchShader, depthFetchMaterial);
+            creaseApplyMaterial = CheckShaderAndCreateMaterial(creaseApplyShader, creaseApplyMaterial);
+
+            if (!isSupported)
+                ReportAutoDisable();
+            return isSupported;
+        }
+
+        void OnRenderImage(RenderTexture source, RenderTexture destination)
+        {
+            if (!CheckResources())
             {
-                EditorGUILayout.HelpBox("High Softness value might reduce performance.", MessageType.Warning, false);
+                Graphics.Blit(source, destination);
+                return;
             }
-            EditorGUILayout.EndFadeGroup();
 
-            EditorGUILayout.Slider(m_spread, 0.0f, 50.0f, new GUIContent("Spread"));
-            m_showSpreadWarning.target = spreadWarningValue;
-            if (EditorGUILayout.BeginFadeGroup(m_showSpreadWarning.faded))
+            int rtW = source.width;
+            int rtH = source.height;
+
+            RenderTexture depth = RenderTexture.GetTemporary(rtW, rtH, 0);
+            RenderTexture blur0 = RenderTexture.GetTemporary(rtW / 2, rtH / 2, 0);
+            RenderTexture blur1 = RenderTexture.GetTemporary(rtW / 2, rtH / 2, 0);
+
+            Graphics.Blit(source, depth, depthFetchMaterial);
+
+            Graphics.Blit(depth, blur0);
+            for (int i = 0; i < softness; i++)
             {
-                EditorGUILayout.HelpBox("High Spread value might introduce visual artifacts.", MessageType.Warning, false);
-            }
-            EditorGUILayout.EndFadeGroup();
+                blurMaterial.SetVector("offsets", new Vector4(0, spread * 0.5f / (1.0f * blur0.height), 0, 0));
+                RenderTexture temp = RenderTexture.GetTemporary(rtW / 2, rtH / 2, 0);
+                Graphics.Blit(blur0, temp, blurMaterial);
+                RenderTexture.ReleaseTemporary(blur0);
+                blur0 = temp;
 
-            serObj.ApplyModifiedProperties ();
+                blurMaterial.SetVector("offsets", new Vector4(spread * 0.5f / (1.0f * blur0.width), 0, 0, 0));
+                temp = RenderTexture.GetTemporary(rtW / 2, rtH / 2, 0);
+                Graphics.Blit(blur0, temp, blurMaterial);
+                RenderTexture.ReleaseTemporary(blur0);
+                blur0 = temp;
+            }
+
+            creaseApplyMaterial.SetTexture("_HrDepthTex", depth);
+            creaseApplyMaterial.SetTexture("_LrDepthTex", blur0);
+            creaseApplyMaterial.SetFloat("intensity", intensity);
+            Graphics.Blit(source, destination, creaseApplyMaterial);
+
+            RenderTexture.ReleaseTemporary(depth);
+            RenderTexture.ReleaseTemporary(blur0);
+            RenderTexture.ReleaseTemporary(blur1);
         }
     }
 }
