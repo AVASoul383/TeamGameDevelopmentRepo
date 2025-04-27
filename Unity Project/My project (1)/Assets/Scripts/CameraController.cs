@@ -41,9 +41,9 @@ public class CameraController : MonoBehaviour
             else
                 rotX += joystickY;
         }
-
+        
         //clamp the camera on the x-axis
-        rotX = Mathf.Clamp(rotX, lockVertMin, lockVertMax);
+        rotX = Mathf.Clamp(rotX, -90f, 90f);
 
         //rotate camera on x-axis to look up and down
         transform.localRotation = Quaternion.Euler(rotX, 0, 0);
