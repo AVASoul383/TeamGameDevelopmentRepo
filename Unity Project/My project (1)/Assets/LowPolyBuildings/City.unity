@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: ad26c9cc4846c7b43a7462426830ab30, type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: d33654200400660438254b0eb5a8e2f0, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: aa3002918133d4942ba0e036c77e33ce, type: 2}
 --- !u!196 &5
 NavMeshSettings:
   serializedVersion: 2
@@ -10293,13 +10293,13 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1173571003}
-  - {fileID: 1844238036}
   - {fileID: 434104850}
   - {fileID: 724890231}
   - {fileID: 1041243493}
   - {fileID: 386918754}
-  - {fileID: 1139416300}
+  - {fileID: 1844238036}
   - {fileID: 48481590}
+  - {fileID: 1139416300}
   - {fileID: 144837064}
   - {fileID: 218515989}
   - {fileID: 222557530}
@@ -10311,8 +10311,8 @@ SceneRoots:
   - {fileID: 506194186}
   - {fileID: 199817420}
   - {fileID: 512037212}
-  - {fileID: 516507987}
   - {fileID: 1701302681}
+  - {fileID: 516507987}
   - {fileID: 304315190}
   - {fileID: 546372119}
   - {fileID: 562441021}
@@ -10340,8 +10340,8 @@ SceneRoots:
   - {fileID: 1313819577}
   - {fileID: 1431426165}
   - {fileID: 1452650613}
-  - {fileID: 1504818468}
   - {fileID: 1547588074}
+  - {fileID: 1504818468}
   - {fileID: 1551584197}
   - {fileID: 1615098218}
   - {fileID: 1637082760}
@@ -10356,8 +10356,8 @@ SceneRoots:
   - {fileID: 1769740717}
   - {fileID: 1792477446}
   - {fileID: 1799543325}
-  - {fileID: 1841912848}
   - {fileID: 1830886097}
+  - {fileID: 1841912848}
   - {fileID: 1871288704}
   - {fileID: 1884997864}
   - {fileID: 1901631427}
