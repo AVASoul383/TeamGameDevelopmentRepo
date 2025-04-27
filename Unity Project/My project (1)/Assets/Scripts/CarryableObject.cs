@@ -12,7 +12,7 @@ public class CarryableObject : MonoBehaviour, ICarryable
     public void OnPickUp(Transform holdParent)
     {
         transform.SetParent(holdParent);
-        transform.localPosition = new Vector3(0, -0.3f, 1.2f);
+        transform.localPosition = new Vector3(0, 0.5f, 1.5f); 
         transform.localRotation = Quaternion.identity;
 
         rb.useGravity = false;
