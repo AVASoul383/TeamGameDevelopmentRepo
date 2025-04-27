@@ -21,7 +21,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] int sprintMod = 2;
     [SerializeField] int jumpSpeed = 10;
     [SerializeField] int jumpsMax = 2;
-    [SerializeField] int gravity = 20;
+    [SerializeField] int gravity = 10;
     [SerializeField] int armor = 0;
 
     [Header("----- Guns -----")]
@@ -69,6 +69,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     bool isPlayingSteps;
     bool isSprinting;
     bool isReloading;
+    bool isSliding;
 
 
     public Transform playerCamera;
@@ -81,17 +82,24 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     public bool isCrouching = false, isProne = false;
     public Vector3 standingCenter = new(0, 1, 0), crouchingCenter = new(0, 0.75f, 0), proneCenter = new(0, 0.25f, 0);
     public Vector3 standingCameraPos = new(0, 1.7f, 0), crouchingCameraPos = new(0, 1.2f, 0), proneCameraPos = new(0, 0.5f, 0);
+    public int slideSpeed = 20;
+    public float slideDuration = 0.75f;
+    float slideTimer = 0f;
+    int currSpeed;
+
 
     Vector3 moveDir, playerVel;
 
-    public KeyCode crouch = KeyCode.C, prone = KeyCode.LeftControl;
+    public KeyCode crouch = KeyCode.C, prone = KeyCode.LeftControl, slideKey = KeyCode.V;
 
     void Start()
     {
+        
         playerCamera = Camera.main.transform;
         HPOrig = HP;
         ExpAmount = 0;
         playerLevel = 1;
+        currSpeed = speed;
         updatePlayerUI();
 
         shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
@@ -114,6 +122,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         crouchInput();
         proneInput();
         handleCrouchProneMovement();
+        handleSlide();
         sprint();
         HandleItemKeys();
 
@@ -140,7 +149,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         }
 
         moveDir = (Input.GetAxis("Horizontal") * transform.right) + (Input.GetAxis("Vertical") * transform.forward);
-        Vector3 finalMove = moveDir * speed;
+        Vector3 finalMove = moveDir * currSpeed;
         finalMove.y = playerVel.y;
         controller.Move(finalMove * Time.deltaTime);
 
@@ -244,6 +253,34 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     void handleCrouchProneMovement()
     {
         speed = isCrouching ? 5 : isProne ? 2 : 10;
+    }
+
+    void startSlide()
+    {
+        isSliding = true;
+        slideTimer = slideDuration;
+        currSpeed = slideSpeed;
+        controller.height = crouchingHeight;
+    }
+
+    void endSlide()
+    {
+        isSliding = false;
+        controller.height = standingHeight;
+        currSpeed = speed;
+    }
+
+    void handleSlide()
+    {
+        if (isSliding)
+        {
+            slideTimer -= Time.deltaTime;
+            if (slideTimer <= 0) endSlide();
+        }
+        else if (Input.GetKeyDown(slideKey) && !isCrouching && !isProne)
+        {
+            startSlide();
+        }
     }
 
     IEnumerator playSteps()
