@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerSpawnPos;
     public GameObject[] advancementPlatforms;
     public Image playerHPBar;
-    public Image playerExpBar;
+    
     public Image playerReloadBar;
     public Image playerReloadFillBar;
     public GameObject playerDamageScreen;
@@ -54,14 +54,20 @@ public class GameManager : MonoBehaviour
     TurnOnOff trigger3;
     TurnOnOff trigger4;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(instance);
+    } 
+    
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
 
         // Try to find player
         player = GameObject.FindWithTag("Player");
-        if (player != null)
+		if (player != null)
         {
             playerScript = player.GetComponent<playerController>();
         }
@@ -102,9 +108,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"GameObject with tag '{tag}' not found.");
-        }
-    }
+			Debug.LogWarning($"GameObject with tag '{tag}' not found.");
+        }    }
 
 
     // Update is called once per frame
@@ -115,7 +120,8 @@ public class GameManager : MonoBehaviour
             if(menuActive == null)
             {
                 statePause();
-                setActiveMenu(menuPause);
+                MenuManager.instance.setActiveMenu(menuPause);
+                
             }
             else if(menuActive == menuPause)
             {
@@ -153,15 +159,15 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        menuActive.SetActive(false);
-        menuActive = null;
+        MenuManager.instance.setActiveMenu(null);
         MusicManager.instance.playGameplayMusic();
     }
 
     public void openShop()
     {
         statePause();
-        setActiveMenu(menuShop);
+        MenuManager.instance.setActiveMenu(menuShop);
+        
     }
 
     public void updateGameGoal(int amount)
@@ -170,9 +176,6 @@ public class GameManager : MonoBehaviour
         goalCountText.text = goalCount.ToString("F0");
 
     }
-
-    
-
     public void bossFight(int amount)
     {
         bossCount += amount;
@@ -180,7 +183,8 @@ public class GameManager : MonoBehaviour
         if(bossCount <= 0)
         {
             statePause();
-            setActiveMenu(menuWin);
+            MenuManager.instance.setActiveMenu(menuWin);
+            
         }
     }
 
@@ -214,7 +218,8 @@ public class GameManager : MonoBehaviour
     public void youLose()
     {
         statePause();
-        setActiveMenu(menuLose);
+        MenuManager.instance.setActiveMenu(menuLose);
+        
     }
 
     public void setActiveMenu(GameObject menu)

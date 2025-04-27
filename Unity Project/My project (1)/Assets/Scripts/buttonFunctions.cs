@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class buttonFunctions : MonoBehaviour
 {
@@ -19,12 +20,56 @@ public class buttonFunctions : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+        if(SceneManager.GetActiveScene().name == "Main Menu")
+            Application.Quit();
+        else
+            SceneManager.LoadScene("Main Menu");
 #endif
     }
 
     public void progress()
     {
         GameManager.instance.stateUnpause();
+    }
+public void PlayGame()
+    {
+        
+        MenuManager.instance.setActiveMenu(null);
+        StartCoroutine(loadGame());
+        //SceneManager.LoadScene("Tower Level");
+ 
+    }
+
+    public void options()
+    {
+        MenuManager.instance.options();
+    }
+    public void back()
+    {
+        MenuManager.instance.prevMenuCall();
+    }
+
+    IEnumerator loadGame()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Tower Level", LoadSceneMode.Single);
+        asyncLoad.allowSceneActivation = false;
+
+        while (!asyncLoad.isDone)
+        {
+            Debug.Log($"Tower Level Loading: {asyncLoad.progress}");
+            if(asyncLoad.progress >= 0.9f)
+            {
+                MenuManager.instance.promptInput();
+
+                if (Input.GetButtonDown("Submit"))
+                {
+                    break;
+                }
+            }
+            yield return null;
+        }
+
+        asyncLoad.allowSceneActivation = true;
+        Debug.Log("Tower Level Loaded");
     }
 }

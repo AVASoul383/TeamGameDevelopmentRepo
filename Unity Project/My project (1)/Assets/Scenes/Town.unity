@@ -1,24 +1,61 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!1045 &1
-Prefab:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4417293643807129247
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 589453173385122707}
-  m_Layer: 0
-  m_Name: road-asphalt-pavement (6)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
+- {fileID: 644662478}
+- {fileID: 378242352}
+- {fileID: 363082249}
+- {fileID: 1256757023}
+- {fileID: 1868108634}
+- {fileID: 1364347574}
+- {fileID: 514096717}
+- {fileID: 1295844659}
+- {fileID: 1023436448}
+- {fileID: 193500721}
+- {fileID: 986525921}
+- {fileID: 1602615578}
+- {fileID: 252127039}
+- {fileID: 1147053388}
+- {fileID: 1473662820}
+- {fileID: 314072408}
+- {fileID: 1129384048}
+- {fileID: 405806348}
+- {fileID: 1618915808}
+- {fileID: 1575826318}
+- {fileID: 109228841}
+- {fileID: 1599196471}
+- {fileID: 427531700}
+- {fileID: 899642443}
+- {fileID: 480342727}
+- {fileID: 1666496259}
+- {fileID: 1478222429347683565}
+- {fileID: 905122361}
+- {fileID: 1802254162}
+- {fileID: 1821783696}
+- {fileID: 612722569}
+- {fileID: 865973414}
+- {fileID: 1573773514}
+- {fileID: 1388096560}
+- {fileID: 399192644}
+- {fileID: 1554305550}
+- {fileID: 1546163260}
+- {fileID: 264799741}
+- {fileID: 1511118982}
+- {fileID: 655226663}
+- {fileID: 678394779}
+- {fileID: 249686061}
+- {fileID: 68974311}
+- {fileID: 776464987}
+- {fileID: 206824693}
+- {fileID: 1505393072}
+- {fileID: 649168924}
+- {fileID: 1421791517}
+- {fileID: 586082904}
+- {fileID: 633035259}
+- {fileID: 353173032}
+- {fileID: 573215105}
+- {fileID: 1278836065}
+- {fileID: 420819520}
+- {fileID: 499473030}
+- {fileID: 785252863}
+- {fileID: 615807265}
+- {fileID: 300623383}
+- {fileID: 76663309}
+- {fileID: 454175812}
+- {fileID: 198690732}

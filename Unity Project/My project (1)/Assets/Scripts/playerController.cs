@@ -175,7 +175,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         jump();
         isGrappling();
 
-        if (Input.GetButton("Fire1") && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
+        if ((Input.GetButton("Fire1") || Input.GetAxis("Fire1") == 1) && gunList.Count > 0 && gunList[gunListPos].ammoCur > 0 && shootTimer >= shootRate)
             shoot();
 
         selectGun();
@@ -232,7 +232,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     void crouchInput()
     {
-        if (!Input.GetKeyDown(crouch)) return;
+        if (!Input.GetKeyDown(crouch) || !Input.GetButtonDown("Crouch")) return;
 
         if (isCrouching) setStanding();
         else
@@ -247,7 +247,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     void proneInput()
     {
-        if (!Input.GetKeyDown(prone)) return;
+        if (!Input.GetKeyDown(prone) || !Input.GetButtonDown("Crouch")) return;
 
         if (isProne) setStanding();
         else
@@ -546,7 +546,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         if (GameManager.instance == null) return;
         GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
-        GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
+        
     }
 
     public void SetPlayerExp(int amount)
