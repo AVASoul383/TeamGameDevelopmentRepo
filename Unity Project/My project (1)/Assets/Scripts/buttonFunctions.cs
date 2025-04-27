@@ -34,5 +34,9 @@ public class buttonFunctions : MonoBehaviour
         GameManager.instance.stateUnpause();
     }
 
+    public void creditsRoll()
+    {
+        GameManager.instance.CreditsOn();
+    }
 
 }

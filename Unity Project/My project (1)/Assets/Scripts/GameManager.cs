@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 
 public class GameManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject menuShop;
+    [SerializeField] GameObject creditsMenu;
     [SerializeField] TMP_Text goalCountText;
     [SerializeField] GameObject continueMenu;
 
@@ -136,6 +138,16 @@ public class GameManager : MonoBehaviour
         if(bossCount <= 0)
         {
             statePause();
+
+            IEnumerator Credits()
+            {
+                setActiveMenu(creditsMenu);
+                yield return new WaitForSeconds(45.0f);
+            }
+            
+            //yield return new WaitForSeconds(30.0f);
+            
+
             setActiveMenu(menuWin);
         }
     }
@@ -177,5 +189,10 @@ public class GameManager : MonoBehaviour
     {
         menuActive = menu;
         menuActive.SetActive(true);
+    }
+
+    public void CreditsOn()
+    {
+        setActiveMenu(creditsMenu);
     }
 }

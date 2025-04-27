@@ -184,8 +184,11 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
-            
-            Instantiate(itemDrop, transform.position, itemDrop.transform.rotation);
+            if (itemDrop != null)
+            {
+                Instantiate(itemDrop, transform.position, itemDrop.transform.rotation);
+            }
+
             Destroy(gameObject);
             enemyDead();
             GameManager.instance.updateMoneyCount(moneyDropped);
