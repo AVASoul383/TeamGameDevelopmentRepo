@@ -18,7 +18,13 @@ MonoBehaviour:
   shootRate: 1.5
   ammoCur: 12
   ammoMax: 16
+  ammoReserve: 0
+  reloadTimer: 0.5
+  bullet: {fileID: 3027016357346803647, guid: 3a18440e9be30d644a44ebc5bd6d063a, type: 3}
+  lastBullet: {fileID: 3027016357346803647, guid: 3ff73864ce0bb3045b425118fa8b8477, type: 3}
   hitEffect: {fileID: 5396372950321188654, guid: fcb74f28d107e284e80af037bfec14ca, type: 3}
   shootSound:
   - {fileID: 8300000, guid: 13a6b948a9fd38140b260724decdbc6e, type: 3}
+  reloadSuccess: []
+  reloadFail: []
   shootVol: 0.5

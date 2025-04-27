@@ -222,6 +222,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
     void shoot()
     {
+        //These if statements are for shooting in different locations on the model
         if (shootRotation < shootPos.Length - 1)
         {
             shootRotation++;
