@@ -51,7 +51,7 @@ public void PlayGame()
 
     IEnumerator loadGame()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Tower Level", LoadSceneMode.Single);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Mining Colony", LoadSceneMode.Single);
         asyncLoad.allowSceneActivation = false;
 
         while (!asyncLoad.isDone)

@@ -36,6 +36,9 @@ public class MenuManager : MonoBehaviour
             menuActive.SetActive(true);
             findButtons();
             buttonPosition = 0;
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 

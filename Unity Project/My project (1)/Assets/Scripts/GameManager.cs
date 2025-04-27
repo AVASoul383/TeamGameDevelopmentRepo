@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
                 dialogueBox.SetActive(false);
             }
         }
-        openArea();
+        //openArea();
     }
 
     public void statePause()
