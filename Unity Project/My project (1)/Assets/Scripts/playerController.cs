@@ -64,6 +64,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     [SerializeField] AudioClip[] audSteps;
     [SerializeField] AudioClip[] audJump;
     [SerializeField] AudioClip[] audHurt;
+    [SerializeField] AudioClip audSlide;
+    [SerializeField] AudioClip audDeath;
 
     ICarryable heldObject;
 
@@ -122,7 +124,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         }
         if (controller.isGrounded)
         {
-            if (moveDir.magnitude > 0.3f && !isPlayingSteps)
+            if (moveDir.magnitude > 0.3f && !isPlayingSteps && !isSliding)
                 StartCoroutine(PlaySteps());
 
             playerVel.y = playerVel.y < 0 ? -1f : playerVel.y;
@@ -153,6 +155,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         if (Input.GetButtonDown("Jump") && jumpCount < jumpsMax)
         {
+            if (audJump.Length > 0) aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)]);
             jumpCount++;
             playerVel.y = jumpSpeed;
         }
@@ -162,7 +165,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     {
         isPlayingSteps = true;
         if (audSteps.Length > 0) aud.PlayOneShot(audSteps[Random.Range(0, audSteps.Length)]);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.4f);
         isPlayingSteps = false;
     }
 
@@ -210,6 +213,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         slideTimer = slideDuration;
         currSpeed = slideSpeed;
         controller.height = crouchingHeight;
+        aud.PlayOneShot(audSlide);
     }
 
     void endSlide()
@@ -274,8 +278,13 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     public void takeDamage(int amount)
     {
+        if (audHurt.Length > 0) aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)]);
         HP -= Mathf.Max(amount - armor, 0);
-        if (HP <= 0) GameManager.instance.youLose();
+        if (HP <= 0) 
+        {
+            aud.PlayOneShot(audDeath);
+            GameManager.instance.youLose(); 
+        }
     }
 
     public void getGunStats(GunStats gun)
