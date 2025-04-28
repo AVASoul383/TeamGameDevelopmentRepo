@@ -502,6 +502,19 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 722972084}
     m_Modifications:
+    - target: {fileID: 2498309562738800726, guid: 11f1f83ead27aa94fa26ee8cf519c548, type: 3}
+      propertyPath: m_text
+      value: "\tTeam Mercury - Scrap Metal\n\n\t\tGiovanni Ramirez\n\t\tIvan Burgos\n\t\tLaneishia
+        Maxwell\n\t\tTravis Byers\n\t\tAlex Arteaga\n\n\t\t--Level Designer--\n\n\t\tGiovanni
+        Ramirez\n\t\tLaneishia Maxwell\n\t\tTravis Byers\n\n\t\t--Enemy Designer--\n\n\t\tGiovanni
+        Ramirez\n\t\tIvan Burgos\n\n\t\t--UI Designer--\n\n\t\tLaneishia Maxwell\n\t\tGiovanni
+        Ramirez\n\t\tAlex Arteaga\n\n\t\t--Weapon Designer--\n\n\t\tGiovanni Ramirez\n\t\tLaneishia
+        Maxwell\n\t\tAlex Arteaga\n\n\t\t--SFX Designer--\n\n\t\tLaneishia Maxwell\n\t\tAlex
+        Arteaga\n\n\t\t--Sound Designer--\n\n\t\tLaneishia Maxwell\n\t\tAlex Arteaga\n\n\t\t--Asset
+        Source--\n\n\t\tUnity Asset Store\n\t\t\n\t'Robot: Flaticon.com'. This cover
+        has been \t\tdesigned using resources from Flaticon.com\r\n\r\n\tHold The
+        Line by Matthew Dunne(ASCAP). \t\tWestar Music\n"
+      objectReference: {fileID: 0}
     - target: {fileID: 5471751979299160452, guid: 11f1f83ead27aa94fa26ee8cf519c548, type: 3}
       propertyPath: m_Name
       value: Credit Screen
