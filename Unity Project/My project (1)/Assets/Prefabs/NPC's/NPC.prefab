@@ -75,7 +75,7 @@ MonoBehaviour:
   interactDistance: 3
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
   interactKey: 101
 --- !u!23 &437472977227940248
 MeshRenderer:
