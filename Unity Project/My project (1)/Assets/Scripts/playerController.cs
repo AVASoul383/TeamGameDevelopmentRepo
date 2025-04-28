@@ -89,7 +89,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         HPOrig = HP;
         currSpeed = speed;
         playerLevel = 1;
-        shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
+        //shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
         //SetStanding();
         //StartCoroutine(NudgeToGround());
     }
@@ -307,7 +307,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         updateGunAmmo();
 
         StartCoroutine(flashMuzzle());
-        shootAnim.SetTrigger("Shoot");
+        //shootAnim.SetTrigger("Shoot");
+        /*
         //Shooting bullets
         Vector3 targetPoint;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // center of screen
@@ -326,20 +327,32 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         else
             Instantiate(gunList[gunListPos].bullet, shootPoint.position, Quaternion.LookRotation(shootDir));
 
+        */
         //Raycast Hitting
         //may look into creating different gun types
-        /*
-        RaycastHit hit;
-        if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, shootDist, ~ignoreLayer))
 
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
         {
+            Debug.Log(hit.collider.name);
             Instantiate(gunList[gunListPos].hitEffect, hit.point, Quaternion.identity);
-            hit.collider.GetComponent<IDamage>()?.takeDamage(shootDamage);
-            hit.collider.GetComponent<IInteract>()?.talkTo();
+
+            IDamage dmg = hit.collider.GetComponent<IDamage>();
+
+            if (dmg != null)
+            {
+                dmg.takeDamage(shootDamage);
+            }
+
+            IInteract act = hit.collider.GetComponent<IInteract>();
+
+            if (act != null)
+            {
+                act.talkTo();
+            }
         }
 
-        */
+
 
     }
     public void getGunStats(GunStats gun)

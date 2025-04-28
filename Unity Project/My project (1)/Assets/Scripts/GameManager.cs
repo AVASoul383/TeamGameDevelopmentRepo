@@ -81,11 +81,14 @@ public class GameManager : MonoBehaviour
         if (playerSpawnPos == null)
             Debug.LogWarning("Player Spawn Pos not found.");
 
-        // Safe way to find triggers
+        /*// Safe way to find triggers
+         * 
         TrySetupTrigger("F1 Trigger", ref trigger1);
         TrySetupTrigger("F2 Trigger", ref trigger2);
         TrySetupTrigger("F3 Trigger", ref trigger3);
         TrySetupTrigger("Boss Trigger", ref trigger4);
+        * The Scene will have the actual triggers
+         */
 
         //MusicManager.instance.playGameplayMusic();
     }

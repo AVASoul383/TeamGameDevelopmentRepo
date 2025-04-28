@@ -42,6 +42,7 @@ public class spawner : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             startSpawning = true;
+            enemiesAlive = numToSpawn;
             ActivateTrapWalls();
         }
     }
