@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     public bool isPaused;
 
+    public int totalNPCs = 0; 
+    public int NPCsInteractedWith = 0;
     int goalCount;
     int bossCount;
     public int moneyCount;
@@ -63,23 +66,19 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
 
+        totalNPCs = FindObjectsByType<NPC>(FindObjectsSortMode.None).Length;
         // Try to find player
         player = GameObject.FindWithTag("Player");
 		if (player != null)
         {
             playerScript = player.GetComponent<playerController>();
         }
-        else
-        {
-            Debug.LogWarning("Player object with tag 'Player' not found.");
-        }
+       
 
         // Try to find player spawn position
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        if (playerSpawnPos == null)
-            Debug.LogWarning("Player Spawn Pos not found.");
+        
 
         /*// Safe way to find triggers
          * 
@@ -104,15 +103,9 @@ public class GameManager : MonoBehaviour
                 foreach (var item in trigger.levelItem)
                     item.SetActive(false);
             }
-            else
-            {
-                Debug.LogWarning($"GameObject with tag '{tag}' found but missing TurnOnOff script.");
-            }
+           
         }
-        else
-        {
-			Debug.LogWarning($"GameObject with tag '{tag}' not found.");
-        }    }
+    }
 
 
     // Update is called once per frame
@@ -132,15 +125,11 @@ public class GameManager : MonoBehaviour
             }
            
         }
-        if (dialogueBox == null)
-        {
-            Debug.Log("Dialogue box is null");  
-        }
+      
         if (dialogueBox.activeSelf)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Debug.Log("E key pressed");
                 dialogueBox.SetActive(false);
             }
         }
@@ -153,7 +142,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        //MusicManager.instance.playMenuMusic();
+        MusicManager.instance.playMenuMusic();
     }
 
     public void stateUnpause()
@@ -163,7 +152,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         MenuManager.instance.setActiveMenu(null);
-        //MusicManager.instance.playGameplayMusic();
+        MusicManager.instance.playGameplayMusic();
     }
 
     public void openShop()
@@ -206,6 +195,16 @@ public class GameManager : MonoBehaviour
             {
                 advancementPlatforms[i].SetActive(true);
             }
+        }
+    }
+
+    public void registerNPCInteraction()
+    {
+        NPCsInteractedWith++;
+        if (NPCsInteractedWith >= totalNPCs)
+        {
+            SceneManager.LoadScene("Tower Level");
+
         }
     }
     public void updateMoneyCount(int amount)

@@ -59,9 +59,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     public Animator shootAnim;
     public Animator reloadAnim;
 
-    [Header("----- Grapple -----")]
-    [SerializeField] int grappleSpeed = 20;
-    [SerializeField] int grappleDist = 50;
+  
 
     [Header("----- Audio Clips -----")]
     [SerializeField] AudioClip[] audSteps;
@@ -92,7 +90,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         currSpeed = speed;
         playerLevel = 1;
         //shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
-        //SetStanding();
+        SetStanding();
         //StartCoroutine(NudgeToGround());
     }
 

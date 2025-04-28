@@ -61,7 +61,6 @@ public void PlayGame()
 
         while (!asyncLoad.isDone)
         {
-            Debug.Log($"Tower Level Loading: {asyncLoad.progress}");
             if(asyncLoad.progress >= 0.9f)
             {
                 MenuManager.instance.promptInput();
@@ -75,6 +74,5 @@ public void PlayGame()
         }
 
         asyncLoad.allowSceneActivation = true;
-        Debug.Log("Tower Level Loaded");
     }
 }
