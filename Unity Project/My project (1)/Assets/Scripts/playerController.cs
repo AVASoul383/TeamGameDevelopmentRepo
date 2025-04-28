@@ -87,8 +87,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         currSpeed = speed;
         playerLevel = 1;
         //shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
-        SetStanding();
-        StartCoroutine(NudgeToGround());
+        //SetStanding();
+        //StartCoroutine(NudgeToGround());
     }
 
     IEnumerator NudgeToGround()

@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mining Colony.unity
     guid: 525bd831b0ce25749943ff5c8de91d7a
+  - enabled: 1
+    path: Assets/Scenes/Town_New.unity
+    guid: 4baae324497c47d4db8b60ccd99efb4c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 324861a466f33fc4a8a950dcfa9e3daa, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}

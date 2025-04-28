@@ -714,7 +714,7 @@ GameObject:
   - component: {fileID: 1273872638609991808}
   m_Layer: 5
   m_Name: Resume
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1041,6 +1041,60 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &631857538455704027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5885257167316231611}
+  - component: {fileID: 8909937005559177753}
+  m_Layer: 0
+  m_Name: MenuManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5885257167316231611
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631857538455704027}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -289.37592, y: -523.39044, z: 362.2048}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 877854097517978444}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8909937005559177753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631857538455704027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd11b57774536d48a028b7fc8cd15a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuActive: {fileID: 0}
+  mainMenu: {fileID: 0}
+  optionsMenu: {fileID: 0}
+  continueMenu: {fileID: 5499301787178871465}
+  loseMenu: {fileID: 4207448409469910564}
+  winMenu: {fileID: 8413946084780117494}
+  pauseMenu: {fileID: 6622464475063467307}
+  shopMenu: {fileID: 7680265092705112892}
+  creditsMenu: {fileID: 0}
+  prompt: {fileID: 0}
 --- !u!1 &704269772431792859
 GameObject:
   m_ObjectHideFlags: 0
@@ -2462,7 +2516,7 @@ GameObject:
   - component: {fileID: 703134830138787777}
   m_Layer: 5
   m_Name: Quit
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2803,7 +2857,7 @@ GameObject:
   - component: {fileID: 3068472508105727854}
   m_Layer: 5
   m_Name: Quit
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3358,7 +3412,7 @@ GameObject:
   - component: {fileID: 57064716602163069}
   m_Layer: 5
   m_Name: Respawn
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3882,6 +3936,10 @@ MonoBehaviour:
   menuShop: {fileID: 7680265092705112892}
   goalCountText: {fileID: 2139045605267139083}
   continueMenu: {fileID: 5499301787178871465}
+  dialogueBox: {fileID: 0}
+  dialogueText: {fileID: 0}
+  npcName: {fileID: 0}
+  interactionPrompt: {fileID: 0}
   playerSpawnPos: {fileID: 0}
   advancementPlatforms:
   - {fileID: 0}
@@ -3893,9 +3951,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   playerHPBar: {fileID: 3783626778917430779}
-  playerExpBar: {fileID: 3451743037915145024}
   playerReloadBar: {fileID: 5107147364117143834}
   playerReloadFillBar: {fileID: 3759154871458810012}
+  playerExpBar: {fileID: 3451743037915145024}
   playerDamageScreen: {fileID: 6129036667720753965}
   playerHealthScreen: {fileID: 1167730821997099754}
   player: {fileID: 0}
@@ -4140,7 +4198,7 @@ GameObject:
   - component: {fileID: 3436559611660484292}
   m_Layer: 5
   m_Name: Restart
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4545,7 +4603,7 @@ GameObject:
   - component: {fileID: 3625441036174804175}
   m_Layer: 5
   m_Name: Restart
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4954,7 +5012,7 @@ GameObject:
   - component: {fileID: 4038189663741635467}
   m_Layer: 5
   m_Name: Restart
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6854,6 +6912,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5885257167316231611}
   - {fileID: 1186360560704433733}
   - {fileID: 2152941460126616876}
   - {fileID: 698473960174983048}
@@ -6960,7 +7019,7 @@ GameObject:
   - component: {fileID: 7553743992079985311}
   m_Layer: 5
   m_Name: Restart
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10702,7 +10761,7 @@ GameObject:
   - component: {fileID: 2531900460138945767}
   m_Layer: 5
   m_Name: Quit
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11266,7 +11325,7 @@ GameObject:
   - component: {fileID: 1655920320058442791}
   m_Layer: 5
   m_Name: Quit
-  m_TagString: Untagged
+  m_TagString: Menu Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

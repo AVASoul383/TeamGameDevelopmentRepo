@@ -36,7 +36,7 @@ public void PlayGame()
         
         MenuManager.instance.setActiveMenu(null);
         //StartCoroutine(loadGame());
-        SceneManager.LoadScene("Mining Colony");
+        SceneManager.LoadScene("Town_New");
 
     }
 
