@@ -138,8 +138,6 @@ public class GameManager : MonoBehaviour
         if(bossCount <= 0)
         {
             statePause();
-
-            setActiveMenu(creditsMenu);
             
             setActiveMenu(menuWin);
         }
