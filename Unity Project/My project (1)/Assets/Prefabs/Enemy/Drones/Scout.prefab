@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 1007391757013840978}
   - component: {fileID: 4762086632941047176}
   - component: {fileID: 4070447005252519749}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Scout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -265,7 +265,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0

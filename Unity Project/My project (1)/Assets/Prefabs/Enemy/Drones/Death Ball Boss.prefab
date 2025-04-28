@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 4036770466464597777}
   - component: {fileID: 658143342048639724}
   - component: {fileID: 7017943317887347953}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Death Ball Boss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -344,7 +344,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -365,7 +365,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

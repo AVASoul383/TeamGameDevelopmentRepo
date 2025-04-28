@@ -23,8 +23,16 @@ public class buttonFunctions : MonoBehaviour
 #endif
     }
 
+    public void respawn()
+    {
+        GameManager.instance.playerScript.spawnPlayer();
+        GameManager.instance.stateUnpause();
+    }
+
     public void progress()
     {
         GameManager.instance.stateUnpause();
     }
+
+
 }
