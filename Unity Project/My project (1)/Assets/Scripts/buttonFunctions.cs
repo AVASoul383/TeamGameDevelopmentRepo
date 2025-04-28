@@ -35,9 +35,9 @@ public void PlayGame()
     {
         
         MenuManager.instance.setActiveMenu(null);
-        StartCoroutine(loadGame());
-        //SceneManager.LoadScene("Tower Level");
- 
+        //StartCoroutine(loadGame());
+        SceneManager.LoadScene("Town_New");
+
     }
 
     public void options()
@@ -47,6 +47,11 @@ public void PlayGame()
     public void back()
     {
         MenuManager.instance.prevMenuCall();
+    }
+
+    public void creditsRoll()
+    {
+        MenuManager.instance.CreditsOn();
     }
 
     IEnumerator loadGame()

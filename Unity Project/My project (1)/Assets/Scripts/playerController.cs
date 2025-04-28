@@ -67,10 +67,12 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     ICarryable heldObject;
 
+    Animator anim;
+
     Vector3 moveDir, playerVel, dodgeDir;
     int HPOrig, jumpCount, gunListPos;
     float shootTimer;
-    bool isSliding, isDodging, isPlayingSteps;
+    bool isSliding, isDodging, isPlayingSteps, isCrouching;
     int currSpeed;
 
     KeyCode crouch = KeyCode.C;
@@ -80,12 +82,13 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     void Start()
     {
         playerCamera = Camera.main.transform;
+        anim = GetComponentInChildren<Animator>();
         HPOrig = HP;
         currSpeed = speed;
         playerLevel = 1;
-        shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
-        SetStanding();
-        StartCoroutine(NudgeToGround());
+        //shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
+        //SetStanding();
+        //StartCoroutine(NudgeToGround());
     }
 
     IEnumerator NudgeToGround()
@@ -101,6 +104,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         Movement();
         HandleInputs();
         handleSlide();
+        anim.SetInteger("Health", HP);  
 
         if (Input.GetKeyDown(KeyCode.G)) TryPickup();
         if (Input.GetKeyDown(KeyCode.D)) DropHeldObject();
@@ -110,7 +114,12 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     void Movement()
     {
         shootTimer += Time.deltaTime;
-
+        anim.SetFloat("Speed", moveDir.magnitude);
+        if (Input.GetButtonDown("Jump") && jumpCount < jumpsMax)
+        {
+            playerVel.y = jumpSpeed;
+            anim.SetTrigger("Jump");
+        }
         if (controller.isGrounded)
         {
             if (moveDir.magnitude > 0.3f && !isPlayingSteps)
@@ -163,10 +172,12 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             SetStanding();
         else
         {
+            isCrouching = true;
             controller.height = crouchingHeight;
             controller.center = crouchingCenter;
             playerCamera.localPosition = crouchingCameraPos;
             currSpeed = crouchingSpeed;
+            anim.SetBool("isCrouching", isCrouching);
         }
     }
 
@@ -185,10 +196,12 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     void SetStanding()
     {
+        isCrouching = false;
         controller.height = standingHeight;
         controller.center = standingCenter;
         playerCamera.localPosition = standingCameraPos;
         currSpeed = speed;
+        anim.SetBool("isCrouching", isCrouching);
     }
 
     void startSlide()
