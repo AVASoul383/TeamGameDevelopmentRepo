@@ -49,6 +49,11 @@ public void PlayGame()
         MenuManager.instance.prevMenuCall();
     }
 
+    public void creditsRoll()
+    {
+        MenuManager.instance.CreditsOn();
+    }
+
     IEnumerator loadGame()
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Mining Colony", LoadSceneMode.Single);

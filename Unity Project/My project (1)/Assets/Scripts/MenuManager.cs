@@ -19,6 +19,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject winMenu;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject shopMenu;
+    [SerializeField] GameObject creditsMenu;
     [SerializeField] GameObject prompt; 
 
     GameObject prevMenu;
@@ -108,6 +109,11 @@ public class MenuManager : MonoBehaviour
         setActiveMenu(prevMenu);
         menuActive.SetActive(true);
         findButtons();
+    }
+
+    public void CreditsOn()
+    {
+        setActiveMenu(creditsMenu);
     }
 
     public void promptInput()
