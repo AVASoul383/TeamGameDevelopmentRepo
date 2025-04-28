@@ -13,7 +13,8 @@ public class Damage : MonoBehaviour
     [Range(1, 10)][SerializeField] int damageAmount;
     [Range(0.25f, 1)][SerializeField] float damageTime;
     [Range(10, 45)][SerializeField] int speed;
-    [Range(1, 10)][SerializeField] int destroyTime;
+    [Range(1, 4)][SerializeField] int destroyTime;
+    [SerializeField] GameObject hitEffectPrefab;
 
 
     bool isDamaging;
@@ -22,36 +23,20 @@ public class Damage : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (type == damageType.moving || type == damageType.homing)
+        if (type == damageType.moving)
         {
+            rb.linearVelocity = transform.forward * speed;
             Destroy(gameObject, destroyTime);
-
-            if(type == damageType.homing)
-                rb.linearVelocity = transform.forward * speed;
         }
-
-        //if (type == damageType.homing)
-        //{
-        //    Destroy(gameObject, destroyTime);
-        //}
-
     }
 
     private void Update()
     {
-        if(type == damageType.homing)
+        if (type == damageType.homing)
         {
-            rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position).normalized * speed * Time.deltaTime;
+            rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position).normalized * (speed * 100) * Time.deltaTime;
         }
     }
-
-    //private void Update()
-    //{
-    //    if (type == damageType.homing)
-    //    {
-    //        rb.linearVelocity = (GameManager.instance.player.transform.position - transform.position).normalized * (speed * 100) * Time.deltaTime;
-    //    }
-    //}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -67,7 +52,13 @@ public class Damage : MonoBehaviour
 
         if (type == damageType.moving || type == damageType.homing)
         {
+            if (hitEffectPrefab != null)
+            {
+                GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+                Destroy(effect, 2f);
+            }
             Destroy(gameObject);
+            
         }
     }
 

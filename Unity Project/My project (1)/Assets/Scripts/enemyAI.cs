@@ -73,18 +73,23 @@ public class enemyAI : MonoBehaviour, IDamage
 
     bool canSeePlayer()
     {
+        if (GameManager.instance == null || GameManager.instance.player == null)
+        {
+            Debug.LogWarning("Player or GameManager is missing!");
+            return false;
+        }
+
         playerDir = GameManager.instance.player.transform.position - headPos.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
 
         Debug.DrawRay(headPos.position, playerDir);
 
         RaycastHit hit;
-        if(Physics.Raycast(headPos.position, playerDir, out hit))
+        if (Physics.Raycast(headPos.position, playerDir, out hit))
         {
-            if(hit.collider.CompareTag("Player") && angleToPlayer <= FOV)
+            if (hit.collider.CompareTag("Player") && angleToPlayer <= FOV)
             {
                 agent.SetDestination(GameManager.instance.player.transform.position);
-                
 
                 if (shootTimer >= shootRate)
                 {
@@ -101,10 +106,11 @@ public class enemyAI : MonoBehaviour, IDamage
                 return true;
             }
         }
+
         agent.stoppingDistance = 0;
         return false;
-
     }
+
 
     void checkRoam()
     {
