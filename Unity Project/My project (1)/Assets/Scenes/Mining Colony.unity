@@ -9440,6 +9440,7 @@ MonoBehaviour:
   winMenu: {fileID: 1693195650}
   pauseMenu: {fileID: 801900748}
   shopMenu: {fileID: 1288415051}
+  creditsMenu: {fileID: 0}
   prompt: {fileID: 0}
 --- !u!1001 &1174495830
 PrefabInstance:
@@ -10885,7 +10886,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 4972863202459748933, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: m_TagString
+      value: Menu Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622464475063467307, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7652786479965876927, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
+      propertyPath: m_TagString
+      value: Menu Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008843146657466540, guid: da94f0b558b37d3498234e7b7f612dc2, type: 3}
       propertyPath: m_TagString
       value: Menu Button
       objectReference: {fileID: 0}

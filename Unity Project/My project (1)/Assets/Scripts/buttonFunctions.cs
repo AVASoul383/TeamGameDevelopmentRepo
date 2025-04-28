@@ -35,9 +35,9 @@ public void PlayGame()
     {
         
         MenuManager.instance.setActiveMenu(null);
-        StartCoroutine(loadGame());
-        //SceneManager.LoadScene("Tower Level");
- 
+        //StartCoroutine(loadGame());
+        SceneManager.LoadScene("Mining Colony");
+
     }
 
     public void options()

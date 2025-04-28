@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         TrySetupTrigger("F3 Trigger", ref trigger3);
         TrySetupTrigger("Boss Trigger", ref trigger4);
 
-        MusicManager.instance.playGameplayMusic();
+        //MusicManager.instance.playGameplayMusic();
     }
 
     void TrySetupTrigger(string tag, ref TurnOnOff trigger)
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        MusicManager.instance.playMenuMusic();
+        //MusicManager.instance.playMenuMusic();
     }
 
     public void stateUnpause()
@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         MenuManager.instance.setActiveMenu(null);
-        MusicManager.instance.playGameplayMusic();
+        //MusicManager.instance.playGameplayMusic();
     }
 
     public void openShop()
