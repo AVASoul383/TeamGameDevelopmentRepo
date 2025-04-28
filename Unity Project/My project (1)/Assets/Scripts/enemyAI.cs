@@ -75,7 +75,6 @@ public class enemyAI : MonoBehaviour, IDamage
     {
         if (GameManager.instance == null || GameManager.instance.player == null)
         {
-            Debug.LogWarning("Player or GameManager is missing!");
             return false;
         }
 
