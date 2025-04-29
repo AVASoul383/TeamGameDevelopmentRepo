@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 2329364084044483386}
   m_Layer: 9
   m_Name: Turret
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,7 +63,7 @@ Transform:
   m_GameObject: {fileID: 4474836147022147231}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.43, y: 6.38, z: -23.37}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -88,7 +88,7 @@ MonoBehaviour:
   model: {fileID: 5830782168827707489}
   agent: {fileID: 1305152482475385902}
   headPos: {fileID: 7738858817633794778}
-  HP: 20
+  HP: 5
   speed: 0
   faceTargetSpeed: 10
   FOV: 180
