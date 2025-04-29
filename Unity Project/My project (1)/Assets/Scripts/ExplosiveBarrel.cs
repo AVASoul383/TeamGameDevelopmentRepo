@@ -16,14 +16,9 @@ public class ExplosiveBarrel : MonoBehaviour
     {
         
         BoxCollider boxCollider = GetComponent<BoxCollider>();
-        if (boxCollider == null)
-        {
-            Debug.LogError("Explosive Barrel is missing a BoxCollider!");
-        }
-        else
-        {
-            boxCollider.isTrigger = true; 
-        }
+       
+        boxCollider.isTrigger = true; 
+        
     }
 
   
@@ -34,7 +29,6 @@ public class ExplosiveBarrel : MonoBehaviour
      
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy detected within radius! Triggering explosion.");
             Explode();
         }
     }

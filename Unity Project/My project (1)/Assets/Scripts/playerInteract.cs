@@ -4,7 +4,7 @@ using System.Collections;
 
 public class playerInteract : MonoBehaviour
 {
-    public float interactDistance = 3f; 
+    public float interactDistance = 3f;
     public LayerMask interactableLayer;
     public KeyCode interactKey = KeyCode.E;
 
@@ -12,6 +12,7 @@ public class playerInteract : MonoBehaviour
     void Start()
     {
         playerCamera = Camera.main;
+        interactableLayer = LayerMask.GetMask("Interactable");
     }
     void Update()
     {
@@ -20,7 +21,6 @@ public class playerInteract : MonoBehaviour
 
     void handleInteraction()
     {
-        Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * interactDistance, Color.red);
         RaycastHit hit;
         if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, interactDistance, interactableLayer))
         {

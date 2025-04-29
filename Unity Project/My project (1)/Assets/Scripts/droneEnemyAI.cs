@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class droneEnemyAI : MonoBehaviour, IDamage
 {
-    enum enemyType { moving, stationary, boss}
+    enum enemyType { moving, stationary, boss, objective}
     [SerializeField] enemyType type;
 
     [Header("----- Model -----")]
@@ -40,6 +40,8 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     int shootRotation;
     int bulletRotation;
 
+    private spawner spawner;
+
     Vector3 playerDir;
     Vector3 shootDir;
     Vector3 startingPos;
@@ -51,10 +53,13 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     void Start()
     {
         GameManager.instance.updateGameGoal(1);
+
         if (type == enemyType.boss)
             GameManager.instance.bossFight(1);
+
         if (type == enemyType.moving || type == enemyType.boss)
             agent.speed = speed;
+
         startingPos = transform.position;
         stoppingDist = agent.stoppingDistance;
     }
@@ -91,27 +96,31 @@ public class droneEnemyAI : MonoBehaviour, IDamage
         }
     }
 
+    public void setSpawner(spawner mySpawner)
+    {
+        spawner = mySpawner;
+    }
+
     bool canSeePlayer()
     {
         playerDir = GameManager.instance.player.transform.position - headPos.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
 
-        Debug.DrawRay(headPos.position, playerDir);
 
         RaycastHit hit;
         if (Physics.Raycast(headPos.position, playerDir, out hit))
         {
             if (hit.collider.CompareTag("Player") && angleToPlayer <= FOV)
             {
-                if(type == enemyType.moving)
+                if (type == enemyType.moving || type == enemyType.boss)
                     agent.SetDestination(GameManager.instance.player.transform.position);
 
-                if (shootTimer >= shootRate)
+                if (shootTimer >= shootRate && (type == enemyType.moving || type == enemyType.stationary || type == enemyType.boss))
                 {
                     shoot();
                 }
 
-                if (agent.remainingDistance <= agent.stoppingDistance)
+                if (agent.remainingDistance <= agent.stoppingDistance && (type == enemyType.moving || type == enemyType.boss))
                 {
                     faceTarget();
                 }
@@ -120,6 +129,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
                 return true;
             }
+
         }
         agent.stoppingDistance = 0;
         return false;
@@ -184,10 +194,12 @@ public class droneEnemyAI : MonoBehaviour, IDamage
         if (HP <= 0)
         {
             Destroy(gameObject);
+            if (spawner != null)
+                spawner.EnemyDied();
             enemyDead();
             GameManager.instance.updateMoneyCount(moneyDropped);
             GameManager.instance.updateGameGoal(-1);
-            GameManager.instance.playerScript.SetPlayerExp(Exp);
+            
             if (type == enemyType.boss)
                 GameManager.instance.bossFight(-1);
 
@@ -216,7 +228,6 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
     void shoot()
     {
-        //These if statements are for shooting in different locations on the model
         if (shootRotation < shootPos.Length - 1)
         {
             shootRotation++;

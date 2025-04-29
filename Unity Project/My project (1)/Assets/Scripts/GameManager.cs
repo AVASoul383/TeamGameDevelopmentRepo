@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -14,13 +15,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuShop;
     [SerializeField] TMP_Text goalCountText;
     [SerializeField] GameObject continueMenu;
+    [SerializeField] GameObject dialogueBox;
+    [SerializeField] TMP_Text dialogueText;
+    [SerializeField] TMP_Text npcName;
+    [SerializeField] GameObject interactionPrompt;
+
 
     public GameObject playerSpawnPos;
     public GameObject[] advancementPlatforms;
     public Image playerHPBar;
-    public Image playerExpBar;
     public Image playerReloadBar;
     public Image playerReloadFillBar;
+    public Image playerExpBar;
     public GameObject playerDamageScreen;
     public GameObject playerHealthScreen;
     public GameObject player;
@@ -40,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     public bool isPaused;
 
+    public int totalNPCs = 0; 
+    public int NPCsInteractedWith = 0;
     int goalCount;
     int bossCount;
     public int moneyCount;
@@ -49,33 +57,39 @@ public class GameManager : MonoBehaviour
     TurnOnOff trigger3;
     TurnOnOff trigger4;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(instance);
+    } 
+    
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
 
+        totalNPCs = FindObjectsByType<NPC>(FindObjectsSortMode.None).Length;
         // Try to find player
         player = GameObject.FindWithTag("Player");
-        if (player != null)
+		if (player != null)
         {
             playerScript = player.GetComponent<playerController>();
         }
-        else
-        {
-            Debug.LogWarning("Player object with tag 'Player' not found.");
-        }
+       
 
         // Try to find player spawn position
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
-        if (playerSpawnPos == null)
-            Debug.LogWarning("Player Spawn Pos not found.");
+        
 
-        // Safe way to find triggers
+        /*// Safe way to find triggers
+         * 
         TrySetupTrigger("F1 Trigger", ref trigger1);
         TrySetupTrigger("F2 Trigger", ref trigger2);
         TrySetupTrigger("F3 Trigger", ref trigger3);
         TrySetupTrigger("Boss Trigger", ref trigger4);
+        * The Scene will have the actual triggers
+         */
+
+        //MusicManager.instance.playGameplayMusic();
     }
 
     void TrySetupTrigger(string tag, ref TurnOnOff trigger)
@@ -89,14 +103,7 @@ public class GameManager : MonoBehaviour
                 foreach (var item in trigger.levelItem)
                     item.SetActive(false);
             }
-            else
-            {
-                Debug.LogWarning($"GameObject with tag '{tag}' found but missing TurnOnOff script.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"GameObject with tag '{tag}' not found.");
+           
         }
     }
 
@@ -104,12 +111,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Cancel") && !isPaused)
+        if (Input.GetButtonDown("Cancel") && !isPaused)
         {
             if(menuActive == null)
             {
                 statePause();
-                setActiveMenu(menuPause);
+                MenuManager.instance.setActiveMenu(menuPause);
+                
             }
             else if(menuActive == menuPause)
             {
@@ -117,7 +125,15 @@ public class GameManager : MonoBehaviour
             }
            
         }
-        openArea();
+      
+        if (dialogueBox.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                dialogueBox.SetActive(false);
+            }
+        }
+        //openArea();
     }
 
     public void statePause()
@@ -126,6 +142,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        MusicManager.instance.playMenuMusic();
     }
 
     public void stateUnpause()
@@ -134,14 +151,15 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        menuActive.SetActive(false);
-        menuActive = null;
+        MenuManager.instance.setActiveMenu(null);
+        MusicManager.instance.playGameplayMusic();
     }
 
     public void openShop()
     {
         statePause();
-        setActiveMenu(menuShop);
+        MenuManager.instance.setActiveMenu(menuShop);
+        
     }
 
     public void updateGameGoal(int amount)
@@ -150,9 +168,6 @@ public class GameManager : MonoBehaviour
         goalCountText.text = goalCount.ToString("F0");
 
     }
-
-    
-
     public void bossFight(int amount)
     {
         bossCount += amount;
@@ -160,7 +175,8 @@ public class GameManager : MonoBehaviour
         if(bossCount <= 0)
         {
             statePause();
-            setActiveMenu(menuWin);
+            MenuManager.instance.setActiveMenu(menuWin);
+            
         }
     }
 
@@ -181,6 +197,16 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public void registerNPCInteraction()
+    {
+        NPCsInteractedWith++;
+        if (NPCsInteractedWith >= totalNPCs)
+        {
+            SceneManager.LoadScene("Tower Level");
+
+        }
+    }
     public void updateMoneyCount(int amount)
     {
         moneyCount += amount;
@@ -194,12 +220,38 @@ public class GameManager : MonoBehaviour
     public void youLose()
     {
         statePause();
-        setActiveMenu(menuLose);
+        MenuManager.instance.setActiveMenu(menuLose);
+        
     }
 
     public void setActiveMenu(GameObject menu)
     {
         menuActive = menu;
         menuActive.SetActive(true);
+    }
+
+    public void showDialogue(string text, string name)
+    {
+        dialogueBox.SetActive(true);
+        npcName.text = name;
+        dialogueText.text = text;
+    }
+
+    public void hideDialogue()
+    {
+        
+            dialogueBox.SetActive(false);
+        
+        
+    }
+
+    public void showInteractionPrompt()
+    {
+        interactionPrompt.SetActive(true);
+    }
+
+    public void hideInteractionPrompt()
+    {
+        interactionPrompt.SetActive(false);
     }
 }

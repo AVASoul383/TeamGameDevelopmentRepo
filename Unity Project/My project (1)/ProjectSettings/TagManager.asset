@@ -12,6 +12,8 @@ TagManager:
   - F2 Trigger
   - F3 Trigger
   - Boss Trigger
+  - Menu Button
+  - WaterWellExit
   layers:
   - Default
   - TransparentFX
@@ -19,11 +21,11 @@ TagManager:
   - Player
   - Water
   - UI
+  - Interactable
+  - Player Model
   - Player Bullet
   - Enemy
-  - Enemy Bullet
-  - Merchant
-  - Interactable
+  - 
   - 
   - 
   - 

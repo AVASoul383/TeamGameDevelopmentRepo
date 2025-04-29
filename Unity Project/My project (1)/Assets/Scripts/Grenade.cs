@@ -79,10 +79,7 @@ public class Grenade : MonoBehaviour
             AudioSource.PlayClipAtPoint(stats.explosionSound, transform.position, stats.explosionVolume);
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, stats.explosionRadius);
-        foreach (Collider hit in hitColliders)
-        {
-            Debug.Log("Hit " + hit.name + " with grenade");
-        }
+       
 
         Destroy(gameObject);
     }

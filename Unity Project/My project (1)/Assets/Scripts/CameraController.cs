@@ -23,20 +23,40 @@ public class CameraController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * sens * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * sens * Time.deltaTime;
 
-        if (invertY)
-            rotX += mouseY;
-        else
-            rotX -= mouseY;
+        float joystickX = Input.GetAxis("Joystick X") * sens * Time.deltaTime;
+        float joystickY = Input.GetAxis("Joystick Y") * sens * Time.deltaTime;
 
+
+        if (invertY)
+        {
+            if (mouseY != 0)
+                rotX += mouseY;
+            else
+                rotX += joystickY;
+        }
+        else
+        {
+            if(mouseY  != 0)
+                rotX -= mouseY;
+            else
+                rotX += joystickY;
+        }
+        
         //clamp the camera on the x-axis
-        rotX = Mathf.Clamp(rotX, lockVertMin, lockVertMax);
+        rotX = Mathf.Clamp(rotX, -90f, 90f);
 
         //rotate camera on x-axis to look up and down
         transform.localRotation = Quaternion.Euler(rotX, 0, 0);
 
         //rotate the player on the y-axis to look left and right
-        transform.parent.Rotate(Vector3.up * mouseX);
-
+        if (mouseX != 0)
+        {
+            transform.parent.Rotate(Vector3.up * mouseX);
+        }
+        else
+        {
+            transform.parent.Rotate(Vector3.up * joystickX);
+        }
 
     }
 }

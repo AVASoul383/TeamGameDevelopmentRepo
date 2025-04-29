@@ -1,53 +1,81 @@
 using UnityEngine;
 
-
+[System.Serializable]
+public struct SpawnData
+{
+    public GameObject enemyPrefab;
+    public Transform[] spawnPoints;
+}
 public class spawner : MonoBehaviour
 {
-    [SerializeField] GameObject objectToSpawn;
-    [SerializeField] int numToSpawn;
-    [SerializeField] int timeBetweenSpawns;
-    [SerializeField] Transform[] spawnPos;
+    [SerializeField] SpawnData[] spawnGroups;
+    [SerializeField] GameObject[] wallsToTrap;
+    [SerializeField] GameObject[] wallsToOpen;
 
-    float spawnTimer;
+    bool hasSpawned;
 
-    int spawnCount;
+    int enemiesAlive;
 
-    bool startSpawning;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameManager.instance.updateGameGoal(numToSpawn);
+        int totalEnemies = 0;
+        foreach (var group in spawnGroups)
+        {
+            totalEnemies += group.spawnPoints.Length;
+        }
+
+        enemiesAlive = totalEnemies;
+        GameManager.instance.updateGameGoal(totalEnemies);
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        spawnTimer += Time.deltaTime;
-
-        if (startSpawning)
+        if (other.CompareTag("Player") && !hasSpawned)
         {
-            if (spawnCount < numToSpawn && spawnTimer >= timeBetweenSpawns)
+            hasSpawned = true;
+            ActivateTrapWalls();
+            SpawnAllEnemies();
+        }
+    }
+
+    void SpawnAllEnemies()
+    {
+        foreach (var group in spawnGroups)
+        {
+            foreach (Transform spawnPoint in group.spawnPoints)
             {
-                spawn();
+                GameObject newEnemy = Instantiate(group.enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+
+                if (newEnemy.TryGetComponent<droneEnemyAI>(out droneEnemyAI enemyAI))
+                {
+                    enemyAI.setSpawner(this);
+                }
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void EnemyDied()
     {
-        if (other.CompareTag("Player"))
+        enemiesAlive--;
+        if (enemiesAlive <= 0)
         {
-            startSpawning = true;
+            OpenWalls();
         }
     }
 
-    void spawn()
+    void ActivateTrapWalls()
     {
-        int arrayPos = Random.Range(0, spawnPos.Length);
+        foreach (GameObject wall in wallsToTrap)
+        {
+            wall.SetActive(true);
+        }
+    }
 
-        Instantiate(objectToSpawn, spawnPos[arrayPos].position, spawnPos[arrayPos].rotation);
-        spawnCount++;
-        spawnTimer = 0;
+    void OpenWalls()
+    {
+        foreach (GameObject wall in wallsToOpen)
+        {
+            wall.SetActive(false);
+        }
     }
 }

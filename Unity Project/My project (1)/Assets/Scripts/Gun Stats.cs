@@ -1,12 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu] 
+[CreateAssetMenu]
 
 public class GunStats : ScriptableObject
 {
     public GameObject model;
     enum enemyType { bullet, raycast }
-    [Range(1,10)] public int shootDamage;
+    [Range(1, 10)] public int shootDamage;
     [Range(5, 1000)] public int shootDis;
     [Range(0.1f, 2f)] public float shootRate;
     [HideInInspector] public int ammoCur;
