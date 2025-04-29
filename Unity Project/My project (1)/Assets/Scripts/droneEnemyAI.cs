@@ -113,15 +113,15 @@ public class droneEnemyAI : MonoBehaviour, IDamage
         {
             if (hit.collider.CompareTag("Player") && angleToPlayer <= FOV)
             {
-                if(type == enemyType.moving)
+                if (type == enemyType.moving || type == enemyType.boss)
                     agent.SetDestination(GameManager.instance.player.transform.position);
 
-                if (shootTimer >= shootRate)
+                if (shootTimer >= shootRate && (type == enemyType.moving || type == enemyType.stationary || type == enemyType.boss))
                 {
                     shoot();
                 }
 
-                if (agent.remainingDistance <= agent.stoppingDistance)
+                if (agent.remainingDistance <= agent.stoppingDistance && (type == enemyType.moving || type == enemyType.boss))
                 {
                     faceTarget();
                 }
@@ -130,6 +130,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
                 return true;
             }
+
         }
         agent.stoppingDistance = 0;
         return false;
