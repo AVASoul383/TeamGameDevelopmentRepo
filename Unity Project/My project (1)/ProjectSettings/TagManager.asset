@@ -13,6 +13,7 @@ TagManager:
   - F3 Trigger
   - Boss Trigger
   - Menu Button
+  - WaterWellExit
   layers:
   - Default
   - TransparentFX
