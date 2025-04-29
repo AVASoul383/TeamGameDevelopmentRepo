@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class droneEnemyAI : MonoBehaviour, IDamage
 {
-    enum enemyType { moving, stationary, boss}
+    enum enemyType { moving, stationary, boss, objective}
     [SerializeField] enemyType type;
 
     [Header("----- Model -----")]
