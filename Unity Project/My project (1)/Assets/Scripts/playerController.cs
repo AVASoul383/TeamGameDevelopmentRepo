@@ -89,7 +89,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         HPOrig = HP;
         currSpeed = speed;
         playerLevel = 1;
-        //shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
+        shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
         //SetStanding();
         //StartCoroutine(NudgeToGround());
     }
@@ -307,8 +307,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         updateGunAmmo();
 
         StartCoroutine(flashMuzzle());
-        //shootAnim.SetTrigger("Shoot");
-        /*
+        shootAnim.SetTrigger("Shoot");
+        
         //Shooting bullets
         Vector3 targetPoint;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // center of screen
@@ -327,10 +327,10 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         else
             Instantiate(gunList[gunListPos].bullet, shootPoint.position, Quaternion.LookRotation(shootDir));
 
-        */
+        
         //Raycast Hitting
         //may look into creating different gun types
-
+        /*
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
         {
@@ -351,7 +351,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
                 act.talkTo();
             }
         }
-
+        */
 
 
     }
