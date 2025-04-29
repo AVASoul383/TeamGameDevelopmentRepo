@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
         NPCsInteractedWith++;
         if (NPCsInteractedWith >= totalNPCs)
         {
-            SceneManager.LoadScene("Tower Level");
+            SceneManager.LoadScene("Factory");
 
         }
     }
