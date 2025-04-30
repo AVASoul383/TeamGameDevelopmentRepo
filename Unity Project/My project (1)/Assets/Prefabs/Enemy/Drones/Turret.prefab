@@ -102,6 +102,9 @@ MonoBehaviour:
   bullet:
   - {fileID: 3027016357346803647, guid: ee17a17a10ce5374e82265199f9e20c1, type: 3}
   shootRate: 0.2
+  possibleDrops:
+  - {fileID: 2133860820274829656, guid: 0837b097c3280c343a4b41ab0caba20b, type: 3}
+  dropChance: 1
   waveManager: {fileID: 0}
 --- !u!33 &2088528848975466339
 MeshFilter:

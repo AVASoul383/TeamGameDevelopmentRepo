@@ -447,6 +447,13 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         updateGunAmmo();
         isReloading = false;
     }
+
+    public void addAmmo(int amount)
+    {
+        gunList[gunListPos].ammoReserve += amount;
+        updateGunAmmo();
+    }
+
     void updateGunAmmo()
     {
         GameManager.instance.ammoAmt.text = gunList[gunListPos].ammoCur.ToString("F0") + "/ " + gunList[gunListPos].ammoMax.ToString("F0") + "   " + gunList[gunListPos].ammoReserve.ToString("F0");

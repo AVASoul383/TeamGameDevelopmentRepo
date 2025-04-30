@@ -33,6 +33,10 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     [SerializeField] GameObject[] bullet;
     [Range(0, 5)][SerializeField] float shootRate;
 
+    [Header("---- Drops ----")]
+    [SerializeField] GameObject[] possibleDrops;
+    [Range(0, 1f)][SerializeField] float dropChance;
+
     float shootTimer;
     float roamTimer;
     float angleToPlayer;
@@ -194,6 +198,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
+            TryDropItem();
             Destroy(gameObject);
             if (spawner != null)
                 spawner.EnemyDied();
@@ -204,6 +209,17 @@ public class droneEnemyAI : MonoBehaviour, IDamage
             if (type == enemyType.boss)
                 GameManager.instance.bossFight(-1);
 
+        }
+    }
+    void TryDropItem()
+    {
+        if (possibleDrops.Length == 0)
+            return;
+
+        if (UnityEngine.Random.value <= dropChance) // random value between 0 and 1
+        {
+            int randomIndex = UnityEngine.Random.Range(0, possibleDrops.Length);
+            Instantiate(possibleDrops[randomIndex], transform.position, Quaternion.identity);
         }
     }
 
