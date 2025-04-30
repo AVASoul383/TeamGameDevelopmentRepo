@@ -63,10 +63,15 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     [Header("----- Audio Clips -----")]
     [SerializeField] AudioClip[] audSteps;
+    [SerializeField] float audStepsVol = 1;
     [SerializeField] AudioClip[] audJump;
+    [SerializeField] float audJumpVol = 1;
     [SerializeField] AudioClip[] audHurt;
-    [SerializeField] AudioClip audSlide;
-    [SerializeField] AudioClip audDeath;
+    [Range(0, 1)][SerializeField] float audHurtVol;
+    [SerializeField] AudioClip[] audReload;
+    [Range(0, 1)][SerializeField] float audReloadVol;
+    [SerializeField] AudioClip[] audNoReload;
+    [Range(0, 1)][SerializeField] float audNoReloadVol;
 
     ICarryable heldObject;
 
@@ -89,6 +94,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         HPOrig = HP;
         currSpeed = speed;
         playerLevel = 1;
+        updatePlayerUI();
 
         shootAnim = transform.Find("Main Camera/Gun Model").GetComponent<Animator>();
         SetStanding();
@@ -294,19 +300,74 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     public void takeDamage(int amount)
     {
-        if (audHurt.Length > 0) aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)]);
-        HP -= Mathf.Max(amount - armor, 0);
+        if (amount > 0)
+        {
+            int total = amount - armor;
+            if (total > 0) HP -= (HP <= 5) ? total / 2 : total;
+            StartCoroutine(flashDamageScreen());
+            if (audHurt.Length > 0)
+                aud.PlayOneShot(audHurt[Random.Range(0, audHurt.Length)], audHurtVol);
+        }
+        else
+        {
+            HP -= amount;
+            StartCoroutine(flashHealingScreen());
+        }
+
+        updatePlayerUI();
+        if (HP > HPOrig) HP = HPOrig;
         if (HP <= 0) 
         {
             aud.PlayOneShot(audDeath);
-            GameManager.instance.youLose(); 
+            GameManager.instance.youLose();
         }
+    }
+    IEnumerator flashDamageScreen()
+    {
+        GameManager.instance.playerDamageScreen.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        GameManager.instance.playerDamageScreen.SetActive(false);
+    }
+
+    IEnumerator flashHealingScreen()
+    {
+        GameManager.instance.playerHealthScreen.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        GameManager.instance.playerHealthScreen.SetActive(false);
+    }
+
+    public void updatePlayerUI()
+    {
+        if (GameManager.instance == null) return;
+        GameManager.instance.playerHPBar.fillAmount = (float)HP / HPOrig;
+        GameManager.instance.playerExpBar.fillAmount = (float)ExpAmount / ExpMax;
     }
 
     void shoot()
     {
         if (isReloading || gunList[gunListPos].ammoCur <= 0)
             return;
+
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
+        {
+            /*Instantiate(gunList[gunListPos].hitEffect, hit.point, Quaternion.identity);
+
+            IDamage dmg = hit.collider.GetComponent<IDamage>();
+
+            if (dmg != null)
+            {
+                dmg.takeDamage(shootDamage);
+            }*/
+
+            IInteract act = hit.collider.GetComponent<IInteract>();
+
+            if (act != null)
+            {
+                act.talkTo();
+                return;
+            }
+        }
 
         shootTimer = 0;
         gunList[gunListPos].ammoCur--;
@@ -321,7 +382,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         //Shooting bullets
         Vector3 targetPoint;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); // center of screen
-        if (Physics.Raycast(ray, out RaycastHit hit, gunList[gunListPos].shootDis, ~ignoreLayer))
+        if (Physics.Raycast(ray, out hit, gunList[gunListPos].shootDis, ~ignoreLayer))
         {
             targetPoint = hit.point;
         }
@@ -335,34 +396,6 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             Instantiate(gunList[gunListPos].lastBullet, shootPoint.position, Quaternion.LookRotation(shootDir));
         else
             Instantiate(gunList[gunListPos].bullet, shootPoint.position, Quaternion.LookRotation(shootDir));
-
-        
-        //Raycast Hitting
-        //may look into creating different gun types
-        /*
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
-        {
-            Debug.Log(hit.collider.name);
-            Instantiate(gunList[gunListPos].hitEffect, hit.point, Quaternion.identity);
-
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-
-            if (dmg != null)
-            {
-                dmg.takeDamage(shootDamage);
-            }
-
-            IInteract act = hit.collider.GetComponent<IInteract>();
-
-            if (act != null)
-            {
-                act.talkTo();
-            }
-        }
-        */
-
-
     }
     public void getGunStats(GunStats gun)
     {

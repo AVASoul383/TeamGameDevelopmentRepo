@@ -25,7 +25,6 @@ public class spawner : MonoBehaviour
         }
 
         enemiesAlive = totalEnemies;
-        GameManager.instance.updateGameGoal(totalEnemies);
     }
 
     void OnTriggerEnter(Collider other)
