@@ -235,7 +235,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         slideTimer = slideDuration;
         currSpeed = slideSpeed;
         controller.height = crouchingHeight;
-        aud.PlayOneShot(audSlide);
+        //aud.PlayOneShot(audSlide);
     }
 
     void endSlide()
@@ -318,7 +318,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         if (HP > HPOrig) HP = HPOrig;
         if (HP <= 0) 
         {
-            aud.PlayOneShot(audDeath);
+            //aud.PlayOneShot(audDeath);
             GameManager.instance.youLose();
         }
     }

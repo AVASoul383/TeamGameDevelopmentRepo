@@ -439,8 +439,6 @@ MonoBehaviour:
   shootRate: 0
   shootAnim: {fileID: 0}
   reloadAnim: {fileID: 0}
-  grappleSpeed: 20
-  grappleDist: 50
   audSteps: []
   audStepsVol: 1
   audJump: []

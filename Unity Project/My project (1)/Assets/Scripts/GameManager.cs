@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         * The Scene will have the actual triggers
          */
 
-        //MusicManager.instance.playGameplayMusic();
+        MusicManager.instance.playGameplayMusic();
     }
 
     void TrySetupTrigger(string tag, ref TurnOnOff trigger)
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
             if(menuActive == null)
             {
                 statePause();
-                GameManager.instance.setActiveMenu(menuPause);
+                setActiveMenu(menuPause);
                 
             }
             else if(menuActive == menuPause)
@@ -149,15 +149,17 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        MenuManager.instance.setActiveMenu(null);
+        menuActive.SetActive(false);
+        menuActive = null;
+        //MenuManager.instance.setActiveMenu(null);
         MusicManager.instance.playGameplayMusic();
     }
 
     public void openShop()
     {
         statePause();
-        MenuManager.instance.setActiveMenu(menuShop);
-        
+        setActiveMenu(menuShop);
+        //MenuManager.instance.setActiveMenu(menuShop);
     }
 
     public void updateGameGoal(int amount)
@@ -173,8 +175,8 @@ public class GameManager : MonoBehaviour
         if(bossCount <= 0)
         {
             statePause();
-            MenuManager.instance.setActiveMenu(menuWin);
-            
+            setActiveMenu(menuWin);
+            //MenuManager.instance.setActiveMenu(menuWin); 
         }
     }
 
