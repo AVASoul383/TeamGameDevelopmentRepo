@@ -164,6 +164,9 @@ MonoBehaviour:
   bullet:
   - {fileID: 3027016357346803647, guid: 1a0ef1dd26bcb7f43a31c04a37d075a2, type: 3}
   shootRate: 1
+  possibleDrops:
+  - {fileID: 2133860820274829656, guid: 0837b097c3280c343a4b41ab0caba20b, type: 3}
+  dropChance: 1
   waveManager: {fileID: 0}
 --- !u!33 &4431342610752728884
 MeshFilter:
@@ -272,7 +275,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -293,7 +296,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

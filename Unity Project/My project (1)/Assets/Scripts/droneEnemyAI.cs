@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class droneEnemyAI : MonoBehaviour, IDamage
 {
-    enum enemyType { moving, stationary, boss}
+    enum enemyType { moving, stationary, boss, objective}
     [SerializeField] enemyType type;
 
     [Header("----- Model -----")]
@@ -32,6 +32,10 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     [SerializeField] Transform[] shootPos;
     [SerializeField] GameObject[] bullet;
     [Range(0, 5)][SerializeField] float shootRate;
+
+    [Header("---- Drops ----")]
+    [SerializeField] GameObject[] possibleDrops;
+    [Range(0, 1f)][SerializeField] float dropChance;
 
     float shootTimer;
     float roamTimer;
@@ -112,15 +116,15 @@ public class droneEnemyAI : MonoBehaviour, IDamage
         {
             if (hit.collider.CompareTag("Player") && angleToPlayer <= FOV)
             {
-                if(type == enemyType.moving)
+                if (type == enemyType.moving || type == enemyType.boss)
                     agent.SetDestination(GameManager.instance.player.transform.position);
 
-                if (shootTimer >= shootRate)
+                if (shootTimer >= shootRate && (type == enemyType.moving || type == enemyType.stationary || type == enemyType.boss))
                 {
                     shoot();
                 }
 
-                if (agent.remainingDistance <= agent.stoppingDistance)
+                if (agent.remainingDistance <= agent.stoppingDistance && (type == enemyType.moving || type == enemyType.boss))
                 {
                     faceTarget();
                 }
@@ -129,6 +133,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
                 return true;
             }
+
         }
         agent.stoppingDistance = 0;
         return false;
@@ -192,6 +197,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
+            TryDropItem();
             Destroy(gameObject);
             if (spawner != null)
                 spawner.EnemyDied();
@@ -202,6 +208,17 @@ public class droneEnemyAI : MonoBehaviour, IDamage
             if (type == enemyType.boss)
                 GameManager.instance.bossFight(-1);
 
+        }
+    }
+    void TryDropItem()
+    {
+        if (possibleDrops.Length == 0)
+            return;
+
+        if (UnityEngine.Random.value <= dropChance) // random value between 0 and 1
+        {
+            int randomIndex = UnityEngine.Random.Range(0, possibleDrops.Length);
+            Instantiate(possibleDrops[randomIndex], transform.position, Quaternion.identity);
         }
     }
 

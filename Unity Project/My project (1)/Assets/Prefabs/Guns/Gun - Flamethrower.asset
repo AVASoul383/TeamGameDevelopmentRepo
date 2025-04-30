@@ -16,12 +16,12 @@ MonoBehaviour:
   shootDamage: 1
   shootDis: 209
   shootRate: 0.3
-  ammoCur: 8
+  ammoCur: 20
   ammoMax: 20
-  ammoReserve: 0
+  ammoReserve: 20
   reloadTimer: 0.5
-  bullet: {fileID: 0}
-  lastBullet: {fileID: 0}
+  bullet: {fileID: 3027016357346803647, guid: 5761ea941edb1ab4d9a64a4c731d84ca, type: 3}
+  lastBullet: {fileID: 3027016357346803647, guid: 1fb7c155c9580f442ab25f7f70438c82, type: 3}
   hitEffect: {fileID: 1301697207402410478, guid: 39f852c28f9c3fd45a427c24f3564ba7, type: 3}
   shootSound:
   - {fileID: 8300000, guid: 13a6b948a9fd38140b260724decdbc6e, type: 3}

@@ -20,8 +20,8 @@ MonoBehaviour:
   ammoMax: 16
   ammoReserve: 0
   reloadTimer: 0.5
-  bullet: {fileID: 0}
-  lastBullet: {fileID: 0}
+  bullet: {fileID: 3027016357346803647, guid: 5761ea941edb1ab4d9a64a4c731d84ca, type: 3}
+  lastBullet: {fileID: 3027016357346803647, guid: 1fb7c155c9580f442ab25f7f70438c82, type: 3}
   hitEffect: {fileID: 970440554703164915, guid: 47096eff328e11a418ace7db2d72aa97, type: 3}
   shootSound:
   - {fileID: 8300000, guid: 7ac239716b56509418342d01d81a827e, type: 3}
