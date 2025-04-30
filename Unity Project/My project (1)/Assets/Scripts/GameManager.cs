@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
             if(menuActive == null)
             {
                 statePause();
-                MenuManager.instance.setActiveMenu(menuPause);
+                GameManager.instance.setActiveMenu(menuPause);
                 
             }
             else if(menuActive == menuPause)
