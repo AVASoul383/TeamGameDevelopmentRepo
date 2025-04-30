@@ -18,7 +18,6 @@ public class ObjectiveTarget : MonoBehaviour, IDamage
 
         if (HP <= 0)
         {
-            GameManager.instance.updateGameGoal(-1);
             OpenWalls();
             Destroy(gameObject);
         }

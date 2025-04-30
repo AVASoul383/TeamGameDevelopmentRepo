@@ -46,8 +46,8 @@ public class GameManager : MonoBehaviour
 
     public bool isPaused;
 
-    public int totalNPCs = 0; 
-    public int NPCsInteractedWith = 0;
+    public int totalNPCs; 
+    public int NPCsInteractedWith;
     int goalCount;
     int bossCount;
     public int moneyCount;
@@ -198,13 +198,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void updateNPCCount()
+    {
+        totalNPCs++;
+    }
+
     public void registerNPCInteraction()
     {
         NPCsInteractedWith++;
         if (NPCsInteractedWith >= totalNPCs)
         {
-            SceneManager.LoadScene("Tower Level");
-
+            SceneManager.LoadScene("Factory");
         }
     }
     public void updateMoneyCount(int amount)

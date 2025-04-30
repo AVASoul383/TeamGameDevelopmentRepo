@@ -6,6 +6,11 @@ public class NPC : MonoBehaviour, playerInteract.IInteractable
     public string[] dialogueLines;
     bool hasBeenInteracted = false;
     // This method is called when the player interacts with the NPC
+
+    void Start()
+    {
+        GameManager.instance.updateNPCCount();
+    }
     public void Interact()
     {
 

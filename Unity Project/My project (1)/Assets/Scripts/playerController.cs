@@ -115,7 +115,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         Movement();
         HandleInputs();
         handleSlide();
-        anim.SetInteger("Health", HP);  
+        anim.SetInteger("Health", HP);
+        HandleItemKeys();
 
         if (Input.GetKeyDown(KeyCode.G)) TryPickup();
         if (Input.GetKeyDown(KeyCode.D)) DropHeldObject();
@@ -345,8 +346,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
     void shoot()
     {
-        if (isReloading || gunList[gunListPos].ammoCur <= 0)
-            return;
+        
 
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreLayer))
@@ -368,6 +368,8 @@ public class playerController : MonoBehaviour, IDamage, IPickup
                 return;
             }
         }
+        if (isReloading || gunList[gunListPos].ammoCur <= 0)
+            return;
 
         shootTimer = 0;
         gunList[gunListPos].ammoCur--;
@@ -515,10 +517,38 @@ public class playerController : MonoBehaviour, IDamage, IPickup
 
         switch (slot)
         {
-            case 1: if (item1Count-- > 0) ActivateItemEffect(1); break;
-            case 2: if (item2Count-- > 0) ActivateItemEffect(2); break;
-            case 3: if (item3Count-- > 0) ActivateItemEffect(3); break;
-            case 4: if (item4Count-- > 0) ActivateItemEffect(4); break;
+            case 1:
+                if (item1Count > 0)
+                {
+                    item1Count--;
+                    ActivateItemEffect(1);
+                    GameManager.instance.updateItemCount1();
+                }
+                break;
+            case 2:
+                if (item2Count > 0)
+                {
+                    item2Count--;
+                    ActivateItemEffect(2);
+                    GameManager.instance.updateItemCount2();
+                }
+                break;
+            case 3:
+                if (item3Count > 0)
+                {
+                    item3Count--;
+                    ActivateItemEffect(3);
+                    GameManager.instance.updateItemCount3();
+                }
+                break;
+            case 4:
+                if (item4Count > 0)
+                {
+                    item4Count--;
+                    ActivateItemEffect(4);
+                    GameManager.instance.updateItemCount4();
+                }
+                break;
         }
     }
 
