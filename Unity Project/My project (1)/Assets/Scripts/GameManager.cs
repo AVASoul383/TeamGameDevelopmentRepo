@@ -57,17 +57,9 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        DontDestroyOnLoad(instance);
-    } 
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-
         // Try to find player
         player = GameObject.FindWithTag("Player");
-		if (player != null)
+        if (player != null)
         {
             playerScript = player.GetComponent<playerController>();
         }
@@ -80,6 +72,15 @@ public class GameManager : MonoBehaviour
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
         if (playerSpawnPos == null)
             Debug.LogWarning("Player Spawn Pos not found.");
+        DontDestroyOnLoad(instance);
+    } 
+    
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+
+        
 
         /*// Safe way to find triggers
          * 
