@@ -44,7 +44,7 @@ public class droneEnemyAI : MonoBehaviour, IDamage
     int shootRotation;
     int bulletRotation;
 
-    private spawner spawner;
+    //private spawner spawner;
 
     Vector3 playerDir;
     Vector3 shootDir;
@@ -100,10 +100,10 @@ public class droneEnemyAI : MonoBehaviour, IDamage
         }
     }
 
-    public void setSpawner(spawner mySpawner)
-    {
-        spawner = mySpawner;
-    }
+    //public void setSpawner(spawner mySpawner)
+    //{
+    //    spawner = mySpawner;
+    //}
 
     bool canSeePlayer()
     {
@@ -199,8 +199,8 @@ public class droneEnemyAI : MonoBehaviour, IDamage
         {
             TryDropItem();
             Destroy(gameObject);
-            if (spawner != null)
-                spawner.EnemyDied();
+            //if (spawner != null)
+            //    spawner.EnemyDied();
             enemyDead();
             GameManager.instance.updateMoneyCount(moneyDropped);
             GameManager.instance.updateGameGoal(-1);
