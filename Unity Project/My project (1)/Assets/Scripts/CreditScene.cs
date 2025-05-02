@@ -5,15 +5,27 @@ using UnityEngine.SceneManagement;
 public class CreditScene : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Start()
     {
         StartCoroutine(BackToMainMenu());
     }
 
+    //void StartCredits()
+    //{
+
+    //}
+
+
+    public void LoadNextScene()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+
     IEnumerator BackToMainMenu()
     {
-        SceneManager.LoadScene("Credits");
-        yield return new WaitForSeconds(45f);
-        SceneManager.LoadScene("Main Menu");
+        MenuManager.instance.setActiveMenu(null);
+        //SceneManager.LoadScene("Credits");
+        yield return new WaitForSecondsRealtime(45f);
+        LoadNextScene();
     }
 }

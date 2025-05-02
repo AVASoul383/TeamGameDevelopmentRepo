@@ -75,4 +75,12 @@ public void PlayGame()
 
         asyncLoad.allowSceneActivation = true;
     }
+
+    public void CreditsActive()
+    {
+        MenuManager.instance.setActiveMenu(null);
+        //StartCoroutine(loadGame());
+        SceneManager.LoadScene("Credits");
+    }
+
 }
