@@ -23,9 +23,8 @@ public class CreditScene : MonoBehaviour
 
     IEnumerator BackToMainMenu()
     {
-        MenuManager.instance.setActiveMenu(null);
-        //SceneManager.LoadScene("Credits");
-        yield return new WaitForSecondsRealtime(45f);
+        
+        yield return new WaitForSecondsRealtime(44f);
         LoadNextScene();
     }
 }
