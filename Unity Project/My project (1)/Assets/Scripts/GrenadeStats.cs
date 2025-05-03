@@ -11,4 +11,7 @@ public class GrenadeStats : ScriptableObject
     public GameObject explosionEffect;
     public AudioClip explosionSound;
     [Range(0f, 1f)] public float explosionVolume;
+
+
 }
+

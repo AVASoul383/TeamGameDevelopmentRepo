@@ -21,6 +21,8 @@ public class PickUp : MonoBehaviour
             pickupable.getGunStats(gun);
             Destroy(gameObject);
         }
+
+
     }
 
 }

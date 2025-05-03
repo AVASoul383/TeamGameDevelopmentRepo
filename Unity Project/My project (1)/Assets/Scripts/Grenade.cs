@@ -15,13 +15,18 @@ public class Grenade : MonoBehaviour
 
     private Rigidbody rb;
     private MeshRenderer mesh;
+    private AudioSource audioSource;
 
-    public static bool playerHasGrenade = false; 
+    public static bool playerHasGrenade = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         mesh = GetComponent<MeshRenderer>();
+        audioSource = GetComponent<AudioSource>();
+
+        if (playerCamera == null)
+            playerCamera = Camera.main.transform;
     }
 
     void Update()
@@ -40,14 +45,18 @@ public class Grenade : MonoBehaviour
     {
         isHeld = true;
         hasBeenPickedUp = true;
-        playerHasGrenade = true; 
+        playerHasGrenade = true;
         rb.isKinematic = true;
         rb.useGravity = false;
+
+        GetComponent<Collider>().enabled = false;
 
         transform.SetParent(playerCamera);
         transform.localPosition = new Vector3(0.3f, -0.4f, 1.2f);
         transform.localRotation = Quaternion.Euler(0, 0, 0);
-        mesh.enabled = true;
+
+        foreach (var r in GetComponentsInChildren<MeshRenderer>())
+            r.enabled = true;
 
         QuestManager qm = FindAnyObjectByType<QuestManager>();
         if (qm != null)
@@ -59,11 +68,18 @@ public class Grenade : MonoBehaviour
     void Throw()
     {
         isHeld = false;
-        playerHasGrenade = false; 
+        playerHasGrenade = false;
         transform.SetParent(null);
         rb.isKinematic = false;
         rb.useGravity = true;
         rb.linearVelocity = playerCamera.forward * throwForce;
+
+        GetComponent<Collider>().enabled = true;
+
+        if (audioSource != null && !audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
 
         StartCoroutine(ExplodeAfterDelay());
     }
@@ -73,13 +89,16 @@ public class Grenade : MonoBehaviour
         yield return new WaitForSeconds(stats.fuseTime);
 
         if (stats.explosionEffect)
-            Instantiate(stats.explosionEffect, transform.position, Quaternion.identity);
+        {
+            GameObject explosion = Instantiate(stats.explosionEffect, transform.position, Quaternion.identity);
+            Destroy(explosion, 1.5f);
+        }
 
         if (stats.explosionSound)
             AudioSource.PlayClipAtPoint(stats.explosionSound, transform.position, stats.explosionVolume);
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, stats.explosionRadius);
-       
+        
 
         Destroy(gameObject);
     }
