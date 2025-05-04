@@ -66,7 +66,6 @@ public class GameManager : MonoBehaviour
         {
             playerScript = player.GetComponent<playerController>();
         }
-       
 
         // Try to find player spawn position
         playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");

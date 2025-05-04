@@ -40,7 +40,6 @@ public void PlayGame()
         MenuManager.instance.setActiveMenu(null);
         //StartCoroutine(loadGame());
         SceneManager.LoadScene("Town_New");
-
     }
 
     public void options()
