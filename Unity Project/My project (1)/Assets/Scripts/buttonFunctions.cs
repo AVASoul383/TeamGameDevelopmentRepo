@@ -18,7 +18,10 @@ public class buttonFunctions : MonoBehaviour
     public void quit()
     {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+        if (SceneManager.GetActiveScene().name == "Main Menu" && Application.platform != RuntimePlatform.WebGLPlayer)
+            UnityEditor.EditorApplication.isPlaying = false;
+        else
+            SceneManager.LoadScene("Main Menu");
 #else
         if(SceneManager.GetActiveScene().name == "Main Menu" && Application.platform != RuntimePlatform.WebGLPlayer)
             Application.Quit();
